@@ -5,8 +5,7 @@ class dboperation {
     public static function logIn($useremail, $userpass) {
         $data = array("status" => "false", "message" => "");
         try {
-//            include_once 'config.php';
-
+//            require '../config.php';
             define("DB_HOST", "localhost");
             define("DB_USERNAME", "root");
             define("DB_PASSWORD", "");
@@ -119,12 +118,27 @@ class dboperation {
                     or die(mysqli_error($conn));
             $conn->set_charset('UTF-8');
             $conn->query('SET NAMES utf8');
-            $query = 'INSERT INTO oman_tourism_guide.place (place_id, '
-                    . 'place_type, place_name, address, place_location_lat,'
-                    . ' place_location_lng, place_admin_creator, view, description) '
+            $query = 'INSERT INTO oman_tourism_guide.place '
+                    . '(place_id, '
+                    . 'place_type, '
+                    . 'place_name, '
+                    . 'address, '
+                    . 'place_location_lat,'
+                    . ' place_location_lng, '
+                    . 'place_admin_creator, '
+                    . 'view, '
+                    . 'description) '
                     . 'VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?)';
             $stmt = $conn->prepare($query) or die(mysql_error());
-            $stmt->bind_param('issffiis', intval($place_type), strval($place_name), strval($address), floatval($location_lat), floatval($location_lat), intval($admin_id), intval($view), strval($description));
+            $stmt->bind_param('issffiis', 
+                    intval($place_type), 
+                    strval($place_name), 
+                    strval($address),
+                    floatval($location_lat),
+                    floatval($location_lng), 
+                    intval($admin_id), 
+                    intval($view), 
+                    strval($description));
             $stmt->execute();
             if ($stmt->affected_rows == 1) {
                 $data["status"] = "true";

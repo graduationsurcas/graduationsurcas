@@ -34,8 +34,9 @@ $(document).ready(function () {
         $('input[name=userpassword]').attr('disabled', 'disabled');
         $('input[name=useremail]').attr('disabled', 'disabled');
         $('input[type="submit"]').attr('disabled', 'disabled');
-        var url = sitelink + "services/loginrequest.php"; // the script where you handle the form input.
+        var url = sitelink + "/services/loginrequest.php"; // the script where you handle the form input.
         // process the form
+        
         $.ajax({
             type: 'POST',
             url: url,
@@ -48,7 +49,7 @@ $(document).ready(function () {
                 .done(function (data) {
 
                     if (data.status == "true") {
-                        window.location.assign(sitelink + "home.php");
+                        window.location.assign(sitelink + "/home.php");
                     } else if (data.status == "false") {
                         $('input[type="submit"]').removeAttr('disabled');
                         $('input[name=userpassword]').removeAttr('disabled');
