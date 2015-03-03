@@ -2,7 +2,7 @@
 include_once './include/auth.php';
 include_once './services/DB/dboperation.php';
 ?>
-<!DOCTYPE html>
+
 <html lang="en">
 
     <head>
