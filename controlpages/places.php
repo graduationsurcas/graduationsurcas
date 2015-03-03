@@ -8,7 +8,7 @@
 <!--new place form-->
 <div class="row">
     <div class="col-lg-7 col-md-7">
-        <label class="form-title"><span class="fa fa-plus"></span>&nbsp;new places</label>
+        <label class="form-title"><span id="new-place-form-icon"><span class="fa fa-plus"></span></span>&nbsp;new places</label>
 
         <form accept-charset="UTF-8" method="POST" class="forms" role="form" id="form-add-new-places">
             <fieldset>
@@ -17,8 +17,7 @@
                     <span class="input-group-addon"><i class="fa fa-list">&nbsp;type</i>
                     </span>
                     <select class="form-control"
-                            placeholder="Major"
-                            id="student_major"
+                            id="new-place-type"
                             >
                         <option value="1000" selected="false">  </option>
                         <?php
@@ -77,17 +76,23 @@
                 <div class="form-group input-group">
                     <span class="input-group-addon"><i class="fa fa-edit">&nbsp;description</i>
                     </span>
-                    <textarea required="" class="form-control" rows="5"></textarea>
+                    <textarea 
+                        required=""
+                        class="form-control"
+                        rows="5"
+                        id="new-place-desc"
+                        name="new-place-desc"
+                        ></textarea>
                     <span  class="input-group-addon error-mark" id="new-place-location-h-error" >*</span>
 
                 </div>
                 <div class="form-group">
                     <label>display status &nbsp;&nbsp;</label>
                     <label class="radio-inline">
-                        <input type="radio" name="optionsRadiosInline" id="display-status-true" value="true" checked> true
+                        <input type="radio" name="new-place-view" id="new-place-view" value="1" checked> true
                     </label>
                     <label class="radio-inline">
-                        <input type="radio" name="optionsRadiosInline" id="display-status-false" value="false"> false
+                        <input type="radio" name="new-place-view" id="new-place-view" value="0"> false
                     </label>
                 </div>
 
@@ -96,7 +101,9 @@
             </fieldset>
 
             <div class="form-message">
-                <label id="form-add-new-places-message"></label>
+                <label id="form-add-new-places-message">
+                    
+                </label>
             </div>
         </form>
     </div>

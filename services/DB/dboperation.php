@@ -130,15 +130,16 @@ class dboperation {
                     . 'description) '
                     . 'VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?)';
             $stmt = $conn->prepare($query) or die(mysql_error());
-            $stmt->bind_param('issffiis', 
-                    intval($place_type), 
-                    strval($place_name), 
-                    strval($address),
-                    floatval($location_lat),
-                    floatval($location_lng), 
-                    intval($admin_id), 
+            $stmt->bind_param('issddiis',
+                    intval($place_type),
+                    strval($place_name),
+                    strval($address), 
+                    doubleval($location_lat), 
+                    doubleval($location_lng),
+                    intval($admin_id),
                     intval($view), 
-                    strval($description));
+                    strval($description)
+            );
             $stmt->execute();
             if ($stmt->affected_rows == 1) {
                 $data["status"] = "true";
