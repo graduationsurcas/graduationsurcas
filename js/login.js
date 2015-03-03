@@ -1,7 +1,7 @@
-// magic.js
+
 $(document).ready(function () {
 
-    // process the form
+    
     $('#form-signin').submit(function (event) {
 
 

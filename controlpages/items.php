@@ -6,6 +6,7 @@
 </div>
 
 <!--new place form-->
+<!--new place form-->
 <div class="row">
     <div class="col-lg-7 col-md-7">
         <label class="form-title"><span class="fa fa-plus"></span>&nbsp;new places</label>
