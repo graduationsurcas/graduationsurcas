@@ -24,9 +24,9 @@ include_once '../services/DB/config.php';
                 <div class="container-fluid">
 
                     <?php
-                                include_once '../controlpages/placeslist.php';
+                    include_once '../controlpages/placeslist.php';
                     ?>
-                   
+
 
 
                 </div>
@@ -38,7 +38,7 @@ include_once '../services/DB/config.php';
         <!-- /#wrapper -->
 
         <?php
-            include_once '../include/fotterlink.html';
+        include_once '../include/fotterlink.html';
         ?>
         <script src="./js/places.js" type="text/javascript"></script>
         <script src="../js/placeslist.js" type="text/javascript"></script>

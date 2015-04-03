@@ -13,8 +13,7 @@ $(document).ready(function () {
                 dataType: 'json',
                 encode: true,
                 success: function (data, textStatus, jqXHR) {
-                    
-               console.log(s);  
+                    console.log(s);
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.log(errorThrown);

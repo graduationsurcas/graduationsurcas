@@ -25,7 +25,7 @@ include_once './services/DB/dboperation.php';
                     <?php
 //                                include_once './controlpages/items.php';
                     ?>
-                   
+
 
 
                 </div>
@@ -37,7 +37,7 @@ include_once './services/DB/dboperation.php';
         <!-- /#wrapper -->
 
         <?php
-            include_once 'include/fotterlink.html';
+        include_once 'include/fotterlink.html';
         ?>
         <script src="js/places.js" type="text/javascript"></script>
 

@@ -159,7 +159,7 @@ $(document).ready(function () {
                             $('#form-places-search-result').html(html);
                             html = null;
                             newplace = null;
-                            
+
                         }
 
 
@@ -172,74 +172,74 @@ $(document).ready(function () {
         // stop the form from submitting the normal way and refreshing the page
         event.preventDefault();
     });
-    
-    
-    
+
+
+
 
 });
 
-function placesList(pagenumber){
-        
-        $("#places-list-table").html("");
-        var Data = {
-            'pageenumber': pagenumber
-        };
+function placesList(pagenumber) {
 
-        var url = sitelink + "/services/getPlaceListPage.php";
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: Data,
-            dataType: 'json',
-            encode: true
-        })
-                // using the done promise callback
-                // {"status":"","data":""}
-                .done(function (data) {
+    $("#places-list-table").html("");
+    var Data = {
+        'pageenumber': pagenumber
+    };
+
+    var url = sitelink + "/services/getPlaceListPage.php";
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: Data,
+        dataType: 'json',
+        encode: true
+    })
+            // using the done promise callback
+            // {"status":"","data":""}
+            .done(function (data) {
 //                console.log(data.data);
-                    $('#new-borrow-message').html("");
-                    
-                    if (data.status == "true") {
-                        if (data.data.length === 0) {
-                            $('#no-borrow-item-message').text("there no place");
-                        } else {
-                            var html = "";
-                            var place = "";
-                            var num = 26;
-                            $.each(data.data, function (id, object) {
-                                place =  '<tr>'+
-                                '<td>'+num+'</td>'+
-                                '<td>'+object.name+'</td>'+
-                                '<td>'+object.type+'</td>'+
-                                '<td>'+object.address+'</td>'+
-                                '<td><span class="btn btn-sm btn-warning">'+
-                                        '<span class="fa fa-file-text-o"></span>'+
-                                    '</span>'+
-                                    '<span class="btn btn-sm btn-primary ">'+
-                                        '<span class="fa fa-edit"></span>'+
-                                    '</span>'+
-                                    '<span class="btn btn-sm btn-danger ">'+
-                                        '<span class="fa fa-trash"></span>'+
-                                    '</span>'+
-                                '</td>'+
-                            '</tr>'; 
-                                html = html + place;
-                                num++;
-                            });
-                            
-                            $('#places-list-table').html(html);
-                            html = null;
-                            place = null;
-                            
-                        }
+                $('#new-borrow-message').html("");
 
+                if (data.status == "true") {
+                    if (data.data.length === 0) {
+                        $('#no-borrow-item-message').text("there no place");
+                    } else {
+                        var html = "";
+                        var place = "";
+                        var num = 26;
+                        $.each(data.data, function (id, object) {
+                            place = '<tr>' +
+                                    '<td>' + num + '</td>' +
+                                    '<td>' + object.name + '</td>' +
+                                    '<td>' + object.type + '</td>' +
+                                    '<td>' + object.address + '</td>' +
+                                    '<td><span class="btn btn-sm btn-warning">' +
+                                    '<span class="fa fa-file-text-o"></span>' +
+                                    '</span>' +
+                                    '<span class="btn btn-sm btn-primary ">' +
+                                    '<span class="fa fa-edit"></span>' +
+                                    '</span>' +
+                                    '<span class="btn btn-sm btn-danger ">' +
+                                    '<span class="fa fa-trash"></span>' +
+                                    '</span>' +
+                                    '</td>' +
+                                    '</tr>';
+                            html = html + place;
+                            num++;
+                        });
 
-                    } else if (data.status === "false") {
+                        $('#places-list-table').html(html);
+                        html = null;
+                        place = null;
 
                     }
-                });
-                
-                
-                
-    }
+
+
+                } else if (data.status === "false") {
+
+                }
+            });
+
+
+
+}
 

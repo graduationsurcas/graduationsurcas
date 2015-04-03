@@ -6,7 +6,7 @@
                     <div class="row-fluid user-row">
                         <img class="center-content img-responsive" alt="oman map" 
                              src="images/iconmap.png"
-                             
+
                              />
                     </div>
                 </div>
@@ -15,7 +15,7 @@
                         <fieldset>
                             <center>
                                 <label id="login_result">
-                                    
+
                                 </label>
                             </center>
                             <div class="input-group">
