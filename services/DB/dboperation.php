@@ -243,25 +243,22 @@ class dboperation {
         }
     }
     public static function getPlacesListJson($selectfrom = 1, $selectto = 25) {
-        $response = array("status" => "false", "data" => "");
+         $response = array("status" => "false", "data" => "");
         try {
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
             $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $stmt = $dbh->prepare('SELECT place_id, place_type as type,'
                     . ' place_name, address FROM place ORDER BY '
-                    . 'create_date ASC LIMIT :selectfrom, :selectto ');
-            $stmt->bindParam(":selectfrom", $selectfrom, PDO::PARAM_INT);
-            $stmt->bindParam(":selectto", $selectto, PDO::PARAM_INT);
+                    . 'create_date ASC LIMIT :selectfrom, :selectto');
+            $stmt->bindParam(':item_type', $typeid, PDO::PARAM_INT);
+            $stmt->bindParam(':manufacturer', $manufacturer, PDO::PARAM_INT);
             $stmt->execute();
             $result = $stmt->fetchAll();
             $data = array();
-            $place = array("id" => "", "name" => "", "address" => "");
             foreach ($result as $row) {
-                $place['id'] = $row['place_id'];
-                $place['name'] = $row['place_name'];
-                $place['address'] = $row['address'];
-                $place['type'] = $row['type'];
-                array_push($data, $place);
+                $id = $row['id'];
+                $name = $row['name'];
+                $data[$id] = $name;
             }
             $response["data"] = $data;
             $response["status"] = "true";
@@ -271,6 +268,7 @@ class dboperation {
             echo $e->getMessage();
         } finally {
             echo json_encode($response);
+            /*             * * close the database connection ** */
             $dbh = null;
         }
     }

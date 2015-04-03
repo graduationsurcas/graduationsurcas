@@ -23,7 +23,7 @@ include_once './services/DB/dboperation.php';
                 <div class="container-fluid">
 
                     <?php
-                                include_once './controlpages/items.php';
+//                                include_once './controlpages/items.php';
                     ?>
                    
 
