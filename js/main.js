@@ -1,4 +1,4 @@
-var sitelink = "http://localhost/graduationProject";
+var sitelink = "http://localhost/graduationsurcas";
 
 $(document).ready(function () {
 
