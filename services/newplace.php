@@ -1,5 +1,5 @@
 <?php
-
+header("Access-Control-Allow-Origin: *");
 //'placename': 
 // 'placetype': 
 // 'placeaddress': 
@@ -19,6 +19,7 @@ if (
 ) {
 session_start();
     include_once 'DB/dboperation.php';
+    include_once 'DB/config.php';
     dboperation::newPlace($_SESSION['login-admin-id'],
             $_POST["placename"],
             $_POST["placetype"],

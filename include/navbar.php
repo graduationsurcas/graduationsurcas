@@ -3,7 +3,7 @@
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                        <span class="sr-only">Toggle navigation</span>
+                        <span class="sr-only"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -30,8 +30,22 @@
                 <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav side-nav">
-                        <li class="active">
-                            <a href="home.php"><i class="fa fa-fw fa-bar-chart-o"></i> place</a>
+                        <li>
+                            <a href="home.php"><i class="fa fa-arrow-circle-o-right"></i> Home</a>
+                        </li>
+                        <li>
+                            <a href="javascript:;" data-toggle="collapse" data-target="#placescolntrollcollapse"><i class="fa fa-fw fa-arrows-v"></i>&nbsp;Places<i class="fa fa-fw fa-caret-down"></i></a>
+                            <ul id="placescolntrollcollapse" class="collapse">
+                                <li>
+                                    <a href="../pages/newplace.php"><span class="fa fa-arrow-circle-o-right"></span>&nbsp;New Place</a>
+                                </li>
+                                <li>
+                                    <a href="../pages/placeslist.php"><span class="fa fa-arrow-circle-o-right"></span>&nbsp;Places List</a>
+                                </li>
+                                <li>
+                                    <a href="../pages/placessearch.php"><span class="fa fa-arrow-circle-o-right"></span>&nbsp;Places Search</a>
+                                </li>
+                            </ul>
                         </li>
                         <li >
                             <a href="items.php"><i class="fa fa-fw fa-dashboard"></i> item</a>

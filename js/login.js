@@ -49,7 +49,7 @@ $(document).ready(function () {
                 .done(function (data) {
 
                     if (data.status == "true") {
-                        window.location.assign(sitelink + "/home.php");
+                        window.location.assign(sitelink + "/pages/home.php");
                     } else if (data.status == "false") {
                         $('input[type="submit"]').removeAttr('disabled');
                         $('input[name=userpassword]').removeAttr('disabled');
