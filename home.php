@@ -7,8 +7,7 @@ include_once './services/DB/dboperation.php';
 
     <head>
         <?php include_once './include/headerlink.html'; ?>
-                <?php include_once './include/headerlink.html'; ?>
-        <?php include_once './include/headerlink.html'; ?>
+          
 
         
     </head>
