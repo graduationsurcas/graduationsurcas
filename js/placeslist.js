@@ -7,18 +7,20 @@ $(document).ready(function () {
                 'selectto': selectto
             };
             var url = sitelink + '/services/DB/servecerequests.php';
+            
             $.ajax({type: 'POST',
                 url: url,
                 data: Data,
                 dataType: 'json',
                 encode: true,
                 success: function (data, textStatus, jqXHR) {
-                    console.log(s);
+                    console.log(data);
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.log(errorThrown);
                 }
             });
+            
         }
     };
 });

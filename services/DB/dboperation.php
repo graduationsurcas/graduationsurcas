@@ -242,7 +242,6 @@ class dboperation {
             $dbh = null;
         }
     }
-
     public static function getPlacesListJson($selectfrom = 1, $selectto = 25) {
         $response = array("status" => "false", "data" => "");
         try {
@@ -250,21 +249,19 @@ class dboperation {
             $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $stmt = $dbh->prepare('SELECT place_id, place_type as type,'
                     . ' place_name, address FROM place ORDER BY '
-                    . 'create_date ASC LIMIT :selectfrom, :selectto');
-            $stmt->bindParam(':selectfrom', $selectfrom, PDO::PARAM_INT);
-            $stmt->bindParam(':selectto', $selectto, PDO::PARAM_INT);
+                    . 'create_date ASC LIMIT :selectfrom, :selectto ');
+            $stmt->bindParam(":selectfrom", $selectfrom, PDO::PARAM_INT);
+            $stmt->bindParam(":selectto", $selectto, PDO::PARAM_INT);
             $stmt->execute();
             $result = $stmt->fetchAll();
             $data = array();
-            $index = 0;
             $place = array("id" => "", "name" => "", "address" => "");
             foreach ($result as $row) {
                 $place['id'] = $row['place_id'];
                 $place['name'] = $row['place_name'];
                 $place['address'] = $row['address'];
                 $place['type'] = $row['type'];
-                $data[$index] = $place;
-                $index++;
+                array_push($data, $place);
             }
             $response["data"] = $data;
             $response["status"] = "true";
