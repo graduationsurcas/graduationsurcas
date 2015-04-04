@@ -1,5 +1,0 @@
- $_SESSION['login-admin-name'] = $row['admin_name'];
-                    $_SESSION['login-admin-id'] = $row['admin_id'];
-                    $_SESSION['login-admin-email'] = $useremail;
-                    $_SESSION['login-admin-level'] = $row['level'];
-$_SESSION['login'] = true

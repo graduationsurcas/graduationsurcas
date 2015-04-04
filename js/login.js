@@ -1,7 +1,7 @@
-
+// magic.js
 $(document).ready(function () {
 
-
+    // process the form
     $('#form-signin').submit(function (event) {
 
 
@@ -34,43 +34,30 @@ $(document).ready(function () {
         $('input[name=userpassword]').attr('disabled', 'disabled');
         $('input[name=useremail]').attr('disabled', 'disabled');
         $('input[type="submit"]').attr('disabled', 'disabled');
-        var url = sitelink + "/services/loginrequest.php"; // the script where you handle the form input.
-        // process the form
+        var url = sitelink + "/server/loginrequest.php"; // the script where you handle the form input.
 
+        // process the form
         $.ajax({
             type: 'POST',
             url: url,
             data: formData,
-            dataType: 'json',
+            dataType: "json",
             encode: true,
             success: function (data, textStatus, jqXHR) {
                 if (data.status == "true") {
-                        window.location.assign(sitelink + "/pages/home.php");
-                    } else if (data.status == "false") {
-                        $('input[type="submit"]').removeAttr('disabled');
-                        $('input[name=userpassword]').removeAttr('disabled');
-                        $('input[name=useremail]').removeAttr('disabled');
-                        $('#login_result').text(data.message);
-                    }
+                    window.location.assign(sitelink + "/pages/home.php");
+                } else if (data.status == "false") {
+                    $('input[type="submit"]').removeAttr('disabled');
+                    $('input[name=userpassword]').removeAttr('disabled');
+                    $('input[name=useremail]').removeAttr('disabled');
+                    $('#login_result').text(data.message);
+                }
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                alert(errorThrown)
+                alert(errorThrown);
             }
-             
-        })
-                // using the done promise callback
-                // {"status":"","message":""}
-                .done(function (data) {
 
-                    if (data.status == "true") {
-                        window.location.assign(sitelink + "/pages/home.php");
-                    } else if (data.status == "false") {
-                        $('input[type="submit"]').removeAttr('disabled');
-                        $('input[name=userpassword]').removeAttr('disabled');
-                        $('input[name=useremail]').removeAttr('disabled');
-                        $('#login_result').text(data.message);
-                    }
-                });
+        });
 
         // stop the form from submitting the normal way and refreshing the page
         event.preventDefault();

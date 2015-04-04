@@ -12,11 +12,13 @@ function encrypt_pass($input, $rounds = 10) {
     return crypt($input, sprintf('$2y$%02d$', $rounds) . $salt);
 }
 
-function decrypt_pass($inpass, $hashpass) {
 
-    if (crypt($inpass, $hashpass) == $hashpass) {
+function decrypt_pass($inpass, $hashpass){
+    
+    if(crypt($inpass, $hashpass) == $hashpass){
         return TRUE;
-    } else {
+    }
+    else{
         return FALSE;
     }
 }

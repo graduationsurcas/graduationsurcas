@@ -1,12 +1,13 @@
 <?php
-include_once '../include/auth.php';
-include_once '../services/DB/dboperation.php';
+include '../include/authpages.php';
+include '../server/config.php';
+include '../server/dboperation.php';
 ?>
-
+<!DOCTYPE html>
 <html lang="en">
 
     <head>
-        <?php include_once '../include/headerlink.html'; ?>
+        <?php include_once '../include/headerlinkpages.html'; ?>
     </head>
 
     <body>
@@ -37,10 +38,11 @@ include_once '../services/DB/dboperation.php';
         <!-- /#wrapper -->
 
         <?php
-        include_once '../include/fotterlink.html';
+        include_once '../include/footerlinkspages.html';
+        include_once '../modals/searchguidemodel.php';
+        include_once '../modals/placedescptionmodal.html';
         ?>
         <script src="../js/places.js" type="text/javascript"></script>
-
     </body>
 
 </html>

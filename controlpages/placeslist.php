@@ -8,22 +8,22 @@
     <div class="col-lg-12 col-md-12">
         <div class="panel panel-primary">
             <div class="panel-body">
-                <table class="table table-bordered table-hover">
+                <table id="places-list-table" class="table table-bordered table-hover">
                     <thead>
                         <tr>
                             <th>#</th>
                             <th>NAME</th>
                             <th>TYPE</th>
                             <th>ADDRESS</th>
-<!--                            <th>location Latitude</th>
-                            <th>location Longitude</th>-->
+                            <!--<th>location Latitude</th>-->
+                            <th>ADD DATE</th>
                             <th>ACTION</th>
 
                         </tr>
                     </thead>
-                    <tbody id="places-list-table">
+                    <tbody >
                         <?php
-                        $selectamount = 25;
+                        $selectamount = 30;
                         $placelist = json_decode(dboperation::getPlacesList(1, $selectamount));
                         $num = 1;
                         foreach ($placelist->data as $key => $object) {
@@ -33,21 +33,21 @@
                                 <td><?php echo $object->name ?></td>
                                 <td><?php echo $object->type ?></td>
                                 <td><?php echo $object->address ?></td>
-                                <td><span class="btn btn-sm btn-warning">
-                                        <span class="fa fa-file-text-o"></span>
-                                    </span>
-                                    <span class="btn btn-sm btn-primary ">
-                                        <span class="fa fa-edit"></span>
-                                    </span>
-                                    <span class="btn btn-sm btn-danger ">
-                                        <span class="fa fa-trash"></span>
-                                    </span>
-                                </td>
-                            </tr>
-                            <?php
-                            $num++;
-                        }
-                        ?>
+                                <td><?php echo $object->creatdate ?></td>
+                                <td>
+                        <center>
+                            <span title="open on the map" class="btn btn-sm btn-primary"><i class="fa fa-map-marker"></i></span>
+                            <span onclick="PlaceOperations.setplacedesc('<?php echo $object->desc ?>')" data-toggle="modal" data-target="#place_desc_modal" title="descrption" class="btn btn-sm btn-warning "><i class="fa fa-file"></i></span>
+                            <span data-toggle="modal" data-target="#update_place_modal" title="edit place information" class="btn btn-sm btn-success "><i class="fa fa-edit"></i></span>
+                            <span title="remove" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></span>
+
+                        </center>
+                        </td>
+                        </tr>
+                        <?php
+                        $num++;
+                    }
+                    ?>
 
                     </tbody>
 
@@ -68,12 +68,14 @@
                             $selctfrom = 0;
                             $selectto = 0;
                             $roundnum = 1;
+
                             for ($index = 0; $index < $pages; $index++) {
                                 $selectfrom = $selectto + 1;
                                 $selectto = $selectamount * $roundnum;
                                 ?>
                                 <li>
                                     <span 
+
                                         onclick="placesListFunctions.placesnextpage('<?php echo $selectfrom; ?>', '<?php echo $selectto ?>')"
                                         class="btn" style="border-radius: 0px;">
                                         <?php echo $index + 1; ?>

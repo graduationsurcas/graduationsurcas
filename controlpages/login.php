@@ -19,12 +19,13 @@
                                 </label>
                             </center>
                             <div class="input-group">
-                                <div class="input-group-addon"><span>@&nbsp;</span>Email</div>
-                                <input class="form-control" placeholder="email" required="" name="useremail" id="useremail" type="email">
+                                    <div class="input-group-addon"><span>@&nbsp;</span>Email</div>
+                                    <input class="form-control" placeholder="email" required="" name="useremail" id="useremail" type="email">
+                                
                             </div>
 
                             <div class="input-group">
-                                <div class="input-group-addon"><span class="fa fa-lock">&nbsp;</span>Password</div>
+                                <div class="input-group-addon" ><span class="fa fa-lock">&nbsp;</span>Password</div>
                                 <input class="form-control" placeholder="Password" required="" name="userpassword" id="userpassword" type="password">
                             </div>
 

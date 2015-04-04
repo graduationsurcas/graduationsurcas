@@ -1,19 +1,23 @@
 <?php
-include '../include/authpages.php';
+include_once './include/auth.php';
+include './server/dboperation.php';
+include './server/config.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
     <head>
-        <?php include_once '../include/headerlinkpages.html'; ?>
+        <?php include_once './include/headerlink.html'; ?>
     </head>
 
     <body>
 
         <div id="wrapper">
 
+
+
             <?php
-            include_once '../include/navbar.php';
+            include_once './include/navbar.php';
             ?>
 
 
@@ -22,7 +26,7 @@ include '../include/authpages.php';
                 <div class="container-fluid">
 
                     <?php
-//                    include_once '../controlpages/borrow.php';
+                    include_once './page/status.php';
                     ?>
 
 
@@ -36,7 +40,7 @@ include '../include/authpages.php';
         <!-- /#wrapper -->
 
         <?php
-        include_once '../include/footerlinkspages.html';
+        include_once 'include/fotterlink.html';
         ?>
 
     </body>

@@ -69,6 +69,8 @@
                            type="number"
                            class="form-control"
                            placeholder="Longitude">
+                    <span title="open map" data-toggle="modal" data-target="#map_modal"  class="btn input-group-addon"><i class="fa fa-map-marker"></i>
+                    </span>
                     <span  class="input-group-addon error-mark" id="new-place-location-h-error" ></span>
                 </div>
                 <div class="form-group input-group">

@@ -4,6 +4,9 @@
     Author     : Gheith
 */
 
+
+
+
 //to center the content inside parent container
 .center-content{
     margin-left: auto;
@@ -12,4 +15,42 @@
     margin-bottom: auto;
 }
 
+.message-info-div{
+    font-size: 18px;
+}
 
+
+.form-model-result{
+    float: left;
+    font-size: 17px;
+    color: #00cc33;
+}
+
+#placessearch-card-placename{
+    font-size: 20px;
+    color: #23527c;
+}
+.placessearch-card-info-title{
+    font-size: 16px;
+    font-weight: 300;
+    color: #999999;
+}
+.placessearch-card-info-value{
+    font-size: 18px;
+    font-weight: 300;
+    color: #204d74;
+}
+
+.modal-title{
+    font-size: 23px;
+    color: #3399ff
+}
+
+#search_guide_modal #search_guide_modal_body_info{
+    font-size: 18px;
+}
+
+.modal-form-result-text{
+    font-size: 18px;
+    color: #00cc33;
+}

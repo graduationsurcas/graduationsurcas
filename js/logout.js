@@ -1,6 +1,7 @@
 
 function logout() {
-    $.get(sitelink + "/services/logout.php", function (data, status) {
+    
+    $.get(sitelink + "/server/logout.php", function (data, status) {
         if (data == 'true') {
             window.location.assign(sitelink);
         } else {

@@ -18,7 +18,6 @@ class dboperation {
             }
 
             if ($find == FALSE) {
-//                if the email not find on the database
                 $data["message"] = "email not found on the database";
             } else {
                 $stmt = $dbh->prepare("SELECT admin_password FROM admin WHERE admin_email = :useremail");
@@ -59,23 +58,17 @@ class dboperation {
                 }
             }
 //            close the database connection
-            $dbh = null;
         } catch (PDOException $e) {
             $data["message"] = $e->getMessage();
             $data["status"] = "false";
         } finally {
-            //            print the data in json format
+            $dbh = null;
             echo json_encode($data);
         }
     }
 
     public static function getPlacesTypes() {
         try {
-            define("DB_HOST", "localhost");
-            define("DB_USERNAME", "root");
-            define("DB_PASSWORD", "");
-            define("DB_NAME", "oman_tourism_guide");
-
 
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
             $sql = "SELECT place_id, place_name FROM place_type WHERE 1";
@@ -97,8 +90,6 @@ class dboperation {
 
     public static function getAllPlacesx() {
         try {
-
-
 
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
             $sql = "SELECT place_id, place_name FROM place_type WHERE 1";
@@ -178,22 +169,53 @@ class dboperation {
     }
 
     public static function placeSearch($searchkey) {
+        $searchkey = strval($searchkey);
         $response = array("status" => "false", "data" => "");
         try {
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
             $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $stmt = $dbh->prepare('SELECT place_id, place_name, address FROM place WHERE place_name like'
-                    . ' "%' . $searchkey . '%" ORDER BY create_date ASC');
+            $stmt = $dbh->prepare('SELECT
+                                    place.place_id,
+                                    place_type.place_name AS placetype,
+                                    place.address,
+                                    place.place_location_lat,
+                                    place.place_location_lng,
+                                    place.description,
+                                    place.view,
+                                    DATE(place.create_date) AS adddate,
+                                    place.place_name
+                                  FROM place
+                                    INNER JOIN place_type
+                                      ON place.place_type = place_type.place_id
+                                  WHERE 1 AND place.place_name LIKE "%'.$searchkey.'%"
+                                  OR place_type.place_name LIKE "%'.$searchkey.'%"
+                                  OR place.address LIKE "%'.$searchkey.'%"
+                                  OR place.create_date LIKE "%'.$searchkey.'%"
+                                  OR place.description LIKE "%'.$searchkey.'%"
+                                  ORDER BY place.create_date DESC');
 //            $stmt->bindParam(':searchkey', $searchkey, PDO::PA);
             $stmt->execute();
             $result = $stmt->fetchAll();
             $data = array();
-            $place = array("id" => "", "name" => "", "address" => "");
+            $place = array("id" => "",
+                "placetype" => "",
+                "name" => "",
+                "view" => "",
+                "locationlat" => "",
+                "desc" => "",
+                "locationlang" => "",
+                "createdate" => "",
+                "address" => "");
             foreach ($result as $row) {
                 $place["id"] = $row['place_id'];
+                $place["placetype"] = $row['placetype'];
                 $place["name"] = $row['place_name'];
+                $place["view"] = $row['view'];
                 $place["address"] = $row['address'];
-
+                $place["locationlat"] = $row['place_location_lat'];
+                $place["locationlang"] = $row['place_location_lng'];
+                $place["createdate"] = $row['adddate'];
+                $place["desc"] = $row['description'];
                 array_push($data, $place);
             }
             $response["data"] = $data;
@@ -203,7 +225,7 @@ class dboperation {
             $response["status"] = "false";
             echo $e->getMessage();
         } finally {
-            return json_encode($response);
+            echo json_encode($response);
 
             /*             * * close the database connection ** */
             $dbh = null;
@@ -215,23 +237,51 @@ class dboperation {
         try {
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
             $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $stmt = $dbh->prepare('SELECT place_id, place_type as type,'
-                    . ' place_name, address FROM place ORDER BY '
-                    . 'create_date ASC LIMIT :selectfrom, :selectto ');
-            $stmt->bindParam(":selectfrom", $selectfrom, PDO::PARAM_INT);
-            $stmt->bindParam(":selectto", $selectto, PDO::PARAM_INT);
+            $stmt = $dbh->prepare('SELECT
+                                    place.place_id,
+                                    place_type.place_name AS placetype,
+                                    place.address,
+                                    place.view,
+                                    place.place_location_lat,
+                                    place.place_location_lng,
+                                    place.description,
+                                    DATE(place.create_date) AS adddate,
+                                    place.place_name,
+                                    place.place_type
+                                  FROM place
+                                    INNER JOIN place_type
+                                      ON place.place_type = place_type.place_id
+                      ORDER BY place.create_date DESC
+                      LIMIT ' . $selectfrom . ' , ' . $selectto . '');
+
             $stmt->execute();
             $result = $stmt->fetchAll();
+            $response = array("status" => "false", "data" => "");
+            $place = array("id" => "",
+                "placetype" => "",
+                "name" => "",
+                "view" => "",
+                "locationlat" => "",
+                "desc" => "",
+                "locationlang" => "",
+                "createdate" => "",
+                "placetypeid" => "",
+                "address" => "");
             $data = array();
-            $place = array("id" => "", "name" => "", "address" => "");
             foreach ($result as $row) {
-                $place['id'] = $row['place_id'];
-                $place['name'] = $row['place_name'];
-                $place['address'] = $row['address'];
-                $place['type'] = $row['type'];
+               $place["id"] = $row['place_id'];
+                $place["type"] = $row['placetype'];
+                $place["placetypeid"] = $row['place_type'];
+                $place["name"] = $row['place_name'];
+                $place["view"] = $row['view'];
+                $place["address"] = $row['address'];
+                $place["locationlat"] = $row['place_location_lat'];
+                $place["locationlang"] = $row['place_location_lng'];
+                $place["creatdate"] = $row['adddate'];
+                $place["desc"] = $row['description'];
                 array_push($data, $place);
             }
-            $response["data"] = $data;
+            $response['data'] = $data;
             $response["status"] = "true";
         } catch (PDOException $e) {
             $response["data"] = $e->getMessage();
@@ -239,38 +289,6 @@ class dboperation {
             echo $e->getMessage();
         } finally {
             return json_encode($response);
-            $dbh = null;
-        }
-    }
-    public static function getPlacesListJson($selectfrom = 1, $selectto = 25) {
-        $response = array("status" => "false", "data" => "");
-        try {
-            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
-            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $stmt = $dbh->prepare('SELECT place_id, place_type as type,'
-                    . ' place_name, address FROM place ORDER BY '
-                    . 'create_date ASC LIMIT :selectfrom, :selectto ');
-            $stmt->bindParam(":selectfrom", $selectfrom, PDO::PARAM_INT);
-            $stmt->bindParam(":selectto", $selectto, PDO::PARAM_INT);
-            $stmt->execute();
-            $result = $stmt->fetchAll();
-            $data = array();
-            $place = array("id" => "", "name" => "", "address" => "");
-            foreach ($result as $row) {
-                $place['id'] = $row['place_id'];
-                $place['name'] = $row['place_name'];
-                $place['address'] = $row['address'];
-                $place['type'] = $row['type'];
-                array_push($data, $place);
-            }
-            $response["data"] = $data;
-            $response["status"] = "true";
-        } catch (PDOException $e) {
-            $response["data"] = $e->getMessage();
-            $response["status"] = "false";
-            echo $e->getMessage();
-        } finally {
-            echo json_encode($response);
             $dbh = null;
         }
     }

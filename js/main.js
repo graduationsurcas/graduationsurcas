@@ -8,7 +8,7 @@ $(document).ready(function () {
             return this.replace(/^\s+|\s+$/g, '');
         }
     }
-
+    
 
 });
 
