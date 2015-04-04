@@ -1,5 +1,7 @@
 var sitelink = "http://localhost/graduationsurcas";
 
+
+
 $(document).ready(function () {
 
     // to solve the trim problem in IE <= 8
@@ -8,7 +10,7 @@ $(document).ready(function () {
             return this.replace(/^\s+|\s+$/g, '');
         }
     }
-    
+
 
 });
 

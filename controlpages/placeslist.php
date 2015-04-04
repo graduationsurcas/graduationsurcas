@@ -36,8 +36,7 @@
                                 <td><?php echo $object->creatdate ?></td>
                                 <td>
                         <center>
-                            <span data-toggle="modal" data-target="#map_modal" onclick="PlaceOperations.setmapplacelocation('<?php echo $object->locationlat ?>',
-                                        '<?php echo $object->locationlang ?>')"title="open on the map" class="btn btn-sm btn-primary"><i class="fa fa-map-marker"></i></span>
+                            <span data-toggle="modal" data-target="#map_modal" onclick="PlaceOperations.setmapplacelocation('<?php echo $object->locationlat ?>', '<?php echo $object->locationlang ?>')"title="open on the map" class="btn btn-sm btn-primary"><i class="fa fa-map-marker"></i></span>
                             <span onclick="PlaceOperations.setplacedesc('<?php echo $object->desc ?>')" data-toggle="modal" data-target="#place_desc_modal" title="descrption" class="btn btn-sm btn-warning "><i class="fa fa-file"></i></span>
                             <span onclick="PlaceOperations.setupdateplacemodelforminfo(
                                         '<?php echo $object->id ?>',

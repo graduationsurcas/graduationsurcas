@@ -130,7 +130,7 @@ $(document).ready(function () {
                         var tdhtml = '';
                         var index = Number(selectfrom);
                         $.each(data.data, function (id, place) {
-                            tdhtml = '<tr id="place_list_tr_'+index+'">' +
+                            tdhtml = '<tr id="place_list_tr_' + index + '">' +
                                     ' <td>' + index + '</td>' +
                                     ' <td>' + place.name + '</td>' +
                                     ' <td>' + place.type + '</td>' +
@@ -181,14 +181,19 @@ $(document).ready(function () {
             $("#radio_" + display).prop("checked", true);
             $("#update_place_modal_form_result").text("");
         },
-        setdeletplacemodelforminfo: function (placeid, tr_id){
+        setdeletplacemodelforminfo: function (placeid, tr_id) {
             $('input[id=remove-place-id]').val(placeid);
             $('input[id=remove-place-tr-id]').val(tr_id);
         },
-        setmapplacelocation:function (lat,lng){
-         
+        setmapplacelocation: function (lat, lng) {
+            $("#set-new-place-coordenate").hide();
+            load(lat, lng);
+
         }
     };
+    $('#new-place-form-open-map-modale').click(function () {
+        $("#set-new-place-coordenate").show();
+    });
 
 
 
@@ -288,7 +293,7 @@ $(document).ready(function () {
     });
 
     $("#update-place").submit(function (event) {
-        
+
         var Data = {
             'destination': 'placeupdate',
             'placetype': $('#update-place-type').val(),
@@ -309,9 +314,9 @@ $(document).ready(function () {
             dataType: 'json',
             encode: true,
             success: function (data, textStatus, jqXHR) {
-                if(data.status == "true"){
+                if (data.status == "true") {
                     $("#update_place_modal_form_result").text("update successful");
-                }else{
+                } else {
                     $("#update_place_modal_form_result").text(data.message);
                 }
             },
@@ -322,15 +327,15 @@ $(document).ready(function () {
 
         event.preventDefault();
     });
-    
+
     $("#form-remove-place").submit(function (event) {
-       
+
         var Data = {
             'destination': 'placeremove',
             'placeid': $('input[id=remove-place-id]').val(),
             'pass': $('input[id=remove-place-admin-pass]').val(),
         };
-        
+
         var url = sitelink + "/server/servecerequests.php";
         $.ajax({
             type: 'POST',
@@ -340,9 +345,9 @@ $(document).ready(function () {
             encode: true,
             success: function (data, textStatus, jqXHR) {
                 alert(data.data);
-                if(data.status == "true"){
+                if (data.status == "true") {
                     $("#remove_place_modal_form_result").text("delete successful");
-                }else{
+                } else {
                     $("#remove_place_modal_form_result").text(data.message);
                 }
             },
@@ -352,11 +357,12 @@ $(document).ready(function () {
         });
         event.preventDefault();
     });
-    
-    
-    $('#set-new-place-coordenate').click(function(){
-    $('input[id=new-place-location-h]').val($("#lat").text());
-    $('input[id=new-place-location-v]').val($("#lng").text());
-});
+
+
+    $('#set-new-place-coordenate').click(function () {
+        $('input[id=new-place-location-h]').val($("#lat").text());
+        $('input[id=new-place-location-v]').val($("#lng").text());
+    });
+
 
 });

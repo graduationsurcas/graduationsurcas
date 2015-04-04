@@ -69,7 +69,7 @@
                            type="number"
                            class="form-control"
                            placeholder="Longitude" step="any" >
-                    <span title="open map" data-toggle="modal" data-target="#map_modal"  class="btn input-group-addon"><i class="fa fa-map-marker"></i>
+                    <span id="new-place-form-open-map-modale" title="open map" data-toggle="modal" data-target="#map_modal"  class="btn input-group-addon"><i class="fa fa-map-marker"></i>
                     </span>
                     <span  class="input-group-addon error-mark" id="new-place-location-h-error" ></span>
                 </div>

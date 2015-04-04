@@ -28,6 +28,7 @@
                             </span>
                         </div>
                     </fieldset>
+                    
                     <div class="form-message">
                         <label id="form-places-search-message"></label>
                     </div>

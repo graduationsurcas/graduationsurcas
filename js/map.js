@@ -2,13 +2,14 @@
 
 
 
- function load() {
+ function load(loclat, loclang) {
       if (GBrowserIsCompatible()) {
         var map = new GMap2(document.getElementById("map"));
         map.addControl(new GSmallMapControl());
         map.addControl(new GMapTypeControl());
-		
-        var center = new GLatLng(22.550775, 59.536719);
+        loclat = (typeof loclat == 'undefined')? 22.56225 : loclat;
+        loclang = (typeof loclang == 'undefined')? 59.47241 : loclang;
+        var center = new GLatLng(loclat, loclang);
         map.setCenter(center, 15);
         geocoder = new GClientGeocoder();
         var marker = new GMarker(center, {draggable: true});  
