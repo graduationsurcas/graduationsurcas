@@ -138,9 +138,18 @@ $(document).ready(function () {
                                     '<td>' + place.creatdate + '</td>' +
                                     '<td>' +
                                     '<center>' +
-                                    '<span title="open on the map" class="btn btn-sm btn-primary"><i class="fa fa-map-marker"></i></span>' +
+                                    '<span data-toggle="modal" data-target="#map_modal" onclick="PlaceOperations.setmapplacelocation(\''+place.locationlat+'\', \''+place.locationlang+'\')" title="open on the map" class="btn btn-sm btn-primary"><i class="fa fa-map-marker"></i></span>' +
                                     '&nbsp;<span onclick="PlaceOperations.setplacedesc(\'' + place.desc + '\')" data-toggle="modal" data-target="#place_desc_modal" title="descrption" class="btn btn-sm btn-warning "><i class="fa fa-file"></i></span>' +
-                                    '&nbsp;<span data-toggle="modal" data-target="#update_place_modal" title="edit place information" class="btn btn-sm btn-success "><i class="fa fa-edit"></i></span>' +
+                                    '&nbsp;<span onclick="PlaceOperations.setupdateplacemodelforminfo('+
+                                        '\''+place.id+'\','+
+                                        '\''+place.placetypeid+'\','+
+                                        '\''+place.name+'\','+
+                                        '\''+place.address+'\','+
+                                        '\''+place.locationlat+'\','+
+                                        '\''+place.locationlang+'\','+
+                                        '\''+place.desc+'\','+
+                                        '\''+place.view+'\''
+                                        +')" data-toggle="modal" data-target="#update_place_modal" title="edit place information" class="btn btn-sm btn-success "><i class="fa fa-edit"></i></span>' +
                                     '&nbsp;<span title="remove" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></span>' +
                                     '</center>' +
                                     '</td>' +
@@ -360,8 +369,14 @@ $(document).ready(function () {
 
 
     $('#set-new-place-coordenate').click(function () {
+        //        for a form on the new place page 
         $('input[id=new-place-location-h]').val($("#lat").text());
         $('input[id=new-place-location-v]').val($("#lng").text());
+        
+//        for a form on the modale of update place 
+        $('input[id=update-place-location-latitude]').val($("#lat").text());
+        $('input[id=update-place-location-Longitude').val($("#lng").text());
+        
     });
 
 

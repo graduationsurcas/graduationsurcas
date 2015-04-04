@@ -79,7 +79,7 @@
                             $roundnum = 1;
 
                             for ($index = 0; $index < $pages; $index++) {
-                                $selectfrom = $selectto + 1;
+                                $selectfrom = $selectto;
                                 $selectto = $selectamount * $roundnum;
                                 ?>
                                 <li>
