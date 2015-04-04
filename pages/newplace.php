@@ -38,8 +38,8 @@ include '../server/dboperation.php';
         <!-- /#wrapper -->
 
         <?php
-        include_once '../include/footerlinkspages.html';
         include_once '../modals/mapmodel.php';
+        include_once '../include/footerlinkspages.html';
         ?>
         <script src="../js/places.js" type="text/javascript"></script>
     </body>

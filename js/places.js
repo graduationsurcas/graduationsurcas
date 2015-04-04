@@ -184,6 +184,9 @@ $(document).ready(function () {
         setdeletplacemodelforminfo: function (placeid, tr_id){
             $('input[id=remove-place-id]').val(placeid);
             $('input[id=remove-place-tr-id]').val(tr_id);
+        },
+        setmapplacelocation:function (lat,lng){
+         
         }
     };
 
@@ -349,5 +352,11 @@ $(document).ready(function () {
         });
         event.preventDefault();
     });
+    
+    
+    $('#set-new-place-coordenate').click(function(){
+    $('input[id=new-place-location-h]').val($("#lat").text());
+    $('input[id=new-place-location-v]').val($("#lng").text());
+});
 
 });
