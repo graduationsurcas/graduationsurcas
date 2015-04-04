@@ -41,6 +41,9 @@ include '../server/dboperation.php';
         include_once '../include/footerlinkspages.html';
         include_once '../modals/searchguidemodel.php';
         include_once '../modals/placedescptionmodal.html';
+         include_once '../modals/updateplacemodal.php';
+        include_once '../modals/removeplacemodal.php';
+        include_once '../modals/mapmodel.php';
         ?>
         <script src="../js/places.js" type="text/javascript"></script>
     </body>

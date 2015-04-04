@@ -59,11 +59,13 @@
                                 <span class="input-group-addon"><i class="fa fa-map-marker">&nbsp;location</i>
                                 </span>
                                 <input required="" 
+                                       step="any"
                                        id="update-place-location-latitude"
                                        type="number"
                                        class="form-control"
                                        placeholder="Latitude">
                                 <input required="" 
+                                       step="any"
                                        id="update-place-location-Longitude"
                                        type="number"
                                        class="form-control"

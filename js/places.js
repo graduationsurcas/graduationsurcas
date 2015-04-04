@@ -150,7 +150,7 @@ $(document).ready(function () {
                                         '\''+place.desc+'\','+
                                         '\''+place.view+'\''
                                         +')" data-toggle="modal" data-target="#update_place_modal" title="edit place information" class="btn btn-sm btn-success "><i class="fa fa-edit"></i></span>' +
-                                    '&nbsp;<span title="remove" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></span>' +
+                                    '&nbsp;<span onclick="PlaceOperations.setdeletplacemodelforminfo( \''+place.id +'\',  \''+index+'\')" data-toggle="modal" data-target="#remove_place_modal" title="remove" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></span>' +
                                     '</center>' +
                                     '</td>' +
                                     '<tr>';
@@ -189,6 +189,7 @@ $(document).ready(function () {
             $('#update-place-desc').text(desc);
             $("#radio_" + display).prop("checked", true);
             $("#update_place_modal_form_result").text("");
+            $("#set-new-place-coordenate").show();
         },
         setdeletplacemodelforminfo: function (placeid, tr_id) {
             $('input[id=remove-place-id]').val(placeid);
@@ -230,7 +231,7 @@ $(document).ready(function () {
                         $('#no-borrow-item-message').text("there no place");
                     } else {
                         var html = "";
-
+                        var index = 1;
                         $.each(data.data, function (id, object) {
                             var newplace =
                                     '<div class="col-lg-4 col-md-4">' +
@@ -268,17 +269,26 @@ $(document).ready(function () {
                                     '</div>' +
                                     '<div class="panel-footer">' +
                                     '<center>' +
-                                    '<span title="open on the map" class="btn btn-sm btn-primary"><i class="fa fa-map-marker"></i></span>' +
+                                    '<span data-toggle="modal" data-target="#map_modal" onclick="PlaceOperations.setmapplacelocation(\''+object.locationlat+'\', \''+object.locationlang+'\')" title="open on the map" class="btn btn-sm btn-primary"><i class="fa fa-map-marker"></i></span>' +
                                     '&nbsp;<span onclick="PlaceOperations.setplacedesc(\'' + object.desc + '\')" data-toggle="modal" data-target="#place_desc_modal" title="descrption" class="btn btn-sm btn-warning "><i class="fa fa-file"></i></span>' +
-                                    '&nbsp;<span data-toggle="modal" data-target="#update_place_modal" title="edit place information" class="btn btn-sm btn-success "><i class="fa fa-edit"></i></span>' +
-                                    '&nbsp;<span title="remove" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></span>' +
+                                    '&nbsp;<span onclick="PlaceOperations.setupdateplacemodelforminfo('+
+                                        '\''+object.id+'\','+
+                                        '\''+object.placetypeid+'\','+
+                                        '\''+object.name+'\','+
+                                        '\''+object.address+'\','+
+                                        '\''+object.locationlat+'\','+
+                                        '\''+object.locationlang+'\','+
+                                        '\''+object.desc+'\','+
+                                        '\''+object.view+'\''
+                                        +')" data-toggle="modal" data-target="#update_place_modal" title="edit place information" class="btn btn-sm btn-success "><i class="fa fa-edit"></i></span>' +
+                                    '&nbsp;<span onclick="PlaceOperations.setdeletplacemodelforminfo( \''+object.id +'\',  \''+index+'\')" data-toggle="modal" data-target="#remove_place_modal" title="remove" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></span>' +
                                     '</center>' +
                                     '</div>' +
                                     ' </div>' +
                                     '</div>';
 
                             $(newplace).appendTo('#form-places-search-result');
-
+                            index++;
                         });
 //                        $('#form-places-search-result').html(html);
                         html = null;

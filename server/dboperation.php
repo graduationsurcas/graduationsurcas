@@ -183,7 +183,8 @@ class dboperation {
                                     place.description,
                                     place.view,
                                     DATE(place.create_date) AS adddate,
-                                    place.place_name
+                                    place.place_name,
+                                    place.place_type
                                   FROM place
                                     INNER JOIN place_type
                                       ON place.place_type = place_type.place_id
@@ -202,6 +203,7 @@ class dboperation {
                 "name" => "",
                 "view" => "",
                 "locationlat" => "",
+                "placetypeid" => "",
                 "desc" => "",
                 "locationlang" => "",
                 "createdate" => "",
@@ -210,6 +212,7 @@ class dboperation {
                 $place["id"] = $row['place_id'];
                 $place["placetype"] = $row['placetype'];
                 $place["name"] = $row['place_name'];
+                $place["placetypeid"] = $row['place_type'];
                 $place["view"] = $row['view'];
                 $place["address"] = $row['address'];
                 $place["locationlat"] = $row['place_location_lat'];
