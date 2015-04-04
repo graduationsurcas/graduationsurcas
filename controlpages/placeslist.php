@@ -28,7 +28,7 @@
                         $num = 1;
                         foreach ($placelist->data as $key => $object) {
                             ?>
-                            <tr>
+                        <tr id="place_list_tr_<?php echo $num; ?>">
                                 <td><?php echo $num; ?></td>
                                 <td><?php echo $object->name ?></td>
                                 <td><?php echo $object->type ?></td>
@@ -38,8 +38,17 @@
                         <center>
                             <span title="open on the map" class="btn btn-sm btn-primary"><i class="fa fa-map-marker"></i></span>
                             <span onclick="PlaceOperations.setplacedesc('<?php echo $object->desc ?>')" data-toggle="modal" data-target="#place_desc_modal" title="descrption" class="btn btn-sm btn-warning "><i class="fa fa-file"></i></span>
-                            <span data-toggle="modal" data-target="#update_place_modal" title="edit place information" class="btn btn-sm btn-success "><i class="fa fa-edit"></i></span>
-                            <span title="remove" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></span>
+                            <span onclick="PlaceOperations.setupdateplacemodelforminfo(
+                                        '<?php echo $object->id ?>',
+                                        '<?php echo $object->placetypeid ?>',
+                                        '<?php echo $object->name ?>',
+                                        '<?php echo $object->address ?>',
+                                        '<?php echo $object->locationlat ?>',
+                                        '<?php echo $object->locationlang ?>',
+                                        '<?php echo $object->desc ?>',
+                                        '<?php echo $object->view ?>'
+                                        )" data-toggle="modal" data-target="#update_place_modal" title="edit place information" class="btn btn-sm btn-success "><i class="fa fa-edit"></i></span>
+                            <span onclick="PlaceOperations.setdeletplacemodelforminfo( '<?php echo $object->id ?>',  '<?php echo $num?>')" data-toggle="modal" data-target="#remove_place_modal" title="remove" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></span>
 
                         </center>
                         </td>

@@ -130,16 +130,16 @@ $(document).ready(function () {
                         var tdhtml = '';
                         var index = Number(selectfrom);
                         $.each(data.data, function (id, place) {
-                            tdhtml = '<tr>' +
+                            tdhtml = '<tr id="place_list_tr_'+index+'">' +
                                     ' <td>' + index + '</td>' +
                                     ' <td>' + place.name + '</td>' +
                                     ' <td>' + place.type + '</td>' +
                                     '<td>' + place.address + '</td>' +
                                     '<td>' + place.creatdate + '</td>' +
-                                    '<td>'+
+                                    '<td>' +
                                     '<center>' +
                                     '<span title="open on the map" class="btn btn-sm btn-primary"><i class="fa fa-map-marker"></i></span>' +
-                                    '&nbsp;<span onclick="PlaceOperations.setplacedesc(\''+place.desc+'\')" data-toggle="modal" data-target="#place_desc_modal" title="descrption" class="btn btn-sm btn-warning "><i class="fa fa-file"></i></span>' +
+                                    '&nbsp;<span onclick="PlaceOperations.setplacedesc(\'' + place.desc + '\')" data-toggle="modal" data-target="#place_desc_modal" title="descrption" class="btn btn-sm btn-warning "><i class="fa fa-file"></i></span>' +
                                     '&nbsp;<span data-toggle="modal" data-target="#update_place_modal" title="edit place information" class="btn btn-sm btn-success "><i class="fa fa-edit"></i></span>' +
                                     '&nbsp;<span title="remove" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></span>' +
                                     '</center>' +
@@ -161,17 +161,29 @@ $(document).ready(function () {
             });
 
         }
-        
-        
+
+
     };
-    
-    
+
+
     PlaceOperations = {
-        setplacedesc:function (desc){
+        setplacedesc: function (desc) {
             $("#place_desc_modal_desc_text").text(desc);
         },
-        setupdateplacemodelforminfo:function (type, name, address, locstionlat, locstionlong, desc, display){
-            
+        setupdateplacemodelforminfo: function (id, type, name, address, locstionlat, locstionlong, desc, display) {
+            $('.placetypeselection option:eq(' + type + ')').prop('selected', true);
+            $('input[id=place-id]').val(id);
+            $('input[id=update-place-name]').val(name);
+            $('input[id=update-place-address]').val(address);
+            $('input[id=update-place-location-latitude]').val(locstionlat);
+            $('input[id=update-place-location-Longitude]').val(locstionlong);
+            $('#update-place-desc').text(desc);
+            $("#radio_" + display).prop("checked", true);
+            $("#update_place_modal_form_result").text("");
+        },
+        setdeletplacemodelforminfo: function (placeid, tr_id){
+            $('input[id=remove-place-id]').val(placeid);
+            $('input[id=remove-place-tr-id]').val(tr_id);
         }
     };
 
@@ -201,15 +213,15 @@ $(document).ready(function () {
                         $('#no-borrow-item-message').text("there no place");
                     } else {
                         var html = "";
-                        
+
                         $.each(data.data, function (id, object) {
-                           var newplace = 
+                            var newplace =
                                     '<div class="col-lg-4 col-md-4">' +
                                     '<div class="panel panel-default">' +
                                     '<div class="panel-heading">' +
                                     '<span class="placessearch-card" id="placessearch-card-placename">' +
                                     object.name +
-                            '</span>' +
+                                    '</span>' +
                                     '</div>' +
                                     '<div class="panel-body">' +
                                     '<div class="placessearch-card-info">' +
@@ -218,7 +230,7 @@ $(document).ready(function () {
                                     '</span>' +
                                     '<span class="placessearch-card-info-value">' +
                                     object.placetype +
-                            '</span><br>' +
+                                    '</span><br>' +
                                     '</div>' +
                                     '<div class="placessearch-card-info">' +
                                     '<span class="placessearch-card-info-title" >' +
@@ -226,7 +238,7 @@ $(document).ready(function () {
                                     '</span>' +
                                     '<span class="placessearch-card-info-value">' +
                                     object.address +
-                            '</span><br>' +
+                                    '</span><br>' +
                                     '</div>' +
                                     '<div class="placessearch-card-info">' +
                                     '<span class="placessearch-card-info-title" >' +
@@ -234,22 +246,22 @@ $(document).ready(function () {
                                     '</span>' +
                                     '<span class="placessearch-card-info-value">' +
                                     object.createdate +
-                            '</span><br>' +
+                                    '</span><br>' +
                                     ' </div>' +
                                     '</div>' +
                                     '<div class="panel-footer">' +
                                     '<center>' +
                                     '<span title="open on the map" class="btn btn-sm btn-primary"><i class="fa fa-map-marker"></i></span>' +
-                                    '&nbsp;<span onclick="PlaceOperations.setplacedesc(\''+object.desc +'\')" data-toggle="modal" data-target="#place_desc_modal" title="descrption" class="btn btn-sm btn-warning "><i class="fa fa-file"></i></span>' +
+                                    '&nbsp;<span onclick="PlaceOperations.setplacedesc(\'' + object.desc + '\')" data-toggle="modal" data-target="#place_desc_modal" title="descrption" class="btn btn-sm btn-warning "><i class="fa fa-file"></i></span>' +
                                     '&nbsp;<span data-toggle="modal" data-target="#update_place_modal" title="edit place information" class="btn btn-sm btn-success "><i class="fa fa-edit"></i></span>' +
                                     '&nbsp;<span title="remove" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></span>' +
                                     '</center>' +
                                     '</div>' +
                                     ' </div>' +
                                     '</div>';
-                            
+
                             $(newplace).appendTo('#form-places-search-result');
-                            
+
                         });
 //                        $('#form-places-search-result').html(html);
                         html = null;
@@ -269,6 +281,72 @@ $(document).ready(function () {
 
 
         // stop the form from submitting the normal way and refreshing the page
+        event.preventDefault();
+    });
+
+    $("#update-place").submit(function (event) {
+        
+        var Data = {
+            'destination': 'placeupdate',
+            'placetype': $('#update-place-type').val(),
+            'placeid': $('input[id=place-id]').val(),
+            'placename': $('input[id=update-place-name]').val(),
+            'placeaddress': $('input[id=update-place-address]').val(),
+            'placelocationlat': $('input[id=update-place-location-latitude]').val(),
+            'placelocationlng': $('input[id=update-place-location-Longitude]').val(),
+            'placedescription': $('#update-place-desc').val(),
+            'placview': $('input[name=update-place-view]:checked', '#update-place').val()
+        };
+
+        var url = sitelink + "/server/servecerequests.php";
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: Data,
+            dataType: 'json',
+            encode: true,
+            success: function (data, textStatus, jqXHR) {
+                if(data.status == "true"){
+                    $("#update_place_modal_form_result").text("update successful");
+                }else{
+                    $("#update_place_modal_form_result").text(data.message);
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $("#update_place_modal_form_result").text(errorThrown);
+            }
+        });
+
+        event.preventDefault();
+    });
+    
+    $("#form-remove-place").submit(function (event) {
+       
+        var Data = {
+            'destination': 'placeremove',
+            'placeid': $('input[id=remove-place-id]').val(),
+            'pass': $('input[id=remove-place-admin-pass]').val(),
+        };
+        
+        var url = sitelink + "/server/servecerequests.php";
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: Data,
+            dataType: 'json',
+            encode: true,
+            success: function (data, textStatus, jqXHR) {
+                alert(data.data);
+                if(data.status == "true"){
+                    $("#remove_place_modal_form_result").text("delete successful");
+                }else{
+                    $("#remove_place_modal_form_result").text(data.message);
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        });
         event.preventDefault();
     });
 

@@ -187,11 +187,11 @@ class dboperation {
                                   FROM place
                                     INNER JOIN place_type
                                       ON place.place_type = place_type.place_id
-                                  WHERE 1 AND place.place_name LIKE "%'.$searchkey.'%"
-                                  OR place_type.place_name LIKE "%'.$searchkey.'%"
-                                  OR place.address LIKE "%'.$searchkey.'%"
-                                  OR place.create_date LIKE "%'.$searchkey.'%"
-                                  OR place.description LIKE "%'.$searchkey.'%"
+                                  WHERE 1 AND place.place_name LIKE "%' . $searchkey . '%"
+                                  OR place_type.place_name LIKE "%' . $searchkey . '%"
+                                  OR place.address LIKE "%' . $searchkey . '%"
+                                  OR place.create_date LIKE "%' . $searchkey . '%"
+                                  OR place.description LIKE "%' . $searchkey . '%"
                                   ORDER BY place.create_date DESC');
 //            $stmt->bindParam(':searchkey', $searchkey, PDO::PA);
             $stmt->execute();
@@ -269,7 +269,7 @@ class dboperation {
                 "address" => "");
             $data = array();
             foreach ($result as $row) {
-               $place["id"] = $row['place_id'];
+                $place["id"] = $row['place_id'];
                 $place["type"] = $row['placetype'];
                 $place["placetypeid"] = $row['place_type'];
                 $place["name"] = $row['place_name'];
@@ -289,6 +289,85 @@ class dboperation {
             echo $e->getMessage();
         } finally {
             return json_encode($response);
+            $dbh = null;
+        }
+    }
+
+    public static function updatePlaces($placeid, $place_type, $new_name, $new_address, $loc_lat, $loc_lang, $view, $description) {
+        $response = array("status" => "false", "message" => "");
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $dbh->prepare('UPDATE place
+                            SET place_type = :place_type,
+                                place_name = :new_name,
+                                address = :new_address,
+                                place_location_lat = :loc_lat,
+                                place_location_lng = :loc_lang,
+                                view = :view,
+                                description = :desc,
+                                last_update = CURRENT_TIMESTAMP()
+                            WHERE place_id = :placeid');
+            $stmt->bindParam(':place_type', $place_type, PDO::PARAM_INT);
+            $stmt->bindParam(':new_name', $new_name, PDO::PARAM_STR);
+            $stmt->bindParam(':new_address', $new_address, PDO::PARAM_STR);
+            $stmt->bindParam(':loc_lat', $loc_lat, PDO::PARAM_INT);
+            $stmt->bindParam(':loc_lang', $loc_lang, PDO::PARAM_INT);
+            $stmt->bindParam(':view', $view, PDO::PARAM_INT);
+            $stmt->bindParam(':desc', $description, PDO::PARAM_STR);
+            $stmt->bindParam(':placeid', $placeid, PDO::PARAM_INT);
+            $stmt->execute();
+            if ($stmt->rowCount() > 0) {
+                $response['message'] = "done";
+                $response["status"] = "true";
+            } else {
+                $response['message'] = $stmt->errorInfo();
+                $response["status"] = "false";
+            }
+        } catch (PDOException $e) {
+            $response["message"] = $e->getMessage();
+            $response["status"] = "false";
+            echo $e->getMessage();
+        } finally {
+            echo json_encode($response);
+            $dbh = null;
+        }
+    }
+
+    public static function removePlaces($placeid, $password) {
+        $response = array("status" => "false", "message" => "");
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            session_start();
+            $stmt = $dbh->prepare("SELECT admin_password FROM admin WHERE admin_email = :useremail");
+            $stmt->bindParam(':useremail', $_SESSION['login-admin-email'], PDO::PARAM_STR);
+            $stmt->execute();
+            $pass = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            if (decrypt_pass($password, $pass['admin_password'])) {
+                $stmt = $dbh->prepare('DELETE
+                                    FROM place
+                                  WHERE place_id = :placeid');
+                $stmt->bindParam(':placeid', $placeid, PDO::PARAM_INT);
+                $stmt->execute();
+                if ($stmt->rowCount() > 0) {
+                    $response["message"] = "done";
+                    $response["status"] = "true";
+                } else {
+                    $response["message"] = $stmt->errorInfo();
+                    $response["status"] = "false";
+                }
+            } else {
+                $response["message"] = "wrong password";
+                $response["status"] = "false";
+            }
+        } catch (PDOException $e) {
+            $response["message"] = $e->getMessage();
+            $response["status"] = "false";
+        } finally {
+            echo json_encode($response);
             $dbh = null;
         }
     }

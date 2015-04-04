@@ -7,7 +7,7 @@
                     <i class="fa fa-file-text"></i>&nbsp;Update Place
                 </h4>
             </div>
-            <form accept-charset="UTF-8" method="POST" class="forms" role="form" id="update-place-place">
+            <form accept-charset="UTF-8" method="POST" class="forms" role="form" id="update-place">
                 <div class="modal-body">
                     <div id="update_place_modal_body_info">
                         <fieldset>
@@ -15,7 +15,8 @@
                             <div class="form-group input-group">
                                 <span class="input-group-addon"><i class="fa fa-list">&nbsp;type</i>
                                 </span>
-                                <select class="form-control"
+                                <div class="placetypeselection">
+                                    <select class="form-control"
                                         id="update-place-type"
                                         >
                                     <option value="1000" selected="false">  </option>
@@ -27,6 +28,7 @@
                                     }
                                     ?>
                                 </select>
+                                </div>
                                 <span  class="input-group-addon error-mark" id="new-place-type-error-mark"></span>
                             </div>
 
@@ -34,8 +36,7 @@
                                 <span class="input-group-addon"><i class="fa fa-edit">&nbsp;name</i>
                                 </span>
                                 <input required="" 
-                                       id="new-place-name"
-                                       name="update-place-name"
+                                       id="update-place-name"
                                        type="text"
                                        class="form-control"
                                        placeholder="place name">
@@ -47,8 +48,7 @@
                                 <span class="input-group-addon"><i class="fa fa-edit">&nbsp;address</i>
                                 </span>
                                 <input required="" 
-                                       id="new-place-address"
-                                       name="update-place-address"
+                                       id="update-place-address"
                                        type="text"
                                        class="form-control"
                                        placeholder="place address">
@@ -59,14 +59,12 @@
                                 <span class="input-group-addon"><i class="fa fa-map-marker">&nbsp;location</i>
                                 </span>
                                 <input required="" 
-                                       id="new-place-location-h"
-                                       name="update-place-location-latitude"
+                                       id="update-place-location-latitude"
                                        type="number"
                                        class="form-control"
                                        placeholder="Latitude">
                                 <input required="" 
-                                       id="new-place-location-v"
-                                       name="update-place-location-Longitude"
+                                       id="update-place-location-Longitude"
                                        type="number"
                                        class="form-control"
                                        placeholder="Longitude">
@@ -81,8 +79,7 @@
                                     required=""
                                     class="form-control"
                                     rows="5"
-                                    id="new-place-desc"
-                                    name="update-place-desc"
+                                    id="update-place-desc"
                                     ></textarea>
                                 <span  class="input-group-addon error-mark" id="new-place-description" ></span>
 
@@ -90,12 +87,13 @@
                             <div class="form-group">
                                 <label>display status &nbsp;&nbsp;</label>
                                 <label class="radio-inline">
-                                    <input type="radio"  id="update-place-view" value="1" checked> true
+                                    <input type="radio" id="radio_1" name="update-place-view" value="1"> true
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio"  id="update-place-view" value="0"> false
+                                    <input type="radio" id="radio_0" name="update-place-view" value="0"> false
                                 </label>
                             </div>
+                            <input type="hidden" id="place-id">
                         </fieldset>
                     </div>
                 </div>
