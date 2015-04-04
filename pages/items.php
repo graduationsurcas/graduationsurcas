@@ -1,12 +1,11 @@
 <?php
-include_once './include/auth.php';
-include_once './services/DB/dboperation.php';
+include '../include/authpages.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
     <head>
-        <?php include_once './include/headerlink.html'; ?>
+        <?php include_once '../include/headerlinkpages.html'; ?>
     </head>
 
     <body>
@@ -14,7 +13,7 @@ include_once './services/DB/dboperation.php';
         <div id="wrapper">
 
             <?php
-            include_once './include/navbar.php';
+            include_once '../include/navbar.php';
             ?>
 
 
@@ -23,7 +22,7 @@ include_once './services/DB/dboperation.php';
                 <div class="container-fluid">
 
                     <?php
-//                                include_once './controlpages/items.php';
+//                    include_once '../controlpages/borrow.php';
                     ?>
 
 
@@ -37,9 +36,8 @@ include_once './services/DB/dboperation.php';
         <!-- /#wrapper -->
 
         <?php
-        include_once 'include/fotterlink.html';
+        include_once '../include/footerlinkspages.html';
         ?>
-        <script src="js/places.js" type="text/javascript"></script>
 
     </body>
 
