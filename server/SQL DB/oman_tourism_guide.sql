@@ -1,593 +1,374 @@
--- phpMyAdmin SQL Dump
--- version 4.2.7.1
--- http://www.phpmyadmin.net
---
--- Host: 127.0.0.1
--- Generation Time: Apr 04, 2015 at 01:08 PM
--- Server version: 5.6.20
--- PHP Version: 5.6.3
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
---
--- Database: `oman_tourism_guide`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `admin`
---
-
-CREATE TABLE IF NOT EXISTS `admin` (
-`admin_id` int(11) NOT NULL,
-  `admin_type` int(11) NOT NULL,
-  `admin_email` varchar(100) NOT NULL,
-  `admin_name` varchar(45) NOT NULL,
-  `admin_password` varchar(65) NOT NULL,
-  `admin_create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
-
---
--- Dumping data for table `admin`
---
-
-INSERT INTO `admin` (`admin_id`, `admin_type`, `admin_email`, `admin_name`, `admin_password`, `admin_create_date`) VALUES
-(1, 1, 'ghak@gmail.com', 'gheith alrawahi', '$2y$10$47JmfnkqWNCETH513547bu0YwkZuaBCIhqmw.on32RBJEPOCOn0VO', '2015-02-25 14:31:11');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `admin_type`
---
-
-CREATE TABLE IF NOT EXISTS `admin_type` (
-`admintype_id` int(11) NOT NULL,
-  `admintype_name` varchar(45) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-
---
--- Dumping data for table `admin_type`
---
-
-INSERT INTO `admin_type` (`admintype_id`, `admintype_name`) VALUES
-(1, 'root'),
-(2, 'admin');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `feadback`
---
-
-CREATE TABLE IF NOT EXISTS `feadback` (
-`feadback_id` int(11) NOT NULL,
-  `feadback_user_id` int(11) NOT NULL,
-  `feadback_add_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `feadback_text` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `item`
---
-
-CREATE TABLE IF NOT EXISTS `item` (
-`item_id` int(11) NOT NULL,
-  `item_type` int(11) NOT NULL,
-  `item_creator` int(11) NOT NULL,
-  `item_place` int(11) NOT NULL,
-  `item_name` varchar(45) NOT NULL,
-  `item_add_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `item_description` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `item_comment`
---
-
-CREATE TABLE IF NOT EXISTS `item_comment` (
-`itemcomment_id` int(11) NOT NULL,
-  `itemcomment_item_id` int(11) NOT NULL,
-  `itemcomment_user_id` int(11) NOT NULL,
-  `itemcomment_text` text NOT NULL,
-  `itemcomment_add_date` varchar(45) DEFAULT 'CURRENT_TIMESTAMP'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `item_type`
---
-
-CREATE TABLE IF NOT EXISTS `item_type` (
-`itemtype_id` int(11) NOT NULL,
-  `itemtype_name` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `language`
---
-
-CREATE TABLE IF NOT EXISTS `language` (
-`lang_id` int(11) NOT NULL,
-  `lang_name` varchar(45) DEFAULT NULL,
-  `lang_shortcut` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `place`
---
-
-CREATE TABLE IF NOT EXISTS `place` (
-`place_id` int(11) NOT NULL,
-  `place_type` int(11) NOT NULL,
-  `place_name` varchar(45) NOT NULL,
-  `address` varchar(132) DEFAULT NULL,
-  `place_location_lat` float DEFAULT NULL,
-  `place_location_lng` float DEFAULT NULL,
-  `place_admin_creator` int(11) NOT NULL,
-  `view` int(1) NOT NULL DEFAULT '1',
-  `description` text NOT NULL,
-  `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=88 ;
-
---
--- Dumping data for table `place`
---
-
-INSERT INTO `place` (`place_id`, `place_type`, `place_name`, `address`, `place_location_lat`, `place_location_lng`, `place_admin_creator`, `view`, `description`, `create_date`, `last_update`) VALUES
-(24, 1, 's', 'Sur cas', 50, 80, 1, 0, 'oman sur city', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(25, 1, 'oman', 'oman', 120, 45, 1, 0, 'oman', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(26, 1, 'sohar', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(27, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(28, 2, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(29, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(30, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(31, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(32, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(33, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(34, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(35, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(36, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(37, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(38, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(39, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(40, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(41, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(42, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(43, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(44, 2, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(45, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(46, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(47, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(48, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(49, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(50, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(51, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(52, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(53, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(54, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(55, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(56, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(57, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(58, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(59, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(60, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(61, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(62, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(63, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(64, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(65, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(66, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(67, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(68, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(69, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(70, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(71, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(72, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(73, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(74, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(75, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(76, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(77, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(78, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(79, 1, 'gheith', 'oman', 5025, 10.36, 1, 1, 'ghjh', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(80, 1, 'gh', 'thr', 54, 54, 1, 1, 'hgd', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(81, 1, 'gh', 'gf', 56, 89, 1, 0, 'bncfcgchg', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(82, 1, 'hg', 'hgg', 65, 65, 1, 1, 'hgcf', '2015-03-07 20:21:06', '2015-04-04 09:56:20'),
-(83, 1, 'ghhg', 'ghgh', 545, 4545, 1, 0, 'errere', '2015-04-03 13:14:48', '2015-04-04 09:56:20'),
-(84, 1, 'oman sss', 'izki', 4545, 4545450, 1, 1, 'sfhgh ghgfhsdghgf', '2015-04-03 22:26:40', '2015-04-04 09:56:20'),
-(85, 1, 'naser', 'nizwa', 4545, 54545, 1, 1, '454cdv fvbdf gd', '2015-04-03 22:29:42', '2015-04-04 09:56:20'),
-(86, 2, 'ghak992', 'Izki', 1525, 1225, 1, 1, 'hamood ali', '2015-04-04 08:42:14', '2015-04-04 09:56:20'),
-(87, 2, 'salim', 'salim', 125, 125, 1, 1, 'salim', '2015-04-04 09:58:10', '2015-04-04 09:58:10');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `place_type`
---
-
-CREATE TABLE IF NOT EXISTS `place_type` (
-`place_id` int(11) NOT NULL,
-  `place_name` varchar(45) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-
---
--- Dumping data for table `place_type`
---
-
-INSERT INTO `place_type` (`place_id`, `place_name`) VALUES
-(1, 'Sur CAS'),
-(2, 'Ibri CAS');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `service`
---
-
-CREATE TABLE IF NOT EXISTS `service` (
-`service_id` int(11) NOT NULL,
-  `service_type` int(11) NOT NULL,
-  `service_user_id` int(11) NOT NULL,
-  `service_admin_add` int(11) NOT NULL,
-  `service_location` varchar(45) DEFAULT NULL,
-  `service_desc` text,
-  `service_add_date` timestamp NULL DEFAULT NULL,
-  `service_rate` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `service_request`
---
-
-CREATE TABLE IF NOT EXISTS `service_request` (
-`servicerequest_id` int(11) NOT NULL,
-  `servicerequest_type` int(11) NOT NULL,
-  `servicerequest_user_id` int(11) NOT NULL,
-  `servicerequest__location` varchar(45) NOT NULL,
-  `servicerequest_desc` text NOT NULL,
-  `servicerequest_add_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `service_type`
---
-
-CREATE TABLE IF NOT EXISTS `service_type` (
-  `servicetype_id` int(11) NOT NULL,
-  `servicetype_name` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `share_area`
---
-
-CREATE TABLE IF NOT EXISTS `share_area` (
-`sharearea_id` int(11) NOT NULL,
-  `sharearea_text` text,
-  `sharearea_user_id` int(11) NOT NULL,
-  `sharearea_image` longblob,
-  `sharearea_add_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `sharearea_location` varchar(150) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `share_comment`
---
-
-CREATE TABLE IF NOT EXISTS `share_comment` (
-`sharecomm_id` int(11) NOT NULL,
-  `sharecomm_sharearea_id` int(11) DEFAULT NULL,
-  `sharecomm_user_id` int(11) NOT NULL,
-  `sharecomm_add_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `sharecomm_text` text
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `user`
---
-
-CREATE TABLE IF NOT EXISTS `user` (
-`user_id` int(11) NOT NULL,
-  `user_name` varchar(45) NOT NULL,
-  `user_password` varchar(160) NOT NULL,
-  `user_lang` int(11) NOT NULL,
-  `user_email` varchar(150) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `user_service`
---
-
-CREATE TABLE IF NOT EXISTS `user_service` (
-`useservice_id` int(11) NOT NULL,
-  `useservice_name` varchar(45) DEFAULT NULL,
-  `useservice_email` varchar(45) DEFAULT NULL,
-  `useservice_phone` varchar(45) DEFAULT NULL,
-  `useservice_password` varchar(45) DEFAULT NULL,
-  `useservice_add_date` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `admin`
---
-ALTER TABLE `admin`
- ADD PRIMARY KEY (`admin_id`,`admin_type`), ADD KEY `admintype_id_key_idx` (`admin_type`);
-
---
--- Indexes for table `admin_type`
---
-ALTER TABLE `admin_type`
- ADD PRIMARY KEY (`admintype_id`);
-
---
--- Indexes for table `feadback`
---
-ALTER TABLE `feadback`
- ADD PRIMARY KEY (`feadback_id`,`feadback_user_id`), ADD KEY `feadback_userid_key_idx` (`feadback_user_id`);
-
---
--- Indexes for table `item`
---
-ALTER TABLE `item`
- ADD PRIMARY KEY (`item_id`,`item_place`,`item_creator`), ADD KEY `item_place_key_idx` (`item_place`), ADD KEY `item_admin_key_idx` (`item_creator`);
-
---
--- Indexes for table `item_comment`
---
-ALTER TABLE `item_comment`
- ADD PRIMARY KEY (`itemcomment_id`,`itemcomment_item_id`,`itemcomment_user_id`), ADD KEY `item_id_key_idx` (`itemcomment_item_id`), ADD KEY `itemcomment_user_id_idx` (`itemcomment_user_id`);
-
---
--- Indexes for table `item_type`
---
-ALTER TABLE `item_type`
- ADD PRIMARY KEY (`itemtype_id`);
-
---
--- Indexes for table `language`
---
-ALTER TABLE `language`
- ADD PRIMARY KEY (`lang_id`);
-
---
--- Indexes for table `place`
---
-ALTER TABLE `place`
- ADD PRIMARY KEY (`place_id`,`place_type`,`place_admin_creator`), ADD KEY `place_type_id_idx` (`place_type`), ADD KEY `place_admin_creator_id_idx` (`place_admin_creator`);
-
---
--- Indexes for table `place_type`
---
-ALTER TABLE `place_type`
- ADD PRIMARY KEY (`place_id`);
-
---
--- Indexes for table `service`
---
-ALTER TABLE `service`
- ADD PRIMARY KEY (`service_id`,`service_type`,`service_admin_add`,`service_user_id`), ADD KEY `service_type_key_idx` (`service_type`), ADD KEY `service_admin_key_idx` (`service_admin_add`), ADD KEY `service_user_key_idx` (`service_user_id`);
-
---
--- Indexes for table `service_request`
---
-ALTER TABLE `service_request`
- ADD PRIMARY KEY (`servicerequest_id`,`servicerequest_type`,`servicerequest_user_id`), ADD KEY `service_type_key_idx` (`servicerequest_type`), ADD KEY `service_user_key_idx` (`servicerequest_user_id`);
-
---
--- Indexes for table `service_type`
---
-ALTER TABLE `service_type`
- ADD PRIMARY KEY (`servicetype_id`);
-
---
--- Indexes for table `share_area`
---
-ALTER TABLE `share_area`
- ADD PRIMARY KEY (`sharearea_id`,`sharearea_user_id`), ADD KEY `sharearea_userid_key_idx` (`sharearea_user_id`);
-
---
--- Indexes for table `share_comment`
---
-ALTER TABLE `share_comment`
- ADD PRIMARY KEY (`sharecomm_id`,`sharecomm_user_id`), ADD KEY `sharecomm_userid_key_idx` (`sharecomm_user_id`);
-
---
--- Indexes for table `user`
---
-ALTER TABLE `user`
- ADD PRIMARY KEY (`user_id`), ADD UNIQUE KEY `user_name_UNIQUE` (`user_name`);
-
---
--- Indexes for table `user_service`
---
-ALTER TABLE `user_service`
- ADD PRIMARY KEY (`useservice_id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `admin`
---
-ALTER TABLE `admin`
-MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `admin_type`
---
-ALTER TABLE `admin_type`
-MODIFY `admintype_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT for table `feadback`
---
-ALTER TABLE `feadback`
-MODIFY `feadback_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `item`
---
-ALTER TABLE `item`
-MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `item_comment`
---
-ALTER TABLE `item_comment`
-MODIFY `itemcomment_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `item_type`
---
-ALTER TABLE `item_type`
-MODIFY `itemtype_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `language`
---
-ALTER TABLE `language`
-MODIFY `lang_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `place`
---
-ALTER TABLE `place`
-MODIFY `place_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=88;
---
--- AUTO_INCREMENT for table `place_type`
---
-ALTER TABLE `place_type`
-MODIFY `place_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT for table `service`
---
-ALTER TABLE `service`
-MODIFY `service_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `service_request`
---
-ALTER TABLE `service_request`
-MODIFY `servicerequest_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `share_area`
---
-ALTER TABLE `share_area`
-MODIFY `sharearea_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `share_comment`
---
-ALTER TABLE `share_comment`
-MODIFY `sharecomm_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `user`
---
-ALTER TABLE `user`
-MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `user_service`
---
-ALTER TABLE `user_service`
-MODIFY `useservice_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `admin`
---
-ALTER TABLE `admin`
-ADD CONSTRAINT `admintype_id_key` FOREIGN KEY (`admin_type`) REFERENCES `admin_type` (`admintype_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `feadback`
---
-ALTER TABLE `feadback`
-ADD CONSTRAINT `feadback_userid_key` FOREIGN KEY (`feadback_user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `item`
---
-ALTER TABLE `item`
-ADD CONSTRAINT `item_admin_key` FOREIGN KEY (`item_creator`) REFERENCES `admin` (`admin_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `item_itemtype_id_key` FOREIGN KEY (`item_id`) REFERENCES `item_type` (`itemtype_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `item_place_key` FOREIGN KEY (`item_place`) REFERENCES `place` (`place_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `item_comment`
---
-ALTER TABLE `item_comment`
-ADD CONSTRAINT `itemcomment_id_key` FOREIGN KEY (`itemcomment_item_id`) REFERENCES `item` (`item_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `itemcomment_user_id` FOREIGN KEY (`itemcomment_user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `place`
---
-ALTER TABLE `place`
-ADD CONSTRAINT `place_admin_creator_id` FOREIGN KEY (`place_admin_creator`) REFERENCES `admin` (`admin_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-ADD CONSTRAINT `place_ibfk_1` FOREIGN KEY (`place_type`) REFERENCES `place_type` (`place_id`) ON DELETE NO ACTION ON UPDATE CASCADE;
-
---
--- Constraints for table `service`
---
-ALTER TABLE `service`
-ADD CONSTRAINT `service_admin_key` FOREIGN KEY (`service_admin_add`) REFERENCES `admin` (`admin_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `service_type_key` FOREIGN KEY (`service_type`) REFERENCES `service_type` (`servicetype_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `service_user_key` FOREIGN KEY (`service_user_id`) REFERENCES `user_service` (`useservice_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `service_request`
---
-ALTER TABLE `service_request`
-ADD CONSTRAINT `servicerequest_type_key` FOREIGN KEY (`servicerequest_type`) REFERENCES `service_type` (`servicetype_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `servicerequest_user_key` FOREIGN KEY (`servicerequest_user_id`) REFERENCES `user_service` (`useservice_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `share_area`
---
-ALTER TABLE `share_area`
-ADD CONSTRAINT `sharearea_userid_key` FOREIGN KEY (`sharearea_user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `share_comment`
---
-ALTER TABLE `share_comment`
-ADD CONSTRAINT `sharecomm_sharearea_id_key` FOREIGN KEY (`sharecomm_id`) REFERENCES `share_area` (`sharearea_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `sharecomm_userid_key` FOREIGN KEY (`sharecomm_user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `user`
---
-ALTER TABLE `user`
-ADD CONSTRAINT `lang_id_key` FOREIGN KEY (`user_id`) REFERENCES `language` (`lang_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+-- MySQL Script generated by MySQL Workbench
+-- 04/06/15 14:19:45
+-- Model: New Model    Version: 1.0
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+-- -----------------------------------------------------
+-- Schema oman_tourism_guide
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema oman_tourism_guide
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `oman_tourism_guide` DEFAULT CHARACTER SET utf8 ;
+USE `oman_tourism_guide` ;
+
+-- -----------------------------------------------------
+-- Table `oman_tourism_guide`.`admin_type`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `oman_tourism_guide`.`admin_type` (
+  `admintype_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `admintype_name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`admintype_id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 3
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `oman_tourism_guide`.`admin`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `oman_tourism_guide`.`admin` (
+  `admin_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `admin_type` INT(11) NOT NULL,
+  `admin_email` VARCHAR(100) NOT NULL,
+  `admin_name` VARCHAR(45) NOT NULL,
+  `admin_password` VARCHAR(65) NOT NULL,
+  `admin_create_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`admin_id`, `admin_type`),
+  INDEX `admintype_id_key_idx` (`admin_type` ASC),
+  CONSTRAINT `admintype_id_key`
+    FOREIGN KEY (`admin_type`)
+    REFERENCES `oman_tourism_guide`.`admin_type` (`admintype_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 2
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `oman_tourism_guide`.`language`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `oman_tourism_guide`.`language` (
+  `lang_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `lang_name` VARCHAR(45) NULL DEFAULT NULL,
+  `lang_shortcut` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`lang_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `oman_tourism_guide`.`user`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `oman_tourism_guide`.`user` (
+  `user_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `user_name` VARCHAR(45) NOT NULL,
+  `user_password` VARCHAR(160) NOT NULL,
+  `user_lang` INT(11) NOT NULL,
+  `user_email` VARCHAR(150) NOT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE INDEX `user_name_UNIQUE` (`user_name` ASC),
+  CONSTRAINT `lang_id_key`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `oman_tourism_guide`.`language` (`lang_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `oman_tourism_guide`.`feadback`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `oman_tourism_guide`.`feadback` (
+  `feadback_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `feadback_user_id` INT(11) NOT NULL,
+  `feadback_add_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `feadback_text` TEXT NOT NULL,
+  PRIMARY KEY (`feadback_id`, `feadback_user_id`),
+  INDEX `feadback_userid_key_idx` (`feadback_user_id` ASC),
+  CONSTRAINT `feadback_userid_key`
+    FOREIGN KEY (`feadback_user_id`)
+    REFERENCES `oman_tourism_guide`.`user` (`user_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `oman_tourism_guide`.`place_type`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `oman_tourism_guide`.`place_type` (
+  `place_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `place_name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`place_id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 3
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `oman_tourism_guide`.`place`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `oman_tourism_guide`.`place` (
+  `place_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `place_type` INT(11) NOT NULL,
+  `place_name` VARCHAR(45) NOT NULL,
+  `address` VARCHAR(132) NULL DEFAULT NULL,
+  `place_location_lat` FLOAT NULL DEFAULT NULL,
+  `place_location_lng` FLOAT NULL DEFAULT NULL,
+  `place_admin_creator` INT(11) NOT NULL,
+  `view` INT(1) NOT NULL DEFAULT '1',
+  `description` TEXT NOT NULL,
+  `create_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_update` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`place_id`, `place_type`, `place_admin_creator`),
+  INDEX `place_type_id_idx` (`place_type` ASC),
+  INDEX `place_admin_creator_id_idx` (`place_admin_creator` ASC),
+  CONSTRAINT `place_admin_creator_id`
+    FOREIGN KEY (`place_admin_creator`)
+    REFERENCES `oman_tourism_guide`.`admin` (`admin_id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `place_ibfk_1`
+    FOREIGN KEY (`place_type`)
+    REFERENCES `oman_tourism_guide`.`place_type` (`place_id`)
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+AUTO_INCREMENT = 153
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `oman_tourism_guide`.`item_type`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `oman_tourism_guide`.`item_type` (
+  `itemtype_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `itemtype_name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`itemtype_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `oman_tourism_guide`.`item`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `oman_tourism_guide`.`item` (
+  `item_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `item_type` INT(11) NOT NULL,
+  `item_admin_creator` INT(11) NOT NULL,
+  `item_place` INT(11) NOT NULL,
+  `item_name` VARCHAR(45) NOT NULL,
+  `item_add_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `item_description` TEXT NOT NULL,
+  PRIMARY KEY (`item_id`, `item_type`, `item_place`, `item_admin_creator`),
+  INDEX `item_place_key_idx` (`item_place` ASC),
+  INDEX `item_admin_key_idx` (`item_admin_creator` ASC),
+  INDEX `item_itemtype_key_idx` (`item_type` ASC),
+  CONSTRAINT `item_admin_key`
+    FOREIGN KEY (`item_admin_creator`)
+    REFERENCES `oman_tourism_guide`.`admin` (`admin_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `item_place_key`
+    FOREIGN KEY (`item_place`)
+    REFERENCES `oman_tourism_guide`.`place` (`place_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `item_itemtype_key`
+    FOREIGN KEY (`item_type`)
+    REFERENCES `oman_tourism_guide`.`item_type` (`itemtype_id`)
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `oman_tourism_guide`.`item_comment`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `oman_tourism_guide`.`item_comment` (
+  `itemcomment_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `itemcomment_item_id` INT(11) NOT NULL,
+  `itemcomment_user_id` INT(11) NOT NULL,
+  `itemcomment_text` TEXT NOT NULL,
+  `itemcomment_add_date` VARCHAR(45) NULL DEFAULT 'CURRENT_TIMESTAMP',
+  PRIMARY KEY (`itemcomment_id`, `itemcomment_item_id`, `itemcomment_user_id`),
+  INDEX `item_id_key_idx` (`itemcomment_item_id` ASC),
+  INDEX `itemcomment_user_id_idx` (`itemcomment_user_id` ASC),
+  CONSTRAINT `itemcomment_id_key`
+    FOREIGN KEY (`itemcomment_item_id`)
+    REFERENCES `oman_tourism_guide`.`item` (`item_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `itemcomment_user_id`
+    FOREIGN KEY (`itemcomment_user_id`)
+    REFERENCES `oman_tourism_guide`.`user` (`user_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `oman_tourism_guide`.`service_type`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `oman_tourism_guide`.`service_type` (
+  `servicetype_id` INT(11) NOT NULL,
+  `servicetype_name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`servicetype_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `oman_tourism_guide`.`user_service`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `oman_tourism_guide`.`user_service` (
+  `useservice_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `useservice_name` VARCHAR(45) NULL DEFAULT NULL,
+  `useservice_email` VARCHAR(45) NULL DEFAULT NULL,
+  `useservice_phone` VARCHAR(45) NULL DEFAULT NULL,
+  `useservice_password` VARCHAR(45) NULL DEFAULT NULL,
+  `useservice_add_date` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`useservice_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `oman_tourism_guide`.`service`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `oman_tourism_guide`.`service` (
+  `service_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `service_type` INT(11) NOT NULL,
+  `service_user_id` INT(11) NOT NULL,
+  `service_admin_add` INT(11) NOT NULL,
+  `service_location` VARCHAR(45) NULL DEFAULT NULL,
+  `service_desc` TEXT NULL DEFAULT NULL,
+  `service_add_date` TIMESTAMP NULL DEFAULT NULL,
+  `service_rate` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`service_id`, `service_type`, `service_admin_add`, `service_user_id`),
+  INDEX `service_type_key_idx` (`service_type` ASC),
+  INDEX `service_admin_key_idx` (`service_admin_add` ASC),
+  INDEX `service_user_key_idx` (`service_user_id` ASC),
+  CONSTRAINT `service_admin_key`
+    FOREIGN KEY (`service_admin_add`)
+    REFERENCES `oman_tourism_guide`.`admin` (`admin_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `service_type_key`
+    FOREIGN KEY (`service_type`)
+    REFERENCES `oman_tourism_guide`.`service_type` (`servicetype_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `service_user_key`
+    FOREIGN KEY (`service_user_id`)
+    REFERENCES `oman_tourism_guide`.`user_service` (`useservice_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `oman_tourism_guide`.`service_request`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `oman_tourism_guide`.`service_request` (
+  `servicerequest_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `servicerequest_type` INT(11) NOT NULL,
+  `servicerequest_user_id` INT(11) NOT NULL,
+  `servicerequest__location` VARCHAR(45) NOT NULL,
+  `servicerequest_desc` TEXT NOT NULL,
+  `servicerequest_add_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`servicerequest_id`, `servicerequest_type`, `servicerequest_user_id`),
+  INDEX `service_type_key_idx` (`servicerequest_type` ASC),
+  INDEX `service_user_key_idx` (`servicerequest_user_id` ASC),
+  CONSTRAINT `servicerequest_type_key`
+    FOREIGN KEY (`servicerequest_type`)
+    REFERENCES `oman_tourism_guide`.`service_type` (`servicetype_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `servicerequest_user_key`
+    FOREIGN KEY (`servicerequest_user_id`)
+    REFERENCES `oman_tourism_guide`.`user_service` (`useservice_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `oman_tourism_guide`.`share_area`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `oman_tourism_guide`.`share_area` (
+  `sharearea_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `sharearea_text` TEXT NULL DEFAULT NULL,
+  `sharearea_user_id` INT(11) NOT NULL,
+  `sharearea_image` LONGBLOB NULL DEFAULT NULL,
+  `sharearea_add_date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `sharearea_location` VARCHAR(150) NULL DEFAULT NULL,
+  PRIMARY KEY (`sharearea_id`, `sharearea_user_id`),
+  INDEX `sharearea_userid_key_idx` (`sharearea_user_id` ASC),
+  CONSTRAINT `sharearea_userid_key`
+    FOREIGN KEY (`sharearea_user_id`)
+    REFERENCES `oman_tourism_guide`.`user` (`user_id`)
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `oman_tourism_guide`.`share_comment`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `oman_tourism_guide`.`share_comment` (
+  `sharecomm_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `sharecomm_sharearea_id` INT(11) NULL DEFAULT NULL,
+  `sharecomm_user_id` INT(11) NOT NULL,
+  `sharecomm_add_date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `sharecomm_text` TEXT NULL DEFAULT NULL,
+  PRIMARY KEY (`sharecomm_id`, `sharecomm_user_id`),
+  INDEX `sharecomm_userid_key_idx` (`sharecomm_user_id` ASC),
+  CONSTRAINT `sharecomm_sharearea_id_key`
+    FOREIGN KEY (`sharecomm_id`)
+    REFERENCES `oman_tourism_guide`.`share_area` (`sharearea_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `sharecomm_userid_key`
+    FOREIGN KEY (`sharecomm_user_id`)
+    REFERENCES `oman_tourism_guide`.`user` (`user_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `oman_tourism_guide`.`item_image`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `oman_tourism_guide`.`item_image` (
+  `id_item_image` INT NOT NULL AUTO_INCREMENT,
+  `item_id` INT(11) NOT NULL,
+  `image_url` MEDIUMTEXT NOT NULL,
+  PRIMARY KEY (`id_item_image`, `item_id`),
+  INDEX `item_image_key_idx` (`item_id` ASC),
+  CONSTRAINT `item_image_key`
+    FOREIGN KEY (`item_id`)
+    REFERENCES `oman_tourism_guide`.`item` (`item_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
