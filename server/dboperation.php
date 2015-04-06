@@ -314,8 +314,8 @@ class dboperation {
             $stmt->bindParam(':place_type', $place_type, PDO::PARAM_INT);
             $stmt->bindParam(':new_name', $new_name, PDO::PARAM_STR);
             $stmt->bindParam(':new_address', $new_address, PDO::PARAM_STR);
-            $stmt->bindParam(':loc_lat', $loc_lat, PDO::PARAM_INT);
-            $stmt->bindParam(':loc_lang', $loc_lang, PDO::PARAM_INT);
+            $stmt->bindParam(':loc_lat', $loc_lat, PDO::PARAM_STR);
+            $stmt->bindParam(':loc_lang', $loc_lang, PDO::PARAM_STR);
             $stmt->bindParam(':view', $view, PDO::PARAM_INT);
             $stmt->bindParam(':desc', $description, PDO::PARAM_STR);
             $stmt->bindParam(':placeid', $placeid, PDO::PARAM_INT);
@@ -337,19 +337,22 @@ class dboperation {
         }
     }
 
-    public static function removePlaces($placeid, $password) {
-        $response = array("status" => "false", "message" => "");
+    public static function removePlaces($placeid, $password, $email) {
+        $response = array("status" => "tru", "message" => "");
+
         try {
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
             $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            session_start();
-            $stmt = $dbh->prepare("SELECT admin_password FROM admin WHERE admin_email = :useremail");
-            $stmt->bindParam(':useremail', $_SESSION['login-admin-email'], PDO::PARAM_STR);
+
+            $stmt = $dbh->prepare("SELECT admin_password FROM admin WHERE admin_id = 1");
+            $stmt->bindParam(':useremail', $email, PDO::PARAM_STR);
             $stmt->execute();
-            $pass = $stmt->fetch(PDO::FETCH_ASSOC);
-            
-            if (decrypt_pass($password, $pass['admin_password'])) {
+            $pass = $stmt->fetchAll();
+
+            if (decrypt_pass($password, $pass[0]['admin_password'])) {
+                $response["status"] = "true";
+
                 $stmt = $dbh->prepare('DELETE
                                     FROM place
                                   WHERE place_id = :placeid');
@@ -370,6 +373,7 @@ class dboperation {
             $response["message"] = $e->getMessage();
             $response["status"] = "false";
         } finally {
+;
             echo json_encode($response);
             $dbh = null;
         }

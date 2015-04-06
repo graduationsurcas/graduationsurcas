@@ -60,3 +60,11 @@ input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
+.qr-button{
+    background: #00cccc;
+    color: #FFFFFF;
+}
+.qr-button:hover{
+    background: #00c2c2;
+    color: #FFFFFF;
+}

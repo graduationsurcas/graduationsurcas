@@ -23,7 +23,7 @@
                     </thead>
                     <tbody >
                         <?php
-                        $selectamount = 30;
+                        $selectamount = 25;
                         $placelist = json_decode(dboperation::getPlacesList(0, $selectamount));
                         $num = 1;
                         foreach ($placelist->data as $key => $object) {
@@ -36,6 +36,7 @@
                                 <td><?php echo $object->creatdate ?></td>
                                 <td>
                         <center>
+                            <span data-toggle="modal" data-target="#qr_modal" onclick="PlaceOperations.setPlaceQrModal('<?php echo $object->id ?>',  '<?php echo $object->name?>')" title="QR" class="qr-button btn btn-sm btn-default"><i class="fa fa-qrcode"></i></span>
                             <span data-toggle="modal" data-target="#map_modal" onclick="PlaceOperations.setmapplacelocation('<?php echo $object->locationlat ?>', '<?php echo $object->locationlang ?>')"title="open on the map" class="btn btn-sm btn-primary"><i class="fa fa-map-marker"></i></span>
                             <span onclick="PlaceOperations.setplacedesc('<?php echo $object->desc ?>')" data-toggle="modal" data-target="#place_desc_modal" title="descrption" class="btn btn-sm btn-warning "><i class="fa fa-file"></i></span>
                             <span onclick="PlaceOperations.setupdateplacemodelforminfo(
@@ -79,7 +80,7 @@
                             $roundnum = 1;
 
                             for ($index = 0; $index < $pages; $index++) {
-                                $selectfrom = $selectto;
+                                $selectfrom =  $selectto;
                                 $selectto = $selectamount * $roundnum;
                                 ?>
                                 <li>

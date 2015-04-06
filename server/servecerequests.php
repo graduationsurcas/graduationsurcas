@@ -18,21 +18,28 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
                     isset($_POST["placedescription"])
             ) {
                 dboperation::newPlace($_SESSION['login-admin-id'], $_POST["placename"], $_POST["placetype"], $_POST["placeaddress"], $_POST["placelocationlat"], $_POST["placelocationlng"], $_POST["placview"], $_POST["placedescription"]);
-            }else {
+            } else {
                 parmNotAccess();
             }
             break;
         case "placespagelist":
             if (isset($_POST['selectfrom']) && isset($_POST['selectto'])) {
                 echo dboperation::getPlacesList($_POST['selectfrom'], $_POST['selectto']);
-            }else {
+            } else {
                 parmNotAccess();
             }
             break;
         case "placessearch":
             if (isset($_POST['searchkey'])) {
                 dboperation::placeSearch($_POST['searchkey']);
-            }else {
+            } else {
+                parmNotAccess();
+            }
+            break;
+        case "placessearch":
+            if (isset($_POST['searchkey'])) {
+                dboperation::placeSearch($_POST['searchkey']);
+            } else {
                 parmNotAccess();
             }
             break;
@@ -51,15 +58,14 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
                 parmNotAccess();
             }
             break;
-            
-        case "placeremove":
-            if (isset($_POST['placeid']) && isset($_POST['pass'])) {
-                include_once './class/cryptpass.php';
-                dboperation::removePlaces($_POST['placeid'], $_POST['pass']);
-            }else {
-                parmNotAccess();
-            }
-            break;
+
+        case "placeremove": {
+                include_once '../class/cryptpass.php';
+                $email = strval($_SESSION['login-admin-email']);
+                dboperation::removePlaces($_POST['placeid'], $_POST['pass'], $email);
+            }break;
+
+
 
         default:
             break;

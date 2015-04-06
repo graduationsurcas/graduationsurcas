@@ -1,7 +1,7 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header" style="text-transform: uppercase"><span class="fa fa-map-marker"></span>&nbsp;new places</h1>
+        <h1 class="page-header" style="text-transform: uppercase"><span class="fa fa-map-marker"></span>&nbsp;New places</h1>
     </div>
 </div>
 
@@ -12,7 +12,7 @@
             <fieldset>
 
                 <div class="form-group input-group">
-                    <span class="input-group-addon"><i class="fa fa-list">&nbsp;type</i>
+                    <span class="input-group-addon"><i class="fa fa-list">&nbsp;Type</i>
                     </span>
                     <select class="form-control"
                             id="new-place-type"
@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="form-group input-group">
-                    <span class="input-group-addon"><i class="fa fa-edit">&nbsp;name</i>
+                    <span class="input-group-addon"><i class="fa fa-edit">&nbsp;Name</i>
                     </span>
                     <input required="" 
                            id="new-place-name"
@@ -43,7 +43,7 @@
 
 
                 <div class="form-group input-group">
-                    <span class="input-group-addon"><i class="fa fa-edit">&nbsp;address</i>
+                    <span class="input-group-addon"><i class="fa fa-edit">&nbsp;Address</i>
                     </span>
                     <input required="" 
                            id="new-place-address"
@@ -55,7 +55,7 @@
                 </div>
 
                 <div class="form-group input-group">
-                    <span class="input-group-addon"><i class="fa fa-map-marker">&nbsp;location</i>
+                    <span class="input-group-addon"><i class="fa fa-map-marker">&nbsp;Location</i>
                     </span>
                     <input required="" 
                            id="new-place-location-h"
@@ -74,7 +74,7 @@
                     <span  class="input-group-addon error-mark" id="new-place-location-h-error" ></span>
                 </div>
                 <div class="form-group input-group">
-                    <span class="input-group-addon"><i class="fa fa-edit">&nbsp;description</i>
+                    <span class="input-group-addon"><i class="fa fa-edit">&nbsp;Description</i>
                     </span>
                     <textarea 
                         required=""

@@ -44,6 +44,7 @@ include '../server/dboperation.php';
          include_once '../modals/updateplacemodal.php';
         include_once '../modals/removeplacemodal.php';
         include_once '../modals/mapmodel.php';
+        include_once '../modals/QRmodal.php';
         ?>
         <script src="../js/places.js" type="text/javascript"></script>
     </body>

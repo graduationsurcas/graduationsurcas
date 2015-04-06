@@ -32,7 +32,7 @@
                             <label>address </label>
                         </li>
                         <li>
-                            <label>add date :&nbsp;</label><span>2015-01-13</span>
+                            <label>add date :&nbsp;</label><span>year(2015-01-13), month(01), day(13)</span>
                         </li>
                         <li>
                             <label>description</label>
