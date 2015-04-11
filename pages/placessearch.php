@@ -41,12 +41,15 @@ include '../server/dboperation.php';
         include_once '../include/footerlinkspages.html';
         include_once '../modals/searchguidemodel.php';
         include_once '../modals/placedescptionmodal.html';
-         include_once '../modals/updateplacemodal.php';
+        include_once '../modals/updateplacemodal.php';
         include_once '../modals/removeplacemodal.php';
         include_once '../modals/mapmodel.php';
         include_once '../modals/QRmodal.php';
         ?>
         <script src="../js/places.js" type="text/javascript"></script>
+        <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAgrj58PbXr2YriiRDqbnL1RSqrCjdkglBijPNIIYrqkVvD1R4QxRl47Yh2D_0C1l5KXQJGrbkSDvXFA"
+        type="text/javascript"></script>
+        <script src="../js/map.js" type="text/javascript"></script>
     </body>
 
 </html>

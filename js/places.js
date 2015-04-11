@@ -118,7 +118,8 @@ $(document).ready(function () {
 
             var url = sitelink + "/server/servecerequests.php";
 
-            $.ajax({type: 'POST',
+            $.ajax({
+                type: 'POST',
                 url: url,
                 data: Data,
                 dataType: 'json',

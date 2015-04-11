@@ -1,5 +1,7 @@
 <?php
 include '../include/authpages.php';
+include '../server/config.php';
+include '../server/dboperation.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,7 +24,7 @@ include '../include/authpages.php';
                 <div class="container-fluid">
 
                     <?php
-//                    include_once '../controlpages/borrow.php';
+                    include_once '../controlpages/itemslist.php';
                     ?>
 
 
@@ -37,8 +39,9 @@ include '../include/authpages.php';
 
         <?php
         include_once '../include/footerlinkspages.html';
+        include_once '../modals/itemimagesmodal.php';
         ?>
-
+        <script src="../js/items.js" type="text/javascript"></script>
     </body>
 
 </html>

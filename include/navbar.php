@@ -47,8 +47,19 @@
                     </li>
                 </ul>
             </li>
-            <li >
-                <a href="items.php"><i class="fa fa-fw fa-dashboard"></i> item</a>
+            <li>
+                <a href="javascript:;" data-toggle="collapse" data-target="#itemscolntrollcollapse"><i class="fa fa-fw fa-cubes"></i>&nbsp;Items<i class="fa fa-fw fa-caret-down"></i></a>
+                <ul id="itemscolntrollcollapse" class="collapse">
+                    <li>
+                        <a href="../pages/newitems.php"><span class="fa fa-arrow-circle-o-right"></span>&nbsp;New Item</a>
+                    </li>
+                    <li>
+                        <a href="../pages/itemslist.php"><span class="fa fa-arrow-circle-o-right"></span>&nbsp;Items List</a>
+                    </li>
+                    <li>
+                        <a href=""><span class="fa fa-arrow-circle-o-right"></span>&nbsp;Items Search</a>
+                    </li>
+                </ul>
             </li>
             <li>
                 <a href="javascript:;" data-toggle="collapse" data-target="#servicecollapse"><i class="fa fa-fw fa-arrows-v"></i> services <i class="fa fa-fw fa-caret-down"></i></a>

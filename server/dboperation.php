@@ -109,6 +109,52 @@ class dboperation {
         }
     }
 
+    public static function getAllItemTypes() {
+        try {
+
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $sql = "SELECT itemtype_id, itemtype_name FROM item_type WHERE 1";
+            $getAllItemTypes = array();
+            foreach ($dbh->query($sql) as $row) {
+                $id = $row['itemtype_id'];
+                $type = $row['itemtype_name'];
+                $getAllItemTypes[$id] = $type;
+            }
+
+            return $getAllItemTypes;
+
+            /*             * * close the database connection ** */
+            $dbh = null;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public static function getAllPlaces() {
+        try {
+
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $sql = "SELECT
+                    place.place_id,
+                    place.place_name,
+                    place_type.place_name AS type
+                  FROM place
+                    INNER JOIN place_type
+                      ON place.place_type = place_type.place_id";
+            $getPlacesTypes = array();
+            foreach ($dbh->query($sql) as $row) {
+                array_push($getPlacesTypes, $row);
+            }
+
+            return $getPlacesTypes;
+
+            /*             * * close the database connection ** */
+            $dbh = null;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+
     public static function newPlace($admin_id, $place_name, $place_type, $address, $location_lat, $location_lng, $view, $description) {
 
         $data = array("status" => "false", "message" => "");
@@ -373,10 +419,194 @@ class dboperation {
             $response["message"] = $e->getMessage();
             $response["status"] = "false";
         } finally {
-;
             echo json_encode($response);
             $dbh = null;
         }
+    }
+
+    public static function newItem($creatorid, $itemtype, $itemplace, $itemname, $itemdesc, $itemview, $images) {
+        $data = array("status" => "false", "message" => "");
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $query = 'INSERT INTO oman_tourism_guide.item '
+                    . '(item_id, '
+                    . 'item_type, '
+                    . 'item_admin_creator, '
+                    . 'item_place, '
+                    . 'item_name,'
+                    . 'item_description, '
+                    . 'status_view) '
+                    . 'VALUES (NULL, :item_type, :item_admin_creator,'
+                    . ' :item_place, :item_name, :item_description,'
+                    . ' :status_view )';
+            $stmt = $dbh->prepare($query) or die(mysql_error());
+            $stmt->bindParam(':item_type', $itemtype, PDO::PARAM_INT);
+            $stmt->bindParam(':item_admin_creator', $creatorid, PDO::PARAM_INT);
+            $stmt->bindParam(':item_place', $itemplace, PDO::PARAM_INT);
+            $stmt->bindParam(':item_name', $itemname, PDO::PARAM_STR);
+            $stmt->bindParam(':item_description', $itemdesc, PDO::PARAM_STR);
+            $stmt->bindParam(':status_view', $itemview, PDO::PARAM_INT);
+            $stmt->execute();
+            if ($stmt->rowCount() == 1) {
+                $data["status"] = "true";
+                $idofinserteditem = $dbh->lastInsertId();
+                $itemsimage = dboperation::uploadItemImages($images);
+                if (count($itemsimage["success"]) > 0) {
+                    $stmt = $dbh->prepare('INSERT INTO item_image (id_item_image, item_id, image_title) 
+                      VALUES(:id, :placeid, :imageurl)');
+                    foreach ($itemsimage["success"] as $imagename) {
+                        $stmt->bindValue(':id', 'NULL');
+                        $stmt->bindValue(':placeid', $idofinserteditem);
+                        $stmt->bindValue(':imageurl', $imagename);
+                        $stmt->execute();
+                    }
+                }
+            } else {
+                $data["message"] = $stmt->errorInfo();
+                $data["status"] = "false";
+            }
+        } catch (Exception $e) {
+            $data["message"] = $e->getMessage();
+            $data["status"] = "false";
+        } finally {
+            $dbh = null;
+            echo json_encode($data);
+        }
+    }
+    public static function itemsTotalCount() {
+        try {
+
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $sql = 'SELECT count(*) as count FROM item WHERE 1';
+            $count;
+            foreach ($dbh->query($sql) as $row) {
+                $count = $row['count'];
+            }
+            return $count;
+            $dbh = null;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+    public static function getItemsList($selectfrom = 1, $selectto = 25) {
+        $response = array("status" => "false", "data" => "");
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $dbh->prepare('SELECT
+                                    item.item_id,
+                                    item_type.itemtype_name,
+                                    item.item_type,
+                                    place.place_name,
+                                    item.item_place,
+                                    item.item_name,
+                                    DATE(item.item_add_date) AS adddate,
+                                    item.item_description,
+                                    item.status_view
+                                  FROM item
+                                    INNER JOIN item_type
+                                      ON item.item_type = item_type.itemtype_id
+                                    INNER JOIN place
+                                      ON item.item_place = place.place_id
+                                  ORDER BY item.item_add_date DESC
+                                   LIMIT ' . intval($selectfrom) . ' , ' . intval($selectto) . '');
+
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            $response = array("status" => "false", "data" => "");
+            $item = array(
+                "itemid" => "",
+                "itemtype" => "",
+                "itemtypeid" => "",
+                "itemplace" => "",
+                "itemplaceid" => "",
+                "itemname" => "",
+                "itemadddate" => "",
+                "itemdesc" => "",
+                "itemstatusview" => ""
+                   );
+            $data = array();
+            foreach ($result as $row) {
+                $item['itemid'] = $row['item_id'];
+                $item['itemtype'] = $row['itemtype_name'];
+                $item['itemtypeid'] = $row['item_type'];
+                $item['itemplace'] = $row['place_name'];
+                $item['itemplaceid'] = $row['item_place'];
+                $item['itemname'] = $row['item_name'];
+                $item['itemadddate'] = $row['adddate'];
+                $item['itemdesc'] = $row['item_description'];
+                $item['itemstatusview'] = $row['status_view'];
+                array_push($data, $item);
+            }
+            $response['data'] = $data;
+            $response["status"] = "true";
+        } catch (PDOException $e) {
+            $response["data"] = $e->getMessage();
+            $response["status"] = "false";
+            echo $e->getMessage();
+        } finally {
+            return json_encode($response);
+            $dbh = null;
+        }
+    }
+    
+    public static function getItemsImages($itemid) {
+        $itemimages = array();
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $dbh->prepare('SELECT
+                                    item_image.image_title,
+                                    item_image.id_item_image
+                                  FROM item_image
+                                  WHERE item_image.item_id = :itemid');
+            $stmt->bindParam(":itemid", $itemid, PDO::PARAM_INT);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            foreach ($result as $row) {
+                array_push($itemimages, $row);
+            }
+        } catch (PDOException $e) {
+            //
+        } finally {
+            return json_encode($itemimages);
+            $dbh = null;
+        }
+    }
+    
+    public static function uploadItemImages($images) {
+        $response = array("success" => array(), "field" => array());
+        $success_upload_image_url = array();
+        $field_upload_image_url = array();
+        $j = 0;     // Variable for indexing uploaded image.
+        // Declaring Path for uploaded images.
+        for ($i = 0; $i < count($images['name']); $i++) {
+            // Loop to get individual element from the array
+            $validextensions = array("jpeg", "jpg", "JPG", "png");      // Extensions which are allowed.
+            $ext = explode('.', basename($images['name'][$i]));   // Explode file name from dot(.)
+            $file_extension = end($ext); // Store extensions in the variable.
+            $imagename = "";
+            $imagename = md5(uniqid()) . "." . $ext[count($ext) - 1];
+            $target_path = "../uploadsimages/";
+            $target_path = $target_path . $imagename;     // Set the target path with a new name of image.
+            $j = $j + 1;      // Increment the number of uploaded images according to the files in array.
+            if (($images["size"][$i] < 2000001)     // 2MB files can be uploaded.
+                    && in_array($file_extension, $validextensions)) {
+                if (move_uploaded_file($images['tmp_name'][$i], $target_path)) {
+                    // If file moved to uploads folder.
+                    $success_upload_image_url[$i] = $imagename;
+                } else {     //  If File Was Not Moved.
+                    $field_upload_image_url[$i] = $images['name'][$i];
+                }
+            } else {     //   If File Size And File Type Was Incorrect.
+                $field_upload_image_url[$i] = $images['name'][$i] . " | Image Size Or File Type Was Incorrect";
+            }
+        }
+        $response["success"] = $success_upload_image_url;
+        $response["field"] = $field_upload_image_url;
+        return $response;
     }
 
 }

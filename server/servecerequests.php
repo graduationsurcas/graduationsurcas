@@ -29,6 +29,13 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
                 parmNotAccess();
             }
             break;
+        case "itemspagelist":
+            if (isset($_POST['selectfrom']) && isset($_POST['selectto'])) {
+                echo dboperation::getItemsList($_POST['selectfrom'], $_POST['selectto']);
+            } else {
+                parmNotAccess();
+            }
+            break;
         case "placessearch":
             if (isset($_POST['searchkey'])) {
                 dboperation::placeSearch($_POST['searchkey']);
@@ -64,7 +71,25 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
                 $email = strval($_SESSION['login-admin-email']);
                 dboperation::removePlaces($_POST['placeid'], $_POST['pass'], $email);
             }break;
-
+        case "newitem": {
+                if (
+                        $_POST['new_item_place'] &&
+                        $_POST['new_item_type'] &&
+                        $_POST['new_item_name'] &&
+                        $_POST['new_item_description'] &&
+                        $_POST['new_item_view'] &&
+                        $_FILES["file"]
+                ) {
+                    dboperation::newItem($_SESSION['login-admin-id'], $_POST['new_item_type'], $_POST['new_item_place'], $_POST['new_item_name'], $_POST['new_item_description'], ($_POST['new_item_view'] == '2') ? 0 : 1, $_FILES["file"]);
+                } else {
+                    
+                }
+            }break;
+        case"itemimages":{
+            if($_POST["itemid"]){
+                echo dboperation::getItemsImages($_POST["itemid"]);
+            }
+        }break;
 
 
         default:
