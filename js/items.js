@@ -148,7 +148,7 @@ $(document).ready(function () {
                             
                             smallimagehtml = smallimagehtml +
                                     '<li class="'+active+'" data-slide-to="'+index+'" data-target="#article-photo-carousel">'+
-                                    '<img alt="" src="../uploadsimages/'+item.image_title+'">'+
+                                    '<img alt="" src="'+item.image_path+item.image_title+'">'+
                                     '</li>'+
                             
                             index++;

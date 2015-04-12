@@ -60,7 +60,8 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
                     isset($_POST['placview']) &&
                     isset($_POST['placeid'])
             ) {
-                dboperation::updatePlaces($_POST['placeid'], $_POST['placetype'], $_POST['placename'], $_POST['placeaddress'], $_POST['placelocationlat'], $_POST['placelocationlng'], $_POST['placview'], $_POST['placedescription']);
+
+                dboperation::updatePlaces($_POST['placeid'], $_POST['placetype'], $_POST['placename'], $_POST['placeaddress'], $_POST['placelocationlat'], $_POST['placelocationlng'], $_POST['placview'], str_replace("'", "\'", $_POST['placedescription']));
             } else {
                 parmNotAccess();
             }
@@ -85,11 +86,11 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
                     
                 }
             }break;
-        case"itemimages":{
-            if($_POST["itemid"]){
-                echo dboperation::getItemsImages($_POST["itemid"]);
-            }
-        }break;
+        case"itemimages": {
+                if ($_POST["itemid"]) {
+                    echo dboperation::getItemsImages($_POST["itemid"]);
+                }
+            }break;
 
 
         default:

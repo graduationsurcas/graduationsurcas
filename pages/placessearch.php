@@ -40,7 +40,7 @@ include '../server/dboperation.php';
         <?php
         include_once '../include/footerlinkspages.html';
         include_once '../modals/searchguidemodel.php';
-        include_once '../modals/placedescptionmodal.html';
+        include_once '../modals/descptionmodal.html';
         include_once '../modals/updateplacemodal.php';
         include_once '../modals/removeplacemodal.php';
         include_once '../modals/mapmodel.php';

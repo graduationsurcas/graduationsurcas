@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    
     $('#form-add-new-places').submit(function (event) {
 
         $('#form-add-new-places-message').text("");
@@ -177,9 +178,11 @@ $(document).ready(function () {
     };
 
 
+
     PlaceOperations = {
         setplacedesc: function (desc) {
-            $("#place_desc_modal_desc_text").text(desc);
+           
+            $("#desc_modal_desc_text").text(desc);
         },
         setupdateplacemodelforminfo: function (id, type, name, address, locstionlat, locstionlong, desc, display) {
             $('.placetypeselection option:eq(' + type + ')').prop('selected', true);
@@ -323,7 +326,8 @@ $(document).ready(function () {
     });
 
     $("#update-place").submit(function (event) {
-
+         var description = $('#update-place-desc').val();
+        description = description.replace(/'/g, '\''); 
         var Data = {
             'destination': 'placeupdate',
             'placetype': $('#update-place-type').val(),
@@ -332,10 +336,11 @@ $(document).ready(function () {
             'placeaddress': $('input[id=update-place-address]').val(),
             'placelocationlat': $('input[id=update-place-location-latitude]').val(),
             'placelocationlng': $('input[id=update-place-location-Longitude]').val(),
-            'placedescription': $('#update-place-desc').val(),
+            'placedescription': description,
             'placview': $('input[name=update-place-view]:checked', '#update-place').val()
         };
-
+//        alert(Data.placedescription);
+//        return ;
         var url = sitelink + "/server/servecerequests.php";
         $.ajax({
             type: 'POST',
@@ -344,6 +349,7 @@ $(document).ready(function () {
             dataType: 'json',
             encode: true,
             success: function (data, textStatus, jqXHR) {
+                
                 if (data.status == "true") {
                     $("#update_place_modal_form_result").text("update successful");
                 } else {
@@ -377,7 +383,7 @@ $(document).ready(function () {
             dataType: 'json',
             encode: true,
             success: function (data, textStatus, jqXHR) {
-
+                console.log(data);
                 if (data.status == "true") {
                     $('input[id=remove-place-admin-pass]').val("");
                     $("#remove_place_modal_form_result").css("color", "green");

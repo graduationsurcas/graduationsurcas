@@ -384,18 +384,19 @@ class dboperation {
     }
 
     public static function removePlaces($placeid, $password, $email) {
-        $response = array("status" => "tru", "message" => "");
+        $response = array("status" => "false", "message" => "");
 
         try {
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
             $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
-            $stmt = $dbh->prepare("SELECT admin_password FROM admin WHERE admin_id = 1");
+            $stmt = $dbh->prepare("SELECT admin_password FROM admin WHERE admin_email = :useremail");
             $stmt->bindParam(':useremail', $email, PDO::PARAM_STR);
             $stmt->execute();
             $pass = $stmt->fetchAll();
-
+//            $response["message"] = $pass[0]["admin_password"];
+            
             if (decrypt_pass($password, $pass[0]['admin_password'])) {
                 $response["status"] = "true";
 
@@ -453,12 +454,13 @@ class dboperation {
                 $idofinserteditem = $dbh->lastInsertId();
                 $itemsimage = dboperation::uploadItemImages($images);
                 if (count($itemsimage["success"]) > 0) {
-                    $stmt = $dbh->prepare('INSERT INTO item_image (id_item_image, item_id, image_title) 
-                      VALUES(:id, :placeid, :imageurl)');
+                    $stmt = $dbh->prepare('INSERT INTO item_image (id_item_image, item_id, image_title, image_path) 
+                      VALUES(:id, :placeid, :imageurl, :path)');
                     foreach ($itemsimage["success"] as $imagename) {
                         $stmt->bindValue(':id', 'NULL');
                         $stmt->bindValue(':placeid', $idofinserteditem);
                         $stmt->bindValue(':imageurl', $imagename);
+                        $stmt->bindValue(':path', '../uploadsimages/');
                         $stmt->execute();
                     }
                 }
@@ -558,6 +560,7 @@ class dboperation {
             $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $stmt = $dbh->prepare('SELECT
                                     item_image.image_title,
+                                    item_image.image_path,
                                     item_image.id_item_image
                                   FROM item_image
                                   WHERE item_image.item_id = :itemid');
