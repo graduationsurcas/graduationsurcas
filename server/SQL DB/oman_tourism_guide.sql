@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 11, 2015 at 01:06 PM
+-- Generation Time: Apr 12, 2015 at 09:52 AM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -89,15 +89,7 @@ CREATE TABLE IF NOT EXISTS `item` (
   `item_add_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `item_description` text NOT NULL,
   `status_view` int(11) NOT NULL DEFAULT '1' COMMENT '1 is disaplay for all\n0 is no'
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `item`
---
-
-INSERT INTO `item` (`item_id`, `item_type`, `item_admin_creator`, `item_place`, `item_name`, `item_add_date`, `item_description`, `status_view`) VALUES
-(21, 1, 2, 153, 'cannons', '2015-04-10 22:03:20', 'Two cannons guard the entrance to the fort which opens into a maze of rooms, high-ceilinged halls, doorways, terraces, narrow staircases and corridors. Four cannons remain on the tower''s top, down from a total of 24, which once served as the fort’s main firepower.', 1),
-(22, 1, 2, 153, 'ghak', '2015-04-11 10:47:21', 'gh', 1);
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -122,18 +114,9 @@ CREATE TABLE IF NOT EXISTS `item_comment` (
 CREATE TABLE IF NOT EXISTS `item_image` (
 `id_item_image` int(11) NOT NULL,
   `item_id` int(11) NOT NULL,
-  `image_title` varchar(40) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `item_image`
---
-
-INSERT INTO `item_image` (`id_item_image`, `item_id`, `image_title`) VALUES
-(14, 21, '11d1efb6c93fbc6c95b080ab8fcc4344.JPG'),
-(17, 21, '11d1efb6c93fbc6c95b080ab8fcc4346.JPG'),
-(18, 21, '11d1efb6c93fbc6c95b080ab8fcc4345.JPG'),
-(19, 22, '796ac0139661c9f88a53d67339873cd3.jpg');
+  `image_title` varchar(40) NOT NULL,
+  `image_path` varchar(60) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -185,13 +168,6 @@ CREATE TABLE IF NOT EXISTS `place` (
   `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB AUTO_INCREMENT=154 DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `place`
---
-
-INSERT INTO `place` (`place_id`, `place_type`, `place_name`, `address`, `place_location_lat`, `place_location_lng`, `place_admin_creator`, `view`, `description`, `create_date`, `last_update`) VALUES
-(153, 3, 'Nizw', 'Al dakhlia', 22.9333, 57.5302, 2, 1, 'It was built in the 1650s by the second Ya’rubi Imam; Imam Sultan Bin Saif Al Ya''rubi,[1] although its underlying structure goes back to the 12th Century.[2] It is Oman''s most visited national monument. The fort was the administrative seat of authority for the presiding Imams and Walis in times of peace and conflict.[3] The main bulk of the fort took about 12 years to complete[1] and was built above an underground stream. The fort is a powerful reminder of the town''s significance through turbulent periods in Oman''s long history. It was a formidable stronghold against raiding forces that desired Nizwa''s abundant natural wealth and its strategic location at the crossroads of vital routes.', '2015-04-08 13:20:26', '2015-04-08 13:20:26');
 
 -- --------------------------------------------------------
 
@@ -442,7 +418,7 @@ MODIFY `feadback_id` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `item`
 --
 ALTER TABLE `item`
-MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=23;
+MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=25;
 --
 -- AUTO_INCREMENT for table `item_comment`
 --
@@ -452,7 +428,7 @@ MODIFY `itemcomment_id` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `item_image`
 --
 ALTER TABLE `item_image`
-MODIFY `id_item_image` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=20;
+MODIFY `id_item_image` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=24;
 --
 -- AUTO_INCREMENT for table `item_type`
 --

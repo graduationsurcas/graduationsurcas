@@ -59,6 +59,9 @@
                     <li>
                         <a href=""><span class="fa fa-arrow-circle-o-right"></span>&nbsp;Items Search</a>
                     </li>
+                    <li>
+                        <a href=""><span class="fa fa-arrow-circle-o-right"></span>&nbsp;Items Comments</a>
+                    </li>
                 </ul>
             </li>
             <li>

@@ -78,8 +78,7 @@ $(document).ready(function () {
 
 
 
-        $('#new-place-form-icon').html('<span class="fa fa-spinner fa-pulse"></span>');
-        $("#form-add-new-places :input").prop("disabled", true);
+        
 
         var url = sitelink + "/server/servecerequests.php"; // the script where you handle the form input.
 
@@ -90,6 +89,10 @@ $(document).ready(function () {
             dataType: 'json',
             encode: true,
             timeout: 1500,
+            beforeSend: function (xhr) {
+                $('#new-place-form-icon').html('<span class="fa fa-spinner fa-pulse"></span>');
+                $("#form-add-new-places :input").prop("disabled", true);
+            },
             success: function (data, textStatus, jqXHR) {
                 $('#new-place-form-icon').html('<span class="fa fa-plus"></span>')
                 $("#form-add-new-places :input").prop("disabled", false);
@@ -109,11 +112,11 @@ $(document).ready(function () {
     });
 
     placesListFunctions = {
-        placesnextpage: function (selectfrom, selectto) {
+        placesnextpage: function (selectfrom, selectamount) {
             Data = {
                 'destination': 'placespagelist',
                 'selectfrom': selectfrom,
-                'selectto': selectto
+                'selectamount': selectamount
             };
 //            alert("from = "+Data.selectfrom+", to = "+Data.selectto);
 
@@ -185,7 +188,7 @@ $(document).ready(function () {
             $("#desc_modal_desc_text").text(desc);
         },
         setupdateplacemodelforminfo: function (id, type, name, address, locstionlat, locstionlong, desc, display) {
-            $('.placetypeselection option:eq(' + type + ')').prop('selected', true);
+            $("#update_place_modal_form_result").text("");
             $('input[id=place-id]').val(id);
             $('input[id=update-place-name]').val(name);
             $('input[id=update-place-address]').val(address);
@@ -195,6 +198,7 @@ $(document).ready(function () {
             $("#radio_" + display).prop("checked", true);
             $("#update_place_modal_form_result").text("");
             $("#set-new-place-coordenate").show();
+            $('#update-place-type').val(type);
         },
         setdeletplacemodelforminfo: function (placeid, tr_id) {
             $('input[id=remove-place-id]').val(placeid);

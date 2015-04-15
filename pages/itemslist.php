@@ -40,6 +40,10 @@ include '../server/dboperation.php';
         <?php
         include_once '../include/footerlinkspages.html';
         include_once '../modals/itemimagesmodal.php';
+        include_once '../modals/descptionmodal.html';
+        include_once '../modals/removeitemmodel.php';
+        include_once '../modals/updateitem.php';
+        include_once '../modals/QRmodal.php';
         ?>
         <script src="../js/items.js" type="text/javascript"></script>
     </body>

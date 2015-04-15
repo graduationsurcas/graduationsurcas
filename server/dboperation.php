@@ -281,7 +281,7 @@ class dboperation {
         }
     }
 
-    public static function getPlacesList($selectfrom = 1, $selectto = 25) {
+    public static function getPlacesList($selectfrom = 1, $selectamount = 25) {
         $response = array("status" => "false", "data" => "");
         try {
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
@@ -301,7 +301,7 @@ class dboperation {
                                     INNER JOIN place_type
                                       ON place.place_type = place_type.place_id
                       ORDER BY place.create_date DESC
-                      LIMIT ' . $selectfrom . ' , ' . $selectto . '');
+                      LIMIT ' . $selectfrom . ' , ' . $selectamount . '');
 
             $stmt->execute();
             $result = $stmt->fetchAll();
@@ -382,8 +382,8 @@ class dboperation {
             $dbh = null;
         }
     }
-
-    public static function removePlaces($placeid, $password, $email) {
+    
+        public static function removePlaces($placeid, $password, $email) {
         $response = array("status" => "false", "message" => "");
 
         try {
@@ -404,6 +404,86 @@ class dboperation {
                                     FROM place
                                   WHERE place_id = :placeid');
                 $stmt->bindParam(':placeid', $placeid, PDO::PARAM_INT);
+                $stmt->execute();
+                if ($stmt->rowCount() > 0) {
+                    $response["message"] = "done";
+                    $response["status"] = "true";
+                } else {
+                    $response["message"] = $stmt->errorInfo();
+                    $response["status"] = "false";
+                }
+            } else {
+                $response["message"] = "wrong password";
+                $response["status"] = "false";
+            }
+        } catch (PDOException $e) {
+            $response["message"] = $e->getMessage();
+            $response["status"] = "false";
+        } finally {
+            echo json_encode($response);
+            $dbh = null;
+        }
+    }
+    
+    public static function updateItem($itemid,  $itemtype, $itemname, $view, $description) {
+        $response = array("status" => "false", "message" => "");
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $dbh->prepare('UPDATE item
+                                    SET item_type = :itemtype,
+                                        item_name = :itemname,
+                                        item_description = :itemdescription,
+                                        status_view = :statusview,
+                                        item_last_update = CURRENT_TIMESTAMP()
+                                    WHERE item_id = :itemid');
+            $stmt->bindParam(':itemid', $itemid, PDO::PARAM_INT);
+            
+            $stmt->bindParam(':itemtype', $itemtype, PDO::PARAM_INT);
+            $stmt->bindParam(':statusview', $view, PDO::PARAM_INT);
+            
+            $stmt->bindParam(':itemname', $itemname, PDO::PARAM_STR);
+            $stmt->bindParam(':itemdescription', $description, PDO::PARAM_STR);
+            
+            $stmt->execute();
+            if ($stmt->rowCount() > 0) {
+                $response['message'] = "done";
+                $response["status"] = "true";
+            } else {
+                $response['message'] = $stmt->errorInfo();
+                $response["status"] = "false";
+            }
+        } catch (PDOException $e) {
+            $response["message"] = $e->getMessage();
+            $response["status"] = "false";
+            echo $e->getMessage();
+        } finally {
+            echo json_encode($response);
+            $dbh = null;
+        }
+    }
+
+    public static function removeItem($itemid, $password, $email) {
+        $response = array("status" => "false", "message" => "");
+
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+
+            $stmt = $dbh->prepare("SELECT admin_password FROM admin WHERE admin_email = :useremail");
+            $stmt->bindParam(':useremail', $email, PDO::PARAM_STR);
+            $stmt->execute();
+            $pass = $stmt->fetchAll();
+//            $response["message"] = $pass[0]["admin_password"];
+            
+            if (decrypt_pass($password, $pass[0]['admin_password'])) {
+                $response["status"] = "true";
+
+                $stmt = $dbh->prepare('DELETE
+                                        FROM item
+                                      WHERE item_id = :itemid');
+                $stmt->bindParam(':itemid', $itemid, PDO::PARAM_INT);
                 $stmt->execute();
                 if ($stmt->rowCount() > 0) {
                     $response["message"] = "done";
@@ -491,7 +571,7 @@ class dboperation {
             echo $e->getMessage();
         }
     }
-    public static function getItemsList($selectfrom = 1, $selectto = 25) {
+    public static function getItemsList($selectfrom = 1, $selectamount = 25) {
         $response = array("status" => "false", "data" => "");
         try {
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
@@ -512,7 +592,7 @@ class dboperation {
                                     INNER JOIN place
                                       ON item.item_place = place.place_id
                                   ORDER BY item.item_add_date DESC
-                                   LIMIT ' . intval($selectfrom) . ' , ' . intval($selectto) . '');
+                                   LIMIT ' . intval($selectfrom) . ' , ' . intval($selectamount) . '');
 
             $stmt->execute();
             $result = $stmt->fetchAll();

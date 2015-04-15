@@ -23,15 +23,15 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
             }
             break;
         case "placespagelist":
-            if (isset($_POST['selectfrom']) && isset($_POST['selectto'])) {
-                echo dboperation::getPlacesList($_POST['selectfrom'], $_POST['selectto']);
+            if (isset($_POST['selectfrom']) && isset($_POST['selectamount'])) {
+                echo dboperation::getPlacesList($_POST['selectfrom'], $_POST['selectamount']);
             } else {
                 parmNotAccess();
             }
             break;
         case "itemspagelist":
-            if (isset($_POST['selectfrom']) && isset($_POST['selectto'])) {
-                echo dboperation::getItemsList($_POST['selectfrom'], $_POST['selectto']);
+            if (isset($_POST['selectfrom']) && isset($_POST['selectamount'])) {
+                echo dboperation::getItemsList($_POST['selectfrom'], $_POST['selectamount']);
             } else {
                 parmNotAccess();
             }
@@ -46,6 +46,20 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
         case "placessearch":
             if (isset($_POST['searchkey'])) {
                 dboperation::placeSearch($_POST['searchkey']);
+            } else {
+                parmNotAccess();
+            }
+            break;
+        case "itemupdate":
+
+            if (isset($_POST['itemid']) &&
+                    isset($_POST['itemtype']) &&
+                    isset($_POST['itemname']) &&
+                    isset($_POST['itemview']) &&
+                    isset($_POST['itemview'])
+            ) {
+
+                dboperation::updateItem($_POST['itemid'], $_POST['itemtype'], $_POST['itemname'], ($_POST['itemview'] == 1) ? 1 : 0, $_POST['itemdescription']);
             } else {
                 parmNotAccess();
             }
@@ -61,16 +75,26 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
                     isset($_POST['placeid'])
             ) {
 
-                dboperation::updatePlaces($_POST['placeid'], $_POST['placetype'], $_POST['placename'], $_POST['placeaddress'], $_POST['placelocationlat'], $_POST['placelocationlng'], $_POST['placview'], str_replace("'", "\'", $_POST['placedescription']));
+                dboperation::updatePlaces($_POST['placeid'], $_POST['placetype'], $_POST['placename'], $_POST['placeaddress'], $_POST['placelocationlat'], $_POST['placelocationlng'], $_POST['placview'], $_POST['placedescription']);
             } else {
                 parmNotAccess();
             }
             break;
 
         case "placeremove": {
-                include_once '../class/cryptpass.php';
-                $email = strval($_SESSION['login-admin-email']);
-                dboperation::removePlaces($_POST['placeid'], $_POST['pass'], $email);
+                if (isset($_POST['placeid']) && isset($_POST['pass'])) {
+                    include_once '../class/cryptpass.php';
+                    $email = strval($_SESSION['login-admin-email']);
+                    dboperation::removePlaces($_POST['placeid'], $_POST['pass'], $email);
+                }
+            }break;
+        case "itemremove": {
+                if (isset($_POST['itemid']) && isset($_POST['pass'])) {
+                    
+                    include_once '../class/cryptpass.php';
+                    $email = strval($_SESSION['login-admin-email']);
+                    dboperation::removeItem($_POST['itemid'], $_POST['pass'], $email);
+                }
             }break;
         case "newitem": {
                 if (

@@ -39,6 +39,7 @@
                             <?php
                             $desc = str_replace("'", "\'", $object->desc);
                             ?>
+                            
                             <span data-toggle="modal" data-target="#qr_modal" onclick="PlaceOperations.setPlaceQrModal('<?php echo $object->id ?>',  '<?php echo $object->name?>')" title="QR" class="qr-button btn btn-sm btn-default"><i class="fa fa-qrcode"></i></span>
                             <span data-toggle="modal" data-target="#map_modal" onclick="PlaceOperations.setmapplacelocation('<?php echo $object->locationlat ?>', '<?php echo $object->locationlang ?>')"title="open on the map" class="btn btn-sm btn-primary"><i class="fa fa-map-marker"></i></span>
                             <span onclick="PlaceOperations.setplacedesc('<?php echo $desc;?>')" data-toggle="modal" data-target="#place_desc_modal" title="descrption" class="btn btn-sm btn-warning "><i class="fa fa-file"></i></span>
@@ -78,24 +79,24 @@
                             if (is_float($pages)) {
                                 $pages = intval($pages + 1);
                             }
-                            $selctfrom = 0;
-                            $selectto = 0;
+                           $selectfrom = 0;
+                            $selectto = $selectamount;
                             $roundnum = 1;
-
                             for ($index = 0; $index < $pages; $index++) {
-                                $selectfrom =  $selectto;
-                                $selectto = $selectamount * $roundnum;
+                                
                                 ?>
                                 <li>
                                     <span 
 
-                                        onclick="placesListFunctions.placesnextpage('<?php echo $selectfrom; ?>', '<?php echo $selectto ?>')"
+                                        onclick="placesListFunctions.placesnextpage('<?php echo $selectfrom; ?>', '<?php echo $selectamount ?>')"
                                         class="btn" style="border-radius: 0px;">
                                         <?php echo $index + 1; ?>
                                     </span>
                                 </li>
                                 <?php
                                 $roundnum++;
+                                $selectfrom = $selectto;
+                                $selectto = $selectamount * $roundnum;
                             }
                             ?>
                         </ul>

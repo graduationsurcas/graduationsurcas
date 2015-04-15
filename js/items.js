@@ -54,14 +54,13 @@ $(document).ready(function () {
     });
 
     itemsListFunctions = {
-        itemsnextpage: function (selectfrom, selectto) {
+        itemsnextpage: function (selectfrom, selectamount) {
             Data = {
                 'destination': 'itemspagelist',
                 'selectfrom': selectfrom,
-                'selectto': selectto
+                'selectamount': selectamount
             };
-//            alert("from = "+Data.selectfrom+", to = "+Data.selectto);
-
+           
             var url = sitelink + "/server/servecerequests.php";
 
             $.ajax({
@@ -73,34 +72,47 @@ $(document).ready(function () {
                 success: function (data, textStatus, jqXHR) {
                     if (data.status == "true") {
                         $("#items-list-table > tbody").empty();
-//                        console.log(data.data);
                         var tdhtml = '';
                         var index = Number(selectfrom);
                         $.each(data.data, function (id, item) {
-                            tdhtml = '<tr>' +
-                               ' <td>' + (index + 1) + '</td>' +
-                                '<td>'+item.itemname+'</td>'+
-                                '<td>'+item.itemtype+'</td>'+
-                                '<td>'+item.itemplace+'</td>'+
-                                '<td>'+item.itemadddate+'</td>'+
-                               ' <td>'+
-                        '<center>'+
-                            '<span class="btn btn-warning btn-sm">'+
-                                '<i class="fa fa-image"></i>'+
-                            '</span>'+
-                        '</center>'+
-                        '</td>'+
-                        '<td>'+
-                        '<center>'+
-                            '<span class="btn btn-primary btn-sm">'+
-                                '<i class="fa fa-edit"></i>'+
-                            '</span>'+
-                            '&nbsp;<span class="btn btn-danger btn-sm">'+
-                                '<i class="fa fa-trash"></i>'+
-                            '</span>'+
-                        '</center>'+
-                        '</td>'+
-                        '</tr>';
+                            var description = item.itemdesc;
+                            description = description.replace(/'/g, '\'');
+                            tdhtml = '<tr id="item_list_tr_' + index + '">' +
+                                    ' <td>' + (index + 1) + '</td>' +
+                                    '<td>' + item.itemname + '</td>' +
+                                    '<td>' + item.itemtype + '</td>' +
+                                    '<td>' + item.itemplace + '</td>' +
+                                    '<td>' + item.itemadddate + '</td>' +
+                                    '<td>' +
+                                   '<center>' +
+                                    '<span onclick="itemsListFunctions.setdescriptionmodel(\'' + description + '\')" data-toggle="modal" data-target="#place_desc_modal" class="btn btn-warning btn-sm">' +
+                                    '<i class="fa fa-file-text"></i>' +
+                                    '</span>' +
+                                    '&nbsp;<span onclick="itemsListFunctions.itemsimagegallery(' + item.itemid + ')" ' +
+                                    'data-toggle="modal" data-target="#item_images_modal"' +
+                                    'class="btn btn-default btn-sm">' +
+                                    ' <i class="fa fa-image"></i>' +
+                                   '</span>' +
+                                    '&nbsp;<span onclick="itemsListFunctions.setupdateitemmodel(' +
+                                    '\'' + item.itemid + '\',' +
+                                    '\'' + item.itemplaceid + '\',' +
+                                    '\'' + item.itemtypeid + '\',' +
+                                    '\'' + item.itemname + '\',' +
+                                    '\'' + description + '\',' +
+                                    '\'' + item.itemstatusview + '\'' +
+                                    ')" data-toggle="modal"' +
+                                    ' data-target="#update_item_modal"' +
+                                    'class="btn btn-success btn-sm">' +
+                                    ' <i class="fa fa-edit"></i>' +
+                                    '</span>' +
+                                    ' &nbsp;<span onclick="itemsListFunctions.setremovemodel(\'' + item.itemid + '\',' +
+                                    ' \'' + index + '\' )" data-toggle="modal" data-target="#remove_item_modal"' +
+                                    ' class="btn btn-danger btn-sm">' +
+                                    ' <i class="fa fa-trash"></i>' +
+                                    '</span>' +
+                                    '</center>' +
+                                    '</td>' +
+                                    '</tr>';
 
                             $("#items-list-table > tbody:last").append(tdhtml);
                             index++;
@@ -116,14 +128,19 @@ $(document).ready(function () {
             });
 
         },
-        
-        itemsimagegallery:function (itemid){
-             Data = {
+        setItemQrModal: function (itemid, itemname) {
+            var info = 'placeid=' + itemid +'&qrtitle='+itemname+'&qrfor=place';
+            $('#qr_modal_image').attr("src", sitelink + '/qr/QRcreator.php?'+info);
+            $('#qr_event_modal_download').attr("href", sitelink + '/qr/QRcreator.php?'+info);
+            $('#QR_title').text(" " + itemname);
+        },
+        itemsimagegallery: function (itemid) {
+            Data = {
                 'destination': 'itemimages',
                 'itemid': itemid
             };
             var url = sitelink + "/server/servecerequests.php";
-             $.ajax({
+            $.ajax({
                 type: 'POST',
                 url: url,
                 data: Data,
@@ -134,24 +151,23 @@ $(document).ready(function () {
                     $(".carousel-indicators").empty();
                 },
                 success: function (data, textStatus, jqXHR) {
-                   
-                    
+
+
                     if (true) {
                         var imagehtml = '';
                         var smallimagehtml = '';
                         var active = "active";
                         var index = 0;
                         $.each(data, function (id, item) {
-                            active = (index == 0)? active : "";
+                            active = (index == 0) ? active : "";
                             imagehtml = imagehtml +
-                            '<div class="'+active+' item"><img  alt="" title="" src="../uploadsimages/'+item.image_title+'"></div>';
-                            
+                                    '<div class="' + active + ' item"><img  alt="" title="" src="../uploadsimages/' + item.image_title + '"></div>';
+
                             smallimagehtml = smallimagehtml +
-                                    '<li class="'+active+'" data-slide-to="'+index+'" data-target="#article-photo-carousel">'+
-                                    '<img alt="" src="'+item.image_path+item.image_title+'">'+
-                                    '</li>'+
-                            
-                            index++;
+                                    '<li class="' + active + '" data-slide-to="' + index + '" data-target="#article-photo-carousel">' +
+                                    '<img alt="" src="' + item.image_path + item.image_title + '">' +
+                                    '</li>' +
+                                    index++;
                         });
                         $(".cont-slider").html(imagehtml);
                         $(".carousel-indicators").html(smallimagehtml);
@@ -165,8 +181,100 @@ $(document).ready(function () {
                     $("#item_images_place_indicators").html("");
                 }
             });
+        },
+        setupdateitemmodel: function (itemid, placeid, itemtype, itemname, description, display) {
+            $('#update_item_id').val(itemid);
+            $('#update_item_place').val(placeid);
+            $('#update_item_type').val(itemtype);
+            $('#update_item_description').text(description);
+            $('input[id=update_item_name]').val(itemname);
+            $("#radio_item_" + display).prop("checked", true);
+            $("#update_item_modal_form_result").text("");
+        },
+        setdescriptionmodel: function (desc) {
+            $("#desc_modal_desc_text").text(desc);
+        },
+        setremovemodel: function (itemid, trid) {
+            $('input[id=remove-item-id]').val(itemid);
+            $('input[id=remove-item-tr-id]').val(trid);
+            $('input[id=remove-item-admin-pass]').val("");
+            $('#remove_item_modal_form_result').text("");
         }
+
     };
+
+
+    $("#update-item").submit(function (event) {
+        var description = $('#update_item_description').val();
+        description = description.replace(/'/g, '\'');
+
+        var Data = {
+            'destination': 'itemupdate',
+            'itemtype': $('#update_item_type').val(),
+            'itemname': $('input[id=update_item_name]').val(),
+            'itemid': $('input[id=update_item_id]').val(),
+            'itemdescription': description,
+            'itemview': $('input[name=update_item_view]:checked', '#update-item').val()
+        };
+
+        var url = sitelink + "/server/servecerequests.php";
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: Data,
+            dataType: 'json',
+            encode: true,
+            success: function (data, textStatus, jqXHR) {
+                console.log(data);
+                if (data.status == "true") {
+                    $("#update_item_modal_form_result").text("update successful");
+                } else {
+                    $("#update_item_modal_form_result").text(data.message);
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $("#update_item_modal_form_result").text(errorThrown);
+            }
+        });
+
+        event.preventDefault();
+    });
+
+    $("#form-remove-item").submit(function (event) {
+        var Data = {
+            'destination': 'itemremove',
+            'itemid': $('input[id=remove-item-id]').val(),
+            'pass': $('input[id=remove-item-admin-pass]').val()
+        };
+
+        var url = sitelink + "/server/servecerequests.php";
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: Data,
+            dataType: 'json',
+            encode: true,
+            success: function (data, textStatus, jqXHR) {
+
+                if (data.status == "true") {
+                    var trid = $('input[id=remove-item-tr-id]').val();
+                    $('input[id=remove-item-admin-pass]').val("");
+                    $("#remove_item_modal_form_result").css("color", "green");
+                    $("#remove_item_modal_form_result").text("delete successful");
+                    $("#item_list_tr_" + trid).toggle();
+                    $("#item_list_search_" + trid).toggle();
+                } else {
+                    $("#remove_item_modal_form_result").css("color", "red");
+                    $("#remove_item_modal_form_result").text(data.message);
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(textStatus);
+                alert(errorThrown);
+            }
+        });
+        event.preventDefault();
+    });
 });
 
 
