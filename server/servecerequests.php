@@ -43,9 +43,9 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
                 parmNotAccess();
             }
             break;
-        case "placessearch":
+        case "itemssearch":
             if (isset($_POST['searchkey'])) {
-                dboperation::placeSearch($_POST['searchkey']);
+                dboperation::itemsSearch($_POST['searchkey']);
             } else {
                 parmNotAccess();
             }
@@ -90,7 +90,7 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
             }break;
         case "itemremove": {
                 if (isset($_POST['itemid']) && isset($_POST['pass'])) {
-                    
+
                     include_once '../class/cryptpass.php';
                     $email = strval($_SESSION['login-admin-email']);
                     dboperation::removeItem($_POST['itemid'], $_POST['pass'], $email);
@@ -115,6 +115,32 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
                     echo dboperation::getItemsImages($_POST["itemid"]);
                 }
             }break;
+        case"commentremove": {
+                if (isset($_POST["commentid"])) {
+                    echo dboperation::removeItemComment($_POST["commentid"]);
+                }
+            }break;
+        case "commentpagelist":
+            if (isset($_POST['selectfrom']) && isset($_POST['selectamount'])) {
+                echo dboperation::getItemsCommentsList($_POST['selectfrom'], $_POST['selectamount']);
+            } else {
+                parmNotAccess();
+            }
+            break;
+        case "singleitemcomment":
+            if (isset($_POST['selectfrom']) && isset($_POST['selectamount']) && $_POST["itemid"]) {
+                echo dboperation::getItemCommentsList($_POST['selectfrom'], $_POST['selectamount'], $_POST["itemid"]);
+            } else {
+                parmNotAccess();
+            }
+            break;
+        case "singleitemcommentscount":
+            if (isset($_POST["itemid"])) {
+                echo dboperation::itemCommentsTotalCount($_POST["itemid"]);
+            } else {
+                parmNotAccess();
+            }
+            break;
 
 
         default:

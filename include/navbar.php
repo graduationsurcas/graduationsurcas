@@ -57,10 +57,10 @@
                         <a href="../pages/itemslist.php"><span class="fa fa-arrow-circle-o-right"></span>&nbsp;Items List</a>
                     </li>
                     <li>
-                        <a href=""><span class="fa fa-arrow-circle-o-right"></span>&nbsp;Items Search</a>
+                        <a href="../pages/itemsearch.php"><span class="fa fa-arrow-circle-o-right"></span>&nbsp;Items Search</a>
                     </li>
                     <li>
-                        <a href=""><span class="fa fa-arrow-circle-o-right"></span>&nbsp;Items Comments</a>
+                        <a href="../pages/itemcomments.php"><span class="fa fa-arrow-circle-o-right"></span>&nbsp;Items Comments</a>
                     </li>
                 </ul>
             </li>

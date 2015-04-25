@@ -44,6 +44,9 @@
                             <span onclick="itemsListFunctions.setdescriptionmodel('<?php echo $desc ?>')" data-toggle="modal" data-target="#place_desc_modal" class="btn btn-warning btn-sm">
                                 <i class="fa fa-file-text"></i>
                             </span>
+                            <span onclick="itemcommentfunction.setsingleitemcomment('<?php echo $item->itemid?>', '25', '0', 1)"  data-toggle="modal" data-target="#item_comments_list_modal" class="btn btn-primary btn-sm">
+                                <i class="fa fa-comments"></i>
+                            </span>
                             <span onclick="itemsListFunctions.itemsimagegallery(<?php echo $item->itemid ?>)" 
                                   data-toggle="modal" data-target="#item_images_modal"
                                   class="btn btn-default btn-sm">

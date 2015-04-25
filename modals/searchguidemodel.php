@@ -16,14 +16,7 @@
                     
                     <ul>
                         <li>
-                            <label>type : </label>
-                            <?php
-                            foreach (dboperation::getPlacesTypes() as $key => $value) {
-                                ?>
-                                <span><?php echo $value; ?>,</span>
-                                <?php
-                            }
-                            ?>
+                            <label>type </label>
                         </li>
                         <li>
                             <label>name </label>

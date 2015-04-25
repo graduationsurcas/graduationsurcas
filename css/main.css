@@ -40,6 +40,20 @@
     font-weight: 300;
     color: #204d74;
 }
+#itemsearch-card-itemname{
+    font-size: 20px;
+    color: #23527c;
+}
+.itemsearch-card-info-title{
+    font-size: 16px;
+    font-weight: 300;
+    color: #999999;
+}
+.itemsearch-card-info-value{
+    font-size: 18px;
+    font-weight: 300;
+    color: #204d74;
+}
 
 .modal-title{
     font-size: 23px;

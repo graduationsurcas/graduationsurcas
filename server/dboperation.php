@@ -382,8 +382,8 @@ class dboperation {
             $dbh = null;
         }
     }
-    
-        public static function removePlaces($placeid, $password, $email) {
+
+    public static function removePlaces($placeid, $password, $email) {
         $response = array("status" => "false", "message" => "");
 
         try {
@@ -396,7 +396,7 @@ class dboperation {
             $stmt->execute();
             $pass = $stmt->fetchAll();
 //            $response["message"] = $pass[0]["admin_password"];
-            
+
             if (decrypt_pass($password, $pass[0]['admin_password'])) {
                 $response["status"] = "true";
 
@@ -424,8 +424,8 @@ class dboperation {
             $dbh = null;
         }
     }
-    
-    public static function updateItem($itemid,  $itemtype, $itemname, $view, $description) {
+
+    public static function updateItem($itemid, $itemtype, $itemname, $view, $description) {
         $response = array("status" => "false", "message" => "");
         try {
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
@@ -438,13 +438,13 @@ class dboperation {
                                         item_last_update = CURRENT_TIMESTAMP()
                                     WHERE item_id = :itemid');
             $stmt->bindParam(':itemid', $itemid, PDO::PARAM_INT);
-            
+
             $stmt->bindParam(':itemtype', $itemtype, PDO::PARAM_INT);
             $stmt->bindParam(':statusview', $view, PDO::PARAM_INT);
-            
+
             $stmt->bindParam(':itemname', $itemname, PDO::PARAM_STR);
             $stmt->bindParam(':itemdescription', $description, PDO::PARAM_STR);
-            
+
             $stmt->execute();
             if ($stmt->rowCount() > 0) {
                 $response['message'] = "done";
@@ -476,7 +476,7 @@ class dboperation {
             $stmt->execute();
             $pass = $stmt->fetchAll();
 //            $response["message"] = $pass[0]["admin_password"];
-            
+
             if (decrypt_pass($password, $pass[0]['admin_password'])) {
                 $response["status"] = "true";
 
@@ -556,6 +556,7 @@ class dboperation {
             echo json_encode($data);
         }
     }
+
     public static function itemsTotalCount() {
         try {
 
@@ -571,6 +572,7 @@ class dboperation {
             echo $e->getMessage();
         }
     }
+
     public static function getItemsList($selectfrom = 1, $selectamount = 25) {
         $response = array("status" => "false", "data" => "");
         try {
@@ -607,7 +609,7 @@ class dboperation {
                 "itemadddate" => "",
                 "itemdesc" => "",
                 "itemstatusview" => ""
-                   );
+            );
             $data = array();
             foreach ($result as $row) {
                 $item['itemid'] = $row['item_id'];
@@ -632,7 +634,182 @@ class dboperation {
             $dbh = null;
         }
     }
-    
+
+    public static function itemsCommentTotalCount() {
+        try {
+
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $sql = 'SELECT count(*) as count FROM item_comment WHERE 1';
+            $count;
+            foreach ($dbh->query($sql) as $row) {
+                $count = $row['count'];
+            }
+            return $count;
+            $dbh = null;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public static function itemCommentsTotalCount($itemid) {
+        $response = array("status" => "false", "data" => "");
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+        try {
+            $sql = 'SELECT count(*) as count FROM item_comment WHERE :itemid';
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindParam(":itemid", $itemid, PDO::PARAM_INT);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            foreach ($result as $row) {
+                $count = $row['count'];
+            }
+            $response["data"] = $count;
+            $response["status"] = "true";
+        }catch (PDOException $e) {
+            $response["data"] = $e->getMessage();
+            $response["status"] = "false";
+        } finally {
+            $dbh = null;
+            return json_encode($response, JSON_UNESCAPED_UNICODE);
+        }
+    }
+
+    public static function getItemsCommentsList($selectfrom = 1, $selectamount = 25) {
+        $response = array("status" => "false", "data" => "");
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $dbh->prepare('SELECT
+                                item.item_id,
+                                item.item_name,
+                                item_comment.itemcomment_text,
+                                item_comment.itemcomment_id,
+                                item_comment.itemcomment_add_date AS createdate,
+                                user.user_id,
+                                user.user_name
+                              FROM item_comment
+                                INNER JOIN item
+                                  ON item_comment.itemcomment_item_id = item.item_id
+                                INNER JOIN user
+                                  ON item_comment.itemcomment_user_id = user.user_id
+                                LIMIT ' . intval($selectfrom) . ' , ' . intval($selectamount) . '');
+
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            $response = array("status" => "false", "data" => "");
+            $comment = array(
+                "commid" => "",
+                "commtext" => "",
+                "commdate" => "",
+                "itemid" => "",
+                "itemname" => "",
+                "username" => "",
+                "userid" => ""
+            );
+            $data = array();
+            foreach ($result as $row) {
+                $comment['commid'] = $row['itemcomment_id'];
+                $comment['commtext'] = $row['itemcomment_text'];
+                $comment['commdate'] = $row['createdate'];
+                $comment['itemid'] = $row['item_id'];
+                $comment['itemname'] = $row['item_name'];
+                $comment['username'] = $row['user_name'];
+                $comment['userid'] = $row['user_id'];
+                array_push($data, $comment);
+            }
+            $response['data'] = $data;
+            $response["status"] = "true";
+        } catch (PDOException $e) {
+            $response["data"] = $e->getMessage();
+            $response["status"] = "false";
+            echo $e->getMessage();
+        } finally {
+            $dbh = null;
+            return json_encode($response, JSON_UNESCAPED_UNICODE);
+        }
+    }
+
+    public static function getItemCommentsList($selectfrom = 0, $selectamount = 25, $itemid) {
+        $response = array("status" => "false", "data" => "");
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $dbh->prepare('SELECT
+                                item.item_id,
+                                item.item_name,
+                                item_comment.itemcomment_text,
+                                item_comment.itemcomment_id,
+                                item_comment.itemcomment_add_date AS createdate,
+                                user.user_id,
+                                user.user_name
+                              FROM item_comment
+                                INNER JOIN item
+                                  ON item_comment.itemcomment_item_id = item.item_id
+                                INNER JOIN user
+                                  ON item_comment.itemcomment_user_id = user.user_id
+                                  WHERE item.item_id = :itemid
+                                LIMIT ' . intval($selectfrom) . ' , ' . intval($selectamount) . '');
+            $stmt->bindParam("itemid", $itemid, PDO::PARAM_INT);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            $response = array("status" => "false", "data" => "");
+            $comment = array(
+                "commid" => "",
+                "commtext" => "",
+                "commdate" => "",
+                "itemid" => "",
+                "itemname" => "",
+                "username" => "",
+                "userid" => ""
+            );
+            $data = array();
+            foreach ($result as $row) {
+                $comment['commid'] = $row['itemcomment_id'];
+                $comment['commtext'] = $row['itemcomment_text'];
+                $comment['commdate'] = $row['createdate'];
+                $comment['itemid'] = $row['item_id'];
+                $comment['itemname'] = $row['item_name'];
+                $comment['username'] = $row['user_name'];
+                $comment['userid'] = $row['user_id'];
+                array_push($data, $comment);
+            }
+            $response['data'] = $data;
+            $response["status"] = "true";
+        } catch (PDOException $e) {
+            $response["data"] = $e->getMessage();
+            $response["status"] = "false";
+            echo $e->getMessage();
+        } finally {
+            $dbh = null;
+            return json_encode($response, JSON_UNESCAPED_UNICODE);
+        }
+    }
+
+    public static function removeItemComment($commentid) {
+        $response = array("status" => "false", "message" => "");
+        $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+        try {
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $dbh->prepare('DELETE FROM item_comment '
+                    . 'WHERE itemcomment_id = :commentid');
+            $stmt->bindParam(':commentid', $commentid, PDO::PARAM_INT);
+            $stmt->execute();
+            if ($stmt->rowCount() > 0) {
+                $response["message"] = "done";
+                $response["status"] = "true";
+            } else {
+                $response["message"] = $stmt->errorInfo();
+                $response["status"] = "false";
+            }
+        } catch (PDOException $e) {
+            $response["message"] = $e->errorInfo;
+            $response["status"] = "false";
+        } finally {
+            $dbh = null;
+            return json_encode($response);
+        }
+    }
+
     public static function getItemsImages($itemid) {
         $itemimages = array();
         try {
@@ -647,18 +824,90 @@ class dboperation {
             $stmt->bindParam(":itemid", $itemid, PDO::PARAM_INT);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            
+
             foreach ($result as $row) {
                 array_push($itemimages, $row);
             }
         } catch (PDOException $e) {
             //
         } finally {
+            $dbh = null;
             return json_encode($itemimages);
+        }
+    }
+
+    public static function itemsSearch($searchkey) {
+        $searchkey = strval($searchkey);
+        $response = array("status" => "false", "data" => "");
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $dbh->prepare('SELECT
+                                    item.item_id,
+                                    item.item_name,
+                                    DATE(item.item_add_date) AS itemadddate,
+                                    item.item_description,
+                                    item.status_view,
+                                    item_type.itemtype_name,
+                                    place.place_name,
+                                    place.address,
+                                    place.place_id,
+                                    item.item_type
+                                  FROM item
+                                    INNER JOIN item_type
+                                      ON item.item_type = item_type.itemtype_id
+                                    INNER JOIN place
+                                      ON item.item_place = place.place_id
+                                      INNER JOIN place_type
+                                         ON place.place_type = place_type.place_id
+                                  WHERE item_type.itemtype_name LIKE "%' . $searchkey . '%"
+                                  OR item.item_name LIKE "%' . $searchkey . '%"
+                                  OR place.place_name LIKE "%' . $searchkey . '%"
+                                  OR place.address LIKE "%' . $searchkey . '%"
+                                  OR item.item_add_date LIKE "%' . $searchkey . '%"
+                                  OR place_type.place_name LIKE "%' . $searchkey . '%"
+                                  OR item.item_description LIKE "%' . $searchkey . '%"');
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            $data = array();
+
+            $item = array(
+                "itemid" => "",
+                "itemname" => "",
+                "itemadddate" => "",
+                "itemdescr" => "",
+                "statusview" => "",
+                "itemtype" => "",
+                "itemtypeid" => "",
+                "placename" => "",
+                "placeaddress" => "",
+                "placeid" => "",
+            );
+            foreach ($result as $row) {
+                $item["itemid"] = $row["item_id"];
+                $item["itemname"] = $row["item_name"];
+                $item["itemadddate"] = $row["itemadddate"];
+                $item["itemdescr"] = $row["item_description"];
+                $item["statusview"] = $row["status_view"];
+                $item["itemtype"] = $row["itemtype_name"];
+                $item["itemtypeid"] = $row["item_type"];
+                $item["placename"] = $row["place_name"];
+                $item["placeaddress"] = $row["address"];
+                $item["placeid"] = $row["place_id"];
+                array_push($data, $item);
+            }
+            $response["data"] = $data;
+            $response["status"] = "true";
+        } catch (PDOException $e) {
+            $response["data"] = $e->getMessage();
+            $response["status"] = "false";
+            echo $e->getMessage();
+        } finally {
+            echo json_encode($response);
             $dbh = null;
         }
     }
-    
+
     public static function uploadItemImages($images) {
         $response = array("success" => array(), "field" => array());
         $success_upload_image_url = array();
@@ -667,7 +916,7 @@ class dboperation {
         // Declaring Path for uploaded images.
         for ($i = 0; $i < count($images['name']); $i++) {
             // Loop to get individual element from the array
-            $validextensions = array("jpeg", "jpg", "JPG", "png");      // Extensions which are allowed.
+            $validextensions = array("jpeg", "jpg", "JPG", "png", "PNG");      // Extensions which are allowed.
             $ext = explode('.', basename($images['name'][$i]));   // Explode file name from dot(.)
             $file_extension = end($ext); // Store extensions in the variable.
             $imagename = "";

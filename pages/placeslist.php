@@ -18,8 +18,7 @@ include '../server/dboperation.php';
             include_once '../include/navbar.php';
             ?>
 
-
-
+           
             <div id="page-wrapper">
                 <div class="container-fluid">
 
@@ -44,6 +43,7 @@ include '../server/dboperation.php';
         include_once '../modals/removeplacemodal.php';
         include_once '../modals/mapmodel.php';
         include_once '../modals/QRmodal.php';
+        
         ?>
         <script src="../js/places.js" type="text/javascript"></script>
         <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAgrj58PbXr2YriiRDqbnL1RSqrCjdkglBijPNIIYrqkVvD1R4QxRl47Yh2D_0C1l5KXQJGrbkSDvXFA"

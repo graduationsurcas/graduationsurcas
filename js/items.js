@@ -1,6 +1,8 @@
 
 $(document).ready(function () {
 
+    var singleitemcommentscount = 0;
+
     //  To add new input file field dynamically,
     //   on click of "Add More Files" button below
     //    function will be executed.
@@ -60,7 +62,7 @@ $(document).ready(function () {
                 'selectfrom': selectfrom,
                 'selectamount': selectamount
             };
-           
+
             var url = sitelink + "/server/servecerequests.php";
 
             $.ajax({
@@ -84,15 +86,21 @@ $(document).ready(function () {
                                     '<td>' + item.itemplace + '</td>' +
                                     '<td>' + item.itemadddate + '</td>' +
                                     '<td>' +
-                                   '<center>' +
-                                    '<span onclick="itemsListFunctions.setdescriptionmodel(\'' + description + '\')" data-toggle="modal" data-target="#place_desc_modal" class="btn btn-warning btn-sm">' +
+                                    '<center>' +
+                                    ' <span data-toggle="modal" data-target="#qr_modal"' +
+                                    'onclick="itemsListFunctions.setItemQrModal(\'' + item.itemid + '\', \'' + item.itemname + '\')" title="QR" ' +
+                                    'class="qr-button btn btn-sm btn-default"><i class="fa fa-qrcode"></i></span>' +
+                                    '&nbsp;<span onclick="itemsListFunctions.setdescriptionmodel(\'' + description + '\')" data-toggle="modal" data-target="#place_desc_modal" class="btn btn-warning btn-sm">' +
                                     '<i class="fa fa-file-text"></i>' +
+                                    '</span>' +
+                                    '&nbsp;<span onclick="itemcommentfunction.setsingleitemcomment(\'' + item.itemid + '\', 25, 0, 1)"  data-toggle="modal" data-target="#item_comments_list_modal" class="btn btn-primary btn-sm">' +
+                                    '<i class="fa fa-comments"></i>' +
                                     '</span>' +
                                     '&nbsp;<span onclick="itemsListFunctions.itemsimagegallery(' + item.itemid + ')" ' +
                                     'data-toggle="modal" data-target="#item_images_modal"' +
                                     'class="btn btn-default btn-sm">' +
                                     ' <i class="fa fa-image"></i>' +
-                                   '</span>' +
+                                    '</span>' +
                                     '&nbsp;<span onclick="itemsListFunctions.setupdateitemmodel(' +
                                     '\'' + item.itemid + '\',' +
                                     '\'' + item.itemplaceid + '\',' +
@@ -129,9 +137,9 @@ $(document).ready(function () {
 
         },
         setItemQrModal: function (itemid, itemname) {
-            var info = 'placeid=' + itemid +'&qrtitle='+itemname+'&qrfor=place';
-            $('#qr_modal_image').attr("src", sitelink + '/qr/QRcreator.php?'+info);
-            $('#qr_event_modal_download').attr("href", sitelink + '/qr/QRcreator.php?'+info);
+            var info = 'placeid=' + itemid + '&qrtitle=' + itemname + '&qrfor=place';
+            $('#qr_modal_image').attr("src", sitelink + '/qr/QRcreator.php?' + info);
+            $('#qr_event_modal_download').attr("href", sitelink + '/qr/QRcreator.php?' + info);
             $('#QR_title').text(" " + itemname);
         },
         itemsimagegallery: function (itemid) {
@@ -275,6 +283,345 @@ $(document).ready(function () {
         });
         event.preventDefault();
     });
+
+    $('#form-item-search').submit(function (event) {
+        $("#form-item-search-result").html("");
+
+        var Data = {
+            'destination': 'itemssearch',
+            'searchkey': $('input[name=items-search-key]').val()
+        };
+
+
+        var url = sitelink + "/server/servecerequests.php";
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: Data,
+            dataType: 'json',
+            encode: true,
+            success: function (data, textStatus, jqXHR) {
+                $('#form-item-search-message').html("");
+//                console.log(data.data);
+                if (data.status == "true") {
+                    if (data.data.length === 0) {
+                        $('#form-item-search-message').text("there no item like " + Data.searchkey);
+                    } else {
+                        var index = 1;
+                        $.each(data.data, function (id, item) {
+//                            console.log(item.itemtype)
+                            var description = item.itemdescr;
+                            description = description.replace(/'/g, '\'');
+                            var newitem =
+                                    ' <div id="item_list_search_' + index + '" class="col-lg-4 col-md-4">' +
+                                    '<div class="panel panel-default">' +
+                                    '<div class="panel-heading">' +
+                                    ' <span class="itemsearch-card" ' +
+                                    'id="itemsearch-card-itemname">' + item.itemname + '</span>' +
+                                    '</div>' +
+                                    '<div class="panel-body">' +
+                                    '<label class="itemsearch-card-info">' +
+                                    '<span class="itemsearch-card-info-title" >' +
+                                    'Type&nbsp;:&nbsp;' +
+                                    '</span>' +
+                                    '<span class="itemsearch-card-info-value">' + item.itemtype + '</span>' +
+                                    '</label>' +
+                                    '<label class="itemsearch-card-info">' +
+                                    '<span class="itemsearch-card-info-title" >' +
+                                    'Add On&nbsp;:&nbsp;' +
+                                    ' </span>' +
+                                    '<span class="itemsearch-card-info-value">'
+                                    + item.itemadddate +
+                                    '</span>' +
+                                    '</label>' +
+                                    '<label class="itemsearch-card-info">' +
+                                    '<span class="itemsearch-card-info-title" >' +
+                                    '  Address&nbsp;:&nbsp;' +
+                                    '</span>' +
+                                    '<span class="itemsearch-card-info-value">'
+                                    + item.placeaddress +
+                                    '</span>' +
+                                    '</label>' +
+                                    ' </div>' +
+                                    '<div class="panel-footer">' +
+                                    '<center>' +
+                                    ' <span data-toggle="modal" data-target="#qr_modal"' +
+                                    'onclick="itemsListFunctions.setItemQrModal(\'' + item.itemid + '\', \'' + item.itemname + '\')" title="QR" ' +
+                                    'class="qr-button btn btn-sm btn-default"><i class="fa fa-qrcode"></i></span>' +
+                                    '&nbsp;<span onclick="itemsListFunctions.setdescriptionmodel(\'' + item.itemdescr + '\')" data-toggle="modal" data-target="#place_desc_modal" class="btn btn-warning btn-sm">' +
+                                    '<i class="fa fa-file-text"></i>' +
+                                    '</span>' +
+                                    '&nbsp;<span onclick="itemcommentfunction.setsingleitemcomment(\'' + item.itemid + '\', 25, 0, 1)"  data-toggle="modal" data-target="#item_comments_list_modal" class="btn btn-primary btn-sm">' +
+                                    '<i class="fa fa-comments"></i>' +
+                                    '</span>' +
+                                    '&nbsp;<span onclick="itemsListFunctions.itemsimagegallery(\'' + item.itemid + '\')" ' +
+                                    'data-toggle="modal" data-target="#item_images_modal"' +
+                                    'class="btn btn-default btn-sm">' +
+                                    '<i class="fa fa-image"></i>' +
+                                    '</span>' +
+                                    '&nbsp;<span onclick="itemsListFunctions.setupdateitemmodel(\'' + item.itemid + '\', \'' + item.placeid + '\', \'' + item.itemtypeid + '\', \'' + item.itemname + '\', \'' + description + '\', \'' + item.statusview + '\')"' +
+                                    'data-toggle="modal"' +
+                                    'data-target="#update_item_modal"' +
+                                    'class="btn btn-success btn-sm">' +
+                                    '<i class="fa fa-edit"></i>' +
+                                    '</span>' +
+                                    '&nbsp;<span onclick="itemsListFunctions.setremovemodel(\'' + item.itemid + '\', \'' + index + '\')" data-toggle="modal" data-target="#remove_item_modal" class="btn btn-danger btn-sm">' +
+                                    '<i class="fa fa-trash"></i>' +
+                                    '</span>' +
+                                    '</center>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    ' </div>';
+
+                            $(newitem).appendTo('#form-item-search-result');
+                            index++;
+                        });
+
+                    }
+
+
+                } else if (data.status === "false") {
+
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        });
+
+
+        // stop the form from submitting the normal way and refreshing the page
+        event.preventDefault();
+    });
+
+    itemcommentfunction = {
+        removecomment: function (commentid, trid) {
+            var Data = {
+                'destination': 'commentremove',
+                'commentid': commentid
+            };
+
+            var url = sitelink + "/server/servecerequests.php";
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: Data,
+                dataType: 'json',
+                encode: true,
+                success: function (data, textStatus, jqXHR) {
+
+                    if (data.status == "true") {
+                        $("#comment_tr_" + trid).toggle();
+                    } else {
+                        alert(data.message);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus);
+                    alert(errorThrown);
+                }
+            });
+        },
+        setcommentmodal: function (comment) {
+            $("#comment_modal_desc_text").text(comment);
+        },
+        commentnextpage: function (selectfrom, selectamount) {
+            Data = {
+                'destination': 'commentpagelist',
+                'selectfrom': selectfrom,
+                'selectamount': selectamount
+            };
+
+            var url = sitelink + "/server/servecerequests.php";
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: Data,
+                dataType: 'json',
+                encode: true,
+                success: function (data, textStatus, jqXHR) {
+                    if (data.status == "true") {
+                        $("#items-comments-list-table > tbody").empty();
+                        var tdhtml = '';
+                        var index = Number(selectfrom);
+                        $.each(data.data, function (id, comment) {
+                            var commenttext = comment.commtext;
+                            commenttext = commenttext.replace(/'/g, '\'');
+                            var commlen = commenttext.length;
+                            var comm = "";
+                            if (Number(commlen) > Number(100)) {
+                                comm = commenttext.substring(0, 100) + '<a onclick="itemcommentfunction.setcommentmodal(\'' + commenttext + '\')" data-toggle="modal" data-target="#item_comment_modal">[..]</a>'
+                            } else {
+                                comm = commenttext;
+                            }
+                            tdhtml =
+                                    '<tr id="comment_tr_"' + index + '>' +
+                                    '<td>' + (index + 1) + '</td>' +
+                                    '<td>' + comment.itemname + '</td>' +
+                                    '<td>' + comment.username + '</td>' +
+                                    '<td>' + comment.commdate + '</td>' +
+                                    '<td>' +
+                                    comm +
+                                    '</td>' +
+                                    '<td ALIGN=center>' +
+                                    '<span onclick="itemcommentfunction.removecomment(\'' + comment.commid + '\', \'' + index + '\')" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></span>' +
+                                    '</td>' +
+                                    '</tr>' +
+                                    $("#items-comments-list-table > tbody:last").append(tdhtml);
+                            index++;
+                        });
+
+                    } else if (data.status === "false") {
+                        alert("error")
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(errorThrown);
+                }
+            });
+
+        },
+        setsingleitemcomment: function (itemid, selectamount, selectfrom, target) {
+
+//            target == 1 -> first page
+//            target == 2 -> next page
+            if (target === 1) {
+                $("#item-comments-modal-pagination").empty();
+                itemcommentfunction.createsingleitemcommenttable(itemid, selectamount);
+            }
+
+            Data = {
+                'destination': 'singleitemcomment',
+                'selectfrom': selectfrom,
+                'selectamount': selectamount,
+                'itemid': itemid
+            };
+            
+            
+            var url = sitelink + "/server/servecerequests.php";
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: Data,
+                dataType: 'json',
+                encode: true,
+                success: function (data, textStatus, jqXHR) {
+
+                
+                
+                    if (data.status == "true") {
+
+                        if (data.data.length === 0) {
+                            $("#item-comments-modal-pagination").hide();
+                            $("#item-comments-modal-list-table").hide();
+                            $("#nocomment-message").show();
+                        }
+                        else {
+                            $("#item-comments-modal-pagination").show();
+                            $("#item-comments-modal-list-table").show();
+                            $("#nocomment-message").hide();
+                        }
+
+                        $("#item-comments-modal-list-table > tbody").empty();
+                        var tdhtml = '';
+                        var index = Number(selectfrom);
+                        $.each(data.data, function (id, comment) {
+                            
+                            var commenttext = comment.commtext;
+                            commenttext = commenttext.replace(/'/g, '\'');
+                            var commlen = commenttext.length;
+                            var comm = "";
+                            if (Number(commlen) > Number(100)) {
+                                comm = commenttext.substring(0, 100) + '<a onclick="itemcommentfunction.setcommentmodal(\'' + commenttext + '\')" data-toggle="modal" data-target="#item_comment_modal">[..]</a>'
+                            } else {
+                                comm = commenttext;
+                            }
+                            tdhtml =
+                                    '<tr id="comment_tr_"' + index + '>' +
+                                    '<td>' + (index + 1) + '</td>' +
+                                    '<td>' + comment.username + '</td>' +
+                                    '<td>' + comment.commdate + '</td>' +
+                                    '<td>' +
+                                    comm +
+                                    '</td>' +
+                                    '<td ALIGN=center>' +
+                                    '<span onclick="itemcommentfunction.removecomment(\'' + comment.commid + '\', \'' + index + '\')" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></span>' +
+                                    '</td>' +
+                                    '</tr>';
+                                    $("#item-comments-modal-list-table > tbody:last").append(tdhtml);
+                            index++;
+                        });
+
+                    } else if (data.status === "false") {
+                        alert("error")
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(errorThrown);
+                }
+            });
+        },
+        createsingleitemcommenttable: function (itemid, selectanount) {
+            var selectamount = selectanount;
+            itemcommentfunction.getsingleitemcommentcount(itemid);
+            var commentcount = singleitemcommentscount;
+            var pages = commentcount / selectamount;
+            if (isFloat(pages)) {
+                pages = Math.floor(pages) + 1;
+            }
+            var selectfrom = 0;
+            var selectto = selectamount;
+            var roundnum = Number(1);
+            $("#item-comments-modal-pagination").empty();
+            for (var index = 0; index < pages; index++) {
+                var nextpagebutton =
+                        '<li><span ' +
+                        'onclick="itemcommentfunction.setsingleitemcomment(\'' + itemid + '\', \'' + selectamount + '\', \'' + selectfrom + '\',  2)"' +
+                        'class="btn" style="border-radius: 0px;">' +
+                        (index + 1) +
+                        '</span></li>';
+                $("#item-comments-modal-pagination").append(nextpagebutton);
+                roundnum++;
+                selectfrom = selectto;
+                selectto = selectamount * roundnum;
+            }
+
+
+//            console.log("selectamount = " + selectamount);
+//            console.log("commentcount = " + commentcount);
+//            console.log("pages = " + pages);
+
+        },
+        getsingleitemcommentcount: function (itemid) {
+            Data = {
+                'destination': 'singleitemcommentscount',
+                'itemid': itemid
+            };
+
+            var url = sitelink + "/server/servecerequests.php";
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: Data,
+                dataType: 'json',
+                encode: true,
+                async: false,
+                success: function (data, textStatus, jqXHR) {
+                    singleitemcommentscount = data.data;
+                }
+            });
+        }
+    };
+
+    function isFloat(n) {
+        return n === +n && n !== (n | 0);
+    }
+
 });
+
+
 
 

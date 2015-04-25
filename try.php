@@ -4,11 +4,12 @@
 //echo $_SESSION['login-admin-id'];
 include_once './server/config.php';
 include_once './server/dboperation.php';
-//include_once './class/cryptpass.php';
+include_once './class/cryptpass.php';
+
+//echo encrypt_pass("1234");
 
 
-
-echo dboperation::updateItem(1, 1, "alysra", 1, "gheith hamood");
-//dboperation::bowrrowItemCurrentCountChange("-", 1, 4);
+//dboperation::itemsSearch("oman");
+echo dboperation::getItemCommentsList(0, 25, 209);
 //$changeoperation = substr(strval(")"), 0, 1);
 //echo $changeoperation;
