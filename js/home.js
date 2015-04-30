@@ -80,7 +80,7 @@ $(document).ready(function () {
                 }
 
             ];
-            
+            //services
             var polarData = [
 				{
 					value: data.service.service,
