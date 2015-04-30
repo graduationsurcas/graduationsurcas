@@ -208,6 +208,12 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
             } else {
                 parmNotAccess();
             }break;
+        case "confirmservicerequest":
+            if (isset($_POST['servicerequestid'])) {
+                echo dboperation::confirmServiceRequests($_POST['servicerequestid'], $adminid);
+            } else {
+                parmNotAccess();
+            }break;
 
         case "getusercount":
             echo json_encode(dboperation::getUserCount());
