@@ -116,6 +116,7 @@ $(document).ready(function () {
             'serviceproviderid': $("#remove-serviceprovider-id").val(),
             'pass': $('input[id=remove-serviceprovider-admin-pass]').val()
         };
+       
         event.preventDefault();
         var trid = $("#remove-serviceprovider-tr-id").val();
 
@@ -136,7 +137,7 @@ $(document).ready(function () {
                 $("#form-remove-serviceprovider :input").prop("disabled", false);
             },
             success: function (data, textStatus, jqXHR) {
-
+                
                 if (data.status == "true") {
                     $('input[id=remove-serviceprovider-admin-pass]').val("");
                     $("#remove_serviceprovider_modal_form_result").css("color", "green");
@@ -148,6 +149,7 @@ $(document).ready(function () {
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown)
                 $("#remove_serviceprovider_modal_form_result").css("color", "red");
                 $("#remove_serviceprovider_modal_form_result").text("Error, try again");
             }
@@ -278,7 +280,7 @@ $(document).ready(function () {
                 'destination': 'removeservicerequest',
                 'servicerequestid': id
             };
-
+            
 
             var url = sitelink + "/server/servecerequests.php";
             $.ajax({
@@ -323,7 +325,6 @@ $(document).ready(function () {
                 'providerid': id
             };
 
-
             var url = sitelink + "/server/servecerequests.php";
             $.ajax({
                 type: 'POST',
@@ -336,6 +337,7 @@ $(document).ready(function () {
                 complete: function (jqXHR, textStatus) {
                 },
                 success: function (data, textStatus, jqXHR) {
+                    console.log(data)
                     if (data.status == "true") {
                         $("#serviceprovider_info_name").text(data.data[0].name);
                         $("#serviceprovider_info_email").text(data.data[0].email);
