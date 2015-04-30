@@ -1259,7 +1259,7 @@ class dboperation {
         try {
 
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
-            $sql = 'SELECT count(*) as count FROM service_request WHERE 1';
+            $sql = 'SELECT count(*) as count FROM service_request WHERE 1' ;
             $count;
             foreach ($dbh->query($sql) as $row) {
                 $count = $row['count'];
@@ -1271,17 +1271,92 @@ class dboperation {
         }
     }
     
-     public static function Count() {
+     public static function getStatisticsCount() {
+        try {
+          $response = array("languages"=>"", "place"=>"");
+
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $sql = 'SELECT * 
+            FROM
+            (SELECT COUNT(*) FROM user WHERE user_lang = 1) as ar, 
+            (SELECT COUNT(*) FROM user WHERE user_lang = 2) as en, 
+            (SELECT COUNT(*) FROM user WHERE user_lang = 3) as fr,
+            (SELECT COUNT(*) FROM user WHERE user_lang = 4) as gr';
+            $languages = array(
+                "ar" => "",
+                "en" => "",
+                "fr" => "",
+                "gr" => "");
+            foreach ($dbh->query($sql) as $row) {
+                $languages["ar"] = $row[0];
+                $languages["en"] = $row[1];
+                $languages["fr"] = $row[2];
+                $languages["gr"] = $row[3];
+            }
+            $response["languages"] = $languages;
+            $sql = 'SELECT * 
+            FROM
+            
+            (SELECT COUNT(*) FROM place WHERE user_lang = 3) as museum, 
+            (SELECT COUNT(*) FROM user WHERE user_lang = 4) as fort, 
+            (SELECT COUNT(*) FROM user WHERE user_lang = 5) as castel,
+            (SELECT COUNT(*) FROM user WHERE user_lang = 4) as burg';
+            $place = array(
+                "museum" => "",
+                "fort" => "",
+                "castel" => "",
+                "burg" => "");
+            foreach ($dbh->query($sql) as $row) {
+                $place["museum"] = $row[0];
+                $place["fort"] = $row[1];
+                $place["castel"] = $row[2];
+                $place["burg"] = $row[3];
+            }
+            $response["place"] = $$place;
+
+            
+            
+            $dbh = null;
+            return $response;
+            
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+    
+    
+      public static function getPlaceCount() {
+          $response = array("languages"=>"", "place"=>"");
         try {
 
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
-            $sql = 'SELECT count(*) as count FROM service_request WHERE 1';
-            $count;
+            
+            $sql = 'SELECT * 
+            FROM
+            
+            (SELECT COUNT(*) FROM place WHERE user_lang = 3) as museum, 
+            (SELECT COUNT(*) FROM user WHERE user_lang = 4) as fort, 
+            (SELECT COUNT(*) FROM user WHERE user_lang = 5) as castel,
+            (SELECT COUNT(*) FROM user WHERE user_lang = 4) as burg';
+            $languages = array(
+                "museum" => "",
+                "fort" => "",
+                "castel" => "",
+                "burg" => "");
             foreach ($dbh->query($sql) as $row) {
-                $count = $row['count'];
+                $languages["museum"] = $row[0];
+                $languages["fort"] = $row[1];
+                $languages["castel"] = $row[2];
+                $languages["burg"] = $row[3];
             }
-            return $count;
+            $response["languages"] = $languages;
+            
+            
+            
+            
             $dbh = null;
+            return $response;
+            
         } catch (PDOException $e) {
             echo $e->getMessage();
         }

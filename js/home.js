@@ -1,10 +1,8 @@
 $(document).ready(function() {
     
     var Data = {
-            'destination': 'serviceproviderupdate'
+            'destination': 'getstatisticscount'
         };
-
-
         var url = sitelink + "/server/servecerequests.php";
         $.ajax({
             type: 'POST',
@@ -18,47 +16,39 @@ $(document).ready(function() {
             complete: function (jqXHR, textStatus) {
                $('#wait-spain-one').html('');
             },
-            success: function (data, textStatus, jqXHR) {
+            success: function (data, textStatus, jqXHR) { 
                var doughnutData = [
 				{
-					value: 600,
+					value: data.ar,
 					color:"#F7464A",
 					highlight: "#FF5A5E",
-					label: "AR"
+					label: "ARABIC user"
 				},
 				{
-					value: 50,
+					value: data.en,
 					color: "#46BFBD",
 					highlight: "#5AD3D1",
-					label: "EN"
+					label: "English user"
 				},
 				{
-					value: 100,
+					value: data.fr,
 					color: "#FDB45C",
 					highlight: "#FFC870",
-					label: "Yellow"
+					label: "France user"
 				},
 				{
-					value: 40,
+					value: data.gr,
 					color: "#949FB1",
 					highlight: "#A8B3C5",
-					label: "Grey"
-				},
-				{
-					value: 120,
-					color: "#4D5360",
-					highlight: "#616774",
-					label: "Dark Grey"
+					label: "Germany user"
 				}
 
 			];
-
-			window.onload = function(){
-				var ctx = document.getElementById("places-statistics").getContext("2d");
-				window.myDoughnut = new Chart(ctx).Doughnut(doughnutData, {responsive : true});
-                                var ctx2 = document.getElementById("chart-area2").getContext("2d");
-				window.myDoughnut = new Chart(ctx2).Doughnut(doughnutData, {responsive : true});
-			};
+                                var language_element = document.getElementById("user-statistics").getContext("2d");
+				window.myDoughnut = new Chart(language_element).Doughnut(doughnutData, {responsive : true});
+                                var place_element = document.getElementById("chart-area2").getContext("2d");
+				window.myDoughnut = new Chart(place_element).Doughnut(doughnutData, {responsive : true});
+			
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 

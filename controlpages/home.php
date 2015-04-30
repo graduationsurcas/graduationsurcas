@@ -10,11 +10,13 @@
             <div class="panel-body">
                <div class="row">
         <div class="col-xs-6 col-sm-6 col-md-3 text-center leftspan" id="one">
-            <h5>Places Statistics</h5>
+            <h4>User Statistics</h4>
             <div id="wait-spain-one" style="margin-top: 9px"></div>
-            <canvas id="places-statistics" />
+            <canvas id="user-statistics" />
         </div>
-        <div class="col-xs-6 col-sm-6 col-md-3 text-center leftspan" id="two"><h5>Statistics</h5> </div>               
+        <div class="col-xs-6 col-sm-6 col-md-3 text-center leftspan" id="two"><h4>Place Statistics</h4>
+            <div id="wait-spain-one" style="margin-top: 9px"></div>
+            <canvas id="places-statistics" /> </div>               
         <div class="col-xs-6 col-sm-6 col-md-3 text-center leftspan" id="three"><h5>Statistics</h5> <canvas id="chart-area2"/></div>
         <div class="col-xs-6 col-sm-6 col-md-3 text-center leftspan" id="three"><h5>Statistics</h5> <img src="images/mobile.png"></div>
 

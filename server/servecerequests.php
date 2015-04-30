@@ -193,14 +193,13 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
             }
             break;
             
-            case "getserviseproviderinfo":
-            if (isset($_POST['providerid'])) {
-                echo dboperation::getServiceProviderInfo($_POST['providerid']);
-            } else {
-                parmNotAccess();
-            }
+            case "getusercount":
+                echo json_encode(dboperation::getUserCount());
             break;
 
+        case "getstatisticscount":
+                echo json_encode(dboperation::getStatisticsCount());
+            break;
         default:
             break;
     }
