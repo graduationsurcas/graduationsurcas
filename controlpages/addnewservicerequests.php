@@ -57,8 +57,8 @@
                                   class="btn btn-default btn-sm">
                                 <i class="fa fa-map-marker"></i>
                             </span>
-                            <span onclick="servicesFunctions.setserviceproviderupdatemodalinfo()" data-toggle="modal"
-                                  data-target="#update_serviceproviderinfo_modal"
+                            <span onclick="addnewservicesrequest.confirmServiceRequest('<?php echo $request->id ?>', '<?php echo $num?>')" 
+                                  
                                   class="btn btn-success btn-sm">
                                 <i class="fa fa-check"></i>
                             </span>

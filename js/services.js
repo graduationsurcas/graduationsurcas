@@ -275,6 +275,38 @@ $(document).ready(function () {
 
 
     addnewservicesrequest = {
+        confirmServiceRequest: function (id, trid){
+             var Data = {
+                'destination': 'confirmservicerequest',
+                'servicerequestid': id
+            };
+            
+
+            var url = sitelink + "/server/servecerequests.php";
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: Data,
+                dataType: 'json',
+                encode: true,
+                beforeSend: function (xhr) {
+                    $(".remove-service-request").prop("disabled", true);
+                },
+                complete: function (jqXHR, textStatus) {
+                    $(".remove-service-request").prop("disabled", false);
+                },
+                success: function (data, textStatus, jqXHR) {
+                    if (data.status == "true") {
+                        $("#servicerequests_list_tr_" + trid).toggle();
+                    } else {
+                        
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                
+                }
+            });
+        },
         removeservicerequest: function (id, trid) {
             var Data = {
                 'destination': 'removeservicerequest',

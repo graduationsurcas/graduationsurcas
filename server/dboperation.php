@@ -1,7 +1,8 @@
 <?php
 
 class dboperation {
-        public static function action_report($report, $adminid) {
+
+    public static function action_report($report, $adminid) {
         $conn = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME)
                 or die(mysqli_error($conn));
         $conn->set_charset('UTF-8');
@@ -10,10 +11,7 @@ class dboperation {
                 . ' report, create_date) VALUES '
                 . '(NULL, ?, ?, ?,CURRENT_TIMESTAMP)';
         $stmt = $conn->prepare($query) or die(mysql_error());
-        $stmt->bind_param('iss', 
-                $adminid,
-                $_SERVER['REMOTE_ADDR'],
-                $report);
+        $stmt->bind_param('iss', $adminid, $_SERVER['REMOTE_ADDR'], $report);
         $stmt->execute();
         if ($stmt->affected_rows == 1) {
 //            return TRUE;
@@ -23,7 +21,7 @@ class dboperation {
         }
         $conn->close();
     }
-    
+
     public static function logIn($useremail, $userpass) {
         $data = array("status" => "false", "message" => "");
         try {
@@ -1096,7 +1094,6 @@ class dboperation {
         }
     }
 
-    
     public static function removeServiceProvider($ServiceProviderid, $password, $email) {
         $response = array("status" => "false", "message" => "");
 
@@ -1260,7 +1257,7 @@ class dboperation {
         try {
 
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
-            $sql = 'SELECT count(*) as count FROM service_request WHERE 1' ;
+            $sql = 'SELECT count(*) as count FROM service_request WHERE 1';
             $count;
             foreach ($dbh->query($sql) as $row) {
                 $count = $row['count'];
@@ -1271,7 +1268,7 @@ class dboperation {
             echo $e->getMessage();
         }
     }
-    
+
     public static function removeServiceRequests($requestid) {
         $response = array("status" => "false", "message" => "");
         try {
@@ -1298,11 +1295,65 @@ class dboperation {
             $dbh = null;
         }
     }
-    
-    
-     public static function getStatisticsCount() {
+
+    public static function confirmServiceRequests($requestid, $adminid) {
+        $response = array("status" => "false", "message" => "");
         try {
-          $response = array("languages"=>"", "place"=>"");
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            $stmt = $dbh->prepare('SELECT * FROM service_request WHERE'
+                    . ' servicerequest_id = :id');
+            $stmt->bindParam(':id', $requestid, PDO::PARAM_INT);
+            $stmt->execute();
+            $request = $stmt->fetchAll(PDO::FETCH_ASSOC)[0];
+            
+            $stmt = $dbh->prepare('INSERT INTO service 
+                (service_title, service_add_date, service_desc,
+                service_location_lang, service_location_lat,
+                service_admin_add, service_user_id, 
+                service_type, service_id)
+                VALUES (:title, CURRENT_TIMESTAMP, :desc, :llang,
+                :llat, :adminid, :userid, :servicetype, NULL)');
+
+            $stmt->bindParam(':title', $request["servicerequest_title"], PDO::PARAM_STR);
+            $stmt->bindParam(':desc', $request["servicerequest_desc"], PDO::PARAM_STR);
+            $stmt->bindParam(':llang', $request["servicerequest_location_lang"], PDO::PARAM_STR);
+            $stmt->bindParam(':llat', $request["servicerequest_location_lat"], PDO::PARAM_STR);
+            $stmt->bindParam(':adminid', $adminid, PDO::PARAM_INT);
+            $stmt->bindParam(':userid', $request["servicerequest_user_id"], PDO::PARAM_INT);
+            $stmt->bindParam(':servicetype', $request["servicerequest_type"], PDO::PARAM_INT);
+
+            $stmt->execute();
+            if ($stmt->rowCount() > 0) {
+                $stmt = $dbh->prepare('DELETE
+                                    FROM service_request
+                                  WHERE servicerequest_id = :id');
+                $stmt->bindParam(':id', $requestid, PDO::PARAM_INT);
+                $stmt->execute();
+                if ($stmt->rowCount() > 0) {
+                    $response["message"] = "done";
+                    $response["status"] = "true";
+                } else {
+                    $response["message"] = $stmt->errorInfo();
+                    $response["status"] = "false";
+                }
+            } else {
+                $response["message"] = $stmt->errorInfo();
+                $response["status"] = "false";
+            }
+        } catch (PDOException $e) {
+            $response["message"] = $e->getMessage();
+            $response["status"] = "false";
+        } finally {
+            $dbh = null;
+            return json_encode($response);
+        }
+    }
+
+    public static function getStatisticsCount() {
+        try {
+            $response = array("languages" => "", "place" => "");
 
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
             $sql = 'SELECT * 
@@ -1335,7 +1386,7 @@ class dboperation {
                 "fort" => "",
                 "castel" => "",
                 "burg" => "");
-            
+
             foreach ($dbh->query($sql) as $row) {
                 $place["museum"] = $row[0];
                 $place["fort"] = $row[1];
@@ -1351,32 +1402,28 @@ class dboperation {
             $service = array(
                 "service" => "",
                 "service_request" => "");
-            
+
             foreach ($dbh->query($sql) as $row) {
                 $service["service"] = $row[0];
                 $service["service_request"] = $row[1];
-               
             }
-            $response["service"] =$service;
-;
-            
-            
+            $response["service"] = $service;
+            ;
+
+
             $dbh = null;
             return $response;
-            
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
     }
-    
-    
-    
-      public static function getPlaceCount() {
-          $response = array("languages"=>"", "place"=>"");
+
+    public static function getPlaceCount() {
+        $response = array("languages" => "", "place" => "");
         try {
 
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
-            
+
             $sql = 'SELECT * 
             FROM
             
@@ -1396,17 +1443,15 @@ class dboperation {
                 $languages["burg"] = $row[3];
             }
             $response["languages"] = $languages;
-            
-            
-            
-            
+
+
+
+
             $dbh = null;
             return $response;
-            
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
     }
 
-    
 }
