@@ -1270,6 +1270,22 @@ class dboperation {
             echo $e->getMessage();
         }
     }
+    
+     public static function Count() {
+        try {
+
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $sql = 'SELECT count(*) as count FROM service_request WHERE 1';
+            $count;
+            foreach ($dbh->query($sql) as $row) {
+                $count = $row['count'];
+            }
+            return $count;
+            $dbh = null;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
 
     
 }

@@ -22,7 +22,7 @@ include '../include/authpages.php';
                 <div class="container-fluid">
 
                     <?php
-//                    include_once '../controlpages/borrow.php';
+                    include_once '../controlpages/home.php';
                     ?>
 
 
@@ -38,6 +38,8 @@ include '../include/authpages.php';
         <?php
         include_once '../include/footerlinkspages.html';
         ?>
+        <script src="../js/Chart.js" type="text/javascript"></script>
+        <script src="../js/home.js" type="text/javascript"></script>
 
     </body>
 

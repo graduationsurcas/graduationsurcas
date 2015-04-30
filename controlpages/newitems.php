@@ -75,6 +75,7 @@
                            id="add_more"
                            class="upload"
                            value="Add More Image"/>
+                  
                 </div>
                 
                 <div class="form-group input-group">
