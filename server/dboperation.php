@@ -1096,6 +1096,7 @@ class dboperation {
         }
     }
 
+    
     public static function removeServiceProvider($ServiceProviderid, $password, $email) {
         $response = array("status" => "false", "message" => "");
 
@@ -1271,6 +1272,34 @@ class dboperation {
         }
     }
     
+    public static function removeServiceRequests($requestid) {
+        $response = array("status" => "false", "message" => "");
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            $stmt = $dbh->prepare('DELETE
+                                    FROM service_request
+                                  WHERE servicerequest_id = :id');
+            $stmt->bindParam(':id', $requestid, PDO::PARAM_INT);
+            $stmt->execute();
+            if ($stmt->rowCount() > 0) {
+                $response["message"] = "done";
+                $response["status"] = "true";
+            } else {
+                $response["message"] = $stmt->errorInfo();
+                $response["status"] = "false";
+            }
+        } catch (PDOException $e) {
+            $response["message"] = $e->getMessage();
+            $response["status"] = "false";
+        } finally {
+            return json_encode($response);
+            $dbh = null;
+        }
+    }
+    
+    
      public static function getStatisticsCount() {
         try {
           $response = array("languages"=>"", "place"=>"");
@@ -1323,6 +1352,7 @@ class dboperation {
             echo $e->getMessage();
         }
     }
+    
     
     
       public static function getPlaceCount() {

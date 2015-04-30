@@ -37,7 +37,7 @@
                                 <td><?php echo $request->servicerequesttypename ?></td>
                                 <td>
                         <center>
-                            <span onclick="addnewservicesrequest.setprofiderinfomodale('<?php echo $request->id ?>')" data-toggle="modal" data-target="#serviceprovider_info_modal" class="btn btn-primary btn-sm">
+                            <span onclick="addnewservicesrequest.setprofiderinfomodale('<?php echo $request->providerid ?>')" data-toggle="modal" data-target="#serviceprovider_info_modal" class="btn btn-primary btn-sm">
                                 <i class="fa fa-user"></i>
                             </span>
                             <?php
@@ -62,7 +62,7 @@
                                   class="btn btn-success btn-sm">
                                 <i class="fa fa-check"></i>
                             </span>
-                            <span onclick="addnewservicesrequest.removeservicerequest('<?php echo $request->id ?>', '<?php echo $num ?>')" class="btn btn-danger btn-sm remove-service-request">
+                            <span onclick="addnewservicesrequest.removeservicerequest('<?php echo $request->id ?>', '<?php echo $num?>')" class="btn btn-danger btn-sm remove-service-request">
                                 <i class="fa fa-trash"></i>
                             </span>
                         </center>
