@@ -1296,24 +1296,40 @@ class dboperation {
             $response["languages"] = $languages;
             $sql = 'SELECT * 
             FROM
-            
-            (SELECT COUNT(*) FROM place WHERE user_lang = 3) as museum, 
-            (SELECT COUNT(*) FROM user WHERE user_lang = 4) as fort, 
-            (SELECT COUNT(*) FROM user WHERE user_lang = 5) as castel,
-            (SELECT COUNT(*) FROM user WHERE user_lang = 4) as burg';
+           
+            (SELECT COUNT(*) FROM place WHERE place_type = 3) as museum, 
+            (SELECT COUNT(*) FROM place WHERE place_type = 4) as fort, 
+            (SELECT COUNT(*) FROM place WHERE place_type = 5) as castel,
+            (SELECT COUNT(*) FROM place WHERE place_type = 6) as burg';
             $place = array(
                 "museum" => "",
                 "fort" => "",
                 "castel" => "",
                 "burg" => "");
+            
             foreach ($dbh->query($sql) as $row) {
                 $place["museum"] = $row[0];
                 $place["fort"] = $row[1];
                 $place["castel"] = $row[2];
                 $place["burg"] = $row[3];
             }
-            $response["place"] = $$place;
-
+            $response["place"] = $place;
+            $sql = 'SELECT * 
+            FROM
+           
+           (SELECT COUNT(*) FROM service) as service, 
+(SELECT COUNT(*) FROM service_request ) as service_request';
+            $service = array(
+                "service" => "",
+                "service_request" => "");
+            
+            foreach ($dbh->query($sql) as $row) {
+                $service["service"] = $row[0];
+                $service["service_request"] = $row[1];
+               
+            }
+            $response["service"] =$service;
+;
             
             
             $dbh = null;
