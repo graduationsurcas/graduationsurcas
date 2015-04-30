@@ -63,7 +63,7 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
                     isset($_POST['itemview'])
             ) {
                 dboperation::updateItem($_POST['itemid'], $_POST['itemtype'], $_POST['itemname'], ($_POST['itemview'] == 1) ? 1 : 0, $_POST['itemdescription']);
-                $report = UPDATEPLACE . " | item id = " . $_POST['itemid'];
+                $report = UPDATEITAM . " | item id = " . $_POST['itemid'];
                 dboperation::action_report($report, $adminid);
                 
             } else {
@@ -82,7 +82,8 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
             ) {
 
                 dboperation::updatePlaces($_POST['placeid'], $_POST['placetype'], $_POST['placename'], $_POST['placeaddress'], $_POST['placelocationlat'], $_POST['placelocationlng'], $_POST['placview'], $_POST['placedescription']);
-                
+                $report = UPDATEPLACE . " | place id = " . $_POST['placeid'];
+                dboperation::action_report($report, $adminid);
                 } else {
                 parmNotAccess();
             }
@@ -93,6 +94,8 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
                     include_once '../class/cryptpass.php';
                     $email = strval($_SESSION['login-admin-email']);
                     dboperation::removePlaces($_POST['placeid'], $_POST['pass'], $email);
+                      $report = REMOVEPLCAE . " | place id = " . $_POST['placeid'];
+                      dboperation::action_report($report, $adminid);
                 }
             }break;
         case "itemremove": {
@@ -101,6 +104,8 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
                     include_once '../class/cryptpass.php';
                     $email = strval($_SESSION['login-admin-email']);
                     dboperation::removeItem($_POST['itemid'], $_POST['pass'], $email);
+                    $report = REMOVEITEM . " | item id = " . $_POST['itemid'];
+                      dboperation::action_report($report, $adminid);
                 }
             }break;
         case "newitem": {
@@ -113,6 +118,8 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
                         $_FILES["file"]
                 ) {
                     dboperation::newItem($_SESSION['login-admin-id'], $_POST['new_item_type'], $_POST['new_item_place'], $_POST['new_item_name'], $_POST['new_item_description'], ($_POST['new_item_view'] == '2') ? 0 : 1, $_FILES["file"]);
+                    dboperation::action_report(ADDNEWITEM, $adminid);
+                    
                 } else {
                     
                 }
@@ -157,7 +164,9 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
             ) {
                 $accountstatus = ($_POST['accountstatus'] == "block")? "true" : "false";
                 dboperation::updateServiceProvider($_POST['id'], $_POST['name'], $_POST['email'], $_POST['phone'], $accountstatus);
-            } else {
+                 $report = UPDATESERVICEPROVIDER . " | Service proivder id = " . $_POST['id'];
+                      dboperation::action_report($report, $adminid);
+                } else {
                 parmNotAccess();
             }
             break;
@@ -176,6 +185,9 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
                     include_once '../class/cryptpass.php';
                     $email = strval($_SESSION['login-admin-email']);
                     dboperation::removeServiceProvider($_POST['serviceproviderid'], $_POST['pass'], $email);
+                    $report = REMOVESERVICEPROVIDER . " | Service proivder id = " . $_POST['id'];
+                     dboperation::action_report($report, $adminid);
+                    
                 }
             }break;
             case "serviceproviderslist":
@@ -185,14 +197,6 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
                 parmNotAccess();
             }
             break;
-            case "getserviseproviderinfo":
-            if (isset($_POST['providerid'])) {
-                echo dboperation::getServiceProviderInfo($_POST['providerid']);
-            } else {
-                parmNotAccess();
-            }
-            break;
-            
             case "getserviseproviderinfo":
             if (isset($_POST['providerid'])) {
                 echo dboperation::getServiceProviderInfo($_POST['providerid']);
