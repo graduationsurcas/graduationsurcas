@@ -30,7 +30,7 @@
                                                     "servicerequesttypeid":"2","servicerequesttypename":"resturant",
                                                     "locationlat":"10.5979","locationlang":"10.5945",
                                                     "desc":"hgyghg yutyu' ygyty ty ghj","createdate":"2015-04-30"}]-->
-                            <tr id="serviceprovider_list_tr_<?php echo $num; ?>">
+                            <tr id="servicerequests_list_tr_<?php echo $num; ?>">
                                 <td><?php echo $num; ?></td>
                                 <td><?php echo $request->title ?></td>
                                 <td><?php echo $request->providername ?></td>
@@ -62,7 +62,7 @@
                                   class="btn btn-success btn-sm">
                                 <i class="fa fa-check"></i>
                             </span>
-                            <span onclick="servicesFunctions.setremovesetserviceprovidermodalinf()" data-toggle="modal" data-target="#remove_serviceprovider_modal" class="btn btn-danger btn-sm">
+                            <span onclick="addnewservicesrequest.removeservicerequest('<?php echo $request->id ?>', '<?php echo $num ?>')" class="btn btn-danger btn-sm remove-service-request">
                                 <i class="fa fa-trash"></i>
                             </span>
                         </center>
