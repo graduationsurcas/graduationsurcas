@@ -653,7 +653,7 @@ class dboperation {
 
     public static function itemCommentsTotalCount($itemid) {
         $response = array("status" => "false", "data" => "");
-            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+        $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
         try {
             $sql = 'SELECT count(*) as count FROM item_comment WHERE :itemid';
             $stmt = $dbh->prepare($sql);
@@ -665,7 +665,7 @@ class dboperation {
             }
             $response["data"] = $count;
             $response["status"] = "true";
-        }catch (PDOException $e) {
+        } catch (PDOException $e) {
             $response["data"] = $e->getMessage();
             $response["status"] = "false";
         } finally {
@@ -939,6 +939,314 @@ class dboperation {
         $response["success"] = $success_upload_image_url;
         $response["field"] = $field_upload_image_url;
         return $response;
+    }
+
+    public static function getServiceProvidersList($selectfrom = 0, $selectamount = 25) {
+        $response = array("status" => "false", "data" => "");
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $dbh->prepare('SELECT
+                                    user_service.useservice_id,
+                                    user_service.useservice_name,
+                                    user_service.useservice_email,
+                                    user_service.useservice_phone,
+                                    DATE(user_service.useservice_add_date) AS createdate,
+                                    user_service.positive_evaluation,
+                                    user_service.negative_evaluation,
+                                    user_service.account_status
+                                  FROM user_service
+                                  ORDER BY user_service.useservice_add_date DESC
+                      LIMIT ' . $selectfrom . ' , ' . $selectamount . '');
+
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            $response = array("status" => "false", "data" => "");
+            $serviceproviders = array(
+                "id" => "",
+                "name" => "",
+                "email" => "",
+                "phone" => "",
+                "createdate" => "",
+                "positiveevaluation" => "",
+                "negativeevaluation" => "",
+                "blockstatus" => "");
+            $data = array();
+            foreach ($result as $row) {
+                $serviceproviders["id"] = $row['useservice_id'];
+                $serviceproviders["name"] = $row['useservice_name'];
+                $serviceproviders["email"] = $row['useservice_email'];
+                $serviceproviders["phone"] = $row['useservice_phone'];
+                $serviceproviders["createdate"] = $row['createdate'];
+                $serviceproviders["positiveevaluation"] = $row['positive_evaluation'];
+                $serviceproviders["negativeevaluation"] = $row['negative_evaluation'];
+                $serviceproviders["blockstatus"] = ($row['account_status'] == "0") ? "false" : "true";
+                array_push($data, $serviceproviders);
+            }
+            $response['data'] = $data;
+            $response["status"] = "true";
+        } catch (PDOException $e) {
+            $response["data"] = $e->getMessage();
+            $response["status"] = "false";
+            echo $e->getMessage();
+        } finally {
+            $dbh = null;
+            return json_encode($response);
+        }
+    }
+
+    public static function serviceProvidersTotalCount() {
+        try {
+
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $sql = 'SELECT count(*) as count FROM user_service WHERE 1';
+            $count;
+            foreach ($dbh->query($sql) as $row) {
+                $count = $row['count'];
+            }
+            return $count;
+            $dbh = null;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public static function updateServiceProvider($id, $name, $email, $phone, $accountstatuse) {
+        $response = array("status" => "false", "message" => "");
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $dbh->prepare('UPDATE user_service
+                                    SET useservice_name = :name,
+                                        useservice_email = :email,
+                                        useservice_phone = :phone,
+                                        account_status = :status
+                                    WHERE useservice_id = :id');
+            $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+            $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+            $stmt->bindParam(':phone', $phone, PDO::PARAM_INT);
+            $accountstatuse = ($accountstatuse == "false") ? 0 : 1;
+            $stmt->bindParam(':status', $accountstatuse, PDO::PARAM_INT);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            if ($stmt->rowCount() > 0) {
+                $response['message'] = "done";
+                $response["status"] = "true";
+            } else {
+                $response['message'] = $stmt->errorInfo();
+                $response["status"] = "false";
+            }
+        } catch (PDOException $e) {
+            $response["message"] = $e->getMessage();
+            $response["status"] = "false";
+            echo $e->getMessage();
+        } finally {
+            echo json_encode($response);
+            $dbh = null;
+        }
+    }
+
+    public static function updateServiceProviderPassword($id, $password) {
+        $response = array("status" => "false", "message" => "");
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $dbh->prepare('UPDATE user_service
+                                    SET useservice_password = :pass
+                                    WHERE useservice_id = :id');
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->bindParam(':pass', encrypt_pass($password), PDO::PARAM_STR);
+            $stmt->execute();
+            if ($stmt->rowCount() > 0) {
+                $response['message'] = "done";
+                $response["status"] = "true";
+            } else {
+                $response['message'] = $stmt->errorInfo();
+                $response["status"] = "false";
+            }
+        } catch (PDOException $e) {
+            $response["message"] = $e->getMessage();
+            $response["status"] = "false";
+            echo $e->getMessage();
+        } finally {
+            echo json_encode($response);
+            $dbh = null;
+        }
+    }
+
+    public static function removeServiceProvider($ServiceProviderid, $password, $email) {
+        $response = array("status" => "false", "message" => "");
+
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+
+            $stmt = $dbh->prepare("SELECT admin_password FROM admin WHERE admin_email = :useremail");
+            $stmt->bindParam(':useremail', $email, PDO::PARAM_STR);
+            $stmt->execute();
+            $pass = $stmt->fetchAll();
+//            $response["message"] = $pass[0]["admin_password"];
+
+            if (decrypt_pass($password, $pass[0]['admin_password'])) {
+                $response["status"] = "true";
+
+                $stmt = $dbh->prepare('DELETE
+                                    FROM user_service
+                                  WHERE useservice_id = :serviceproviderid');
+                $stmt->bindParam(':serviceproviderid', $ServiceProviderid, PDO::PARAM_INT);
+                $stmt->execute();
+                if ($stmt->rowCount() > 0) {
+                    $response["message"] = "done";
+                    $response["status"] = "true";
+                } else {
+                    $response["message"] = $stmt->errorInfo();
+                    $response["status"] = "false";
+                }
+            } else {
+                $response["message"] = "wrong password";
+                $response["status"] = "false";
+            }
+        } catch (PDOException $e) {
+            $response["message"] = $e->getMessage();
+            $response["status"] = "false";
+        } finally {
+            echo json_encode($response);
+            $dbh = null;
+        }
+    }
+
+    public static function getServiceProviderInfo($id) {
+        $response = array("status" => "false", "data" => "");
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $dbh->prepare('SELECT
+                                   user_service.useservice_id,
+                                    user_service.useservice_name,
+                                    user_service.useservice_email,
+                                    user_service.useservice_phone,
+                                    DATE(user_service.useservice_add_date) AS createdate,
+                                    user_service.positive_evaluation,
+                                    user_service.negative_evaluation,
+                                    user_service.account_status
+                                  FROM user_service
+                                  WHERE user_service.useservice_id = :id');
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            $response = array("status" => "false", "data" => "");
+            $serviceproviders = array(
+                "id" => "",
+                "name" => "",
+                "email" => "",
+                "phone" => "",
+                "createdate" => "",
+                "positiveevaluation" => "",
+                "negativeevaluation" => "",
+                "blockstatus" => "");
+            $data = array();
+            foreach ($result as $row) {
+                $serviceproviders["id"] = $row['useservice_id'];
+                $serviceproviders["name"] = $row['useservice_name'];
+                $serviceproviders["email"] = $row['useservice_email'];
+                $serviceproviders["phone"] = $row['useservice_phone'];
+                $serviceproviders["createdate"] = $row['createdate'];
+                $serviceproviders["positiveevaluation"] = $row['positive_evaluation'];
+                $serviceproviders["negativeevaluation"] = $row['negative_evaluation'];
+                $serviceproviders["blockstatus"] = ($row['account_status'] == "0") ? "false" : "true";
+                array_push($data, $serviceproviders);
+            }
+            $response['data'] = $data;
+            $response["status"] = "true";
+        } catch (PDOException $e) {
+            $response["data"] = $e->getMessage();
+            $response["status"] = "false";
+            echo $e->getMessage();
+        } finally {
+            $dbh = null;
+            return json_encode($response);
+        }
+    }
+
+    public static function getServiceRequestsList($selectfrom = 0, $selectamount = 25) {
+        $response = array("status" => "false", "data" => "");
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $dbh->prepare('SELECT
+                                    service_request.servicerequest_id,
+                                    service_request.servicerequest_title,
+                                    user_service.useservice_name,
+                                    service_request.servicerequest_type,
+                                    service_type.servicetype_name,
+                                    service_request.servicerequest_user_id,
+                                    service_request.servicerequest_location_lat,
+                                    service_request.servicerequest_location_lang,
+                                    service_request.servicerequest_desc,
+                                    DATE(service_request.servicerequest_add_date) AS createdate
+                                  FROM service_request
+                                    INNER JOIN service_type
+                                      ON service_request.servicerequest_type = service_type.servicetype_id
+                                    INNER JOIN user_service
+                                      ON service_request.servicerequest_user_id = user_service.useservice_id
+                                  ORDER BY service_request.servicerequest_add_date
+                      LIMIT ' . $selectfrom . ' , ' . $selectamount . '');
+
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            $response = array("status" => "false", "data" => "");
+            $servicerequest = array(
+                "id" => "",
+                "title" => "",
+                "providername" => "",
+                "providerid" => "",
+                "servicerequesttypeid" => "",
+                "servicerequesttypename" => "",
+                "locationlat" => "",
+                "locationlang" => "",
+                "desc" => "",
+                "createdate" => "");
+            $data = array();
+            foreach ($result as $row) {
+                $servicerequest["id"] = $row['servicerequest_id'];
+                $servicerequest["title"] = $row['servicerequest_title'];
+                $servicerequest["providername"] = $row['useservice_name'];
+                $servicerequest["providerid"] = $row['servicerequest_user_id'];
+                $servicerequest["servicerequesttypeid"] = $row['servicerequest_type'];
+                $servicerequest["servicerequesttypename"] = $row['servicetype_name'];
+                $servicerequest["locationlat"] = $row['servicerequest_location_lat'];
+                $servicerequest["locationlang"] = $row['servicerequest_location_lang'];
+                $servicerequest["desc"] = $row['servicerequest_desc'];
+                $servicerequest["createdate"] = $row['createdate'];
+                array_push($data, $servicerequest);
+            }
+            $response['data'] = $data;
+            $response["status"] = "true";
+        } catch (PDOException $e) {
+            $response["data"] = $e->getMessage();
+            $response["status"] = "false";
+            echo $e->getMessage();
+        } finally {
+            $dbh = null;
+            return json_encode($response);
+        }
+    }
+
+    public static function ServiceRequestsTotalCount() {
+        try {
+
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $sql = 'SELECT count(*) as count FROM service_request WHERE 1';
+            $count;
+            foreach ($dbh->query($sql) as $row) {
+                $count = $row['count'];
+            }
+            return $count;
+            $dbh = null;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
     }
 
 }

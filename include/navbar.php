@@ -71,7 +71,10 @@
                         <a href="#">services</a>
                     </li>
                     <li>
-                        <a href="#">service providers</a>
+                        <a href="../pages/servicesrequests.php">services requests</a>
+                    </li>
+                    <li>
+                        <a href="../pages/serviceproviders.php">service providers</a>
                     </li>
                 </ul>
             </li>

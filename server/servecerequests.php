@@ -141,7 +141,50 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
                 parmNotAccess();
             }
             break;
-
+            case "serviceproviderupdate":
+            if (isset($_POST['id']) &&
+                    isset($_POST['name']) &&
+                    isset($_POST['phone']) &&
+                    isset($_POST['email']) &&
+                    isset($_POST['accountstatus'])
+            ) {
+                $accountstatus = ($_POST['accountstatus'] == "block")? "true" : "false";
+                dboperation::updateServiceProvider($_POST['id'], $_POST['name'], $_POST['email'], $_POST['phone'], $accountstatus);
+            } else {
+                parmNotAccess();
+            }
+            break;
+            case "serviceproviderupdatepass":
+            if (isset($_POST['id']) &&
+                    isset($_POST['pass'])
+            ) {
+                include_once '../class/cryptpass.php';
+                dboperation::updateServiceProviderPassword($_POST['id'], $_POST['pass']);
+            } else {
+                parmNotAccess();
+            }
+            break;
+            case "serviceproviderremove": {
+                if (isset($_POST['serviceproviderid']) && isset($_POST['pass'])) {
+                    include_once '../class/cryptpass.php';
+                    $email = strval($_SESSION['login-admin-email']);
+                    dboperation::removeServiceProvider($_POST['serviceproviderid'], $_POST['pass'], $email);
+                }
+            }break;
+            case "serviceproviderslist":
+            if (isset($_POST['selectfrom']) && isset($_POST['selectamount'])) {
+                echo dboperation::getServiceProvidersList($_POST['selectfrom'], $_POST['selectamount']);
+            } else {
+                parmNotAccess();
+            }
+            break;
+            case "getserviseproviderinfo":
+            if (isset($_POST['providerid'])) {
+                echo dboperation::getServiceProviderInfo($_POST['providerid']);
+            } else {
+                parmNotAccess();
+            }
+            break;
 
         default:
             break;
