@@ -1,7 +1,6 @@
 <?php
 
 class dboperation {
-
     public static function action_report($report, $adminid) {
         $conn = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME)
                 or die(mysqli_error($conn));
@@ -11,7 +10,10 @@ class dboperation {
                 . ' report, create_date) VALUES '
                 . '(NULL, ?, ?, ?,CURRENT_TIMESTAMP)';
         $stmt = $conn->prepare($query) or die(mysql_error());
-        $stmt->bind_param('iss', $adminid, $_SERVER['REMOTE_ADDR'], $report);
+        $stmt->bind_param('iss', 
+                $adminid,
+                $_SERVER['REMOTE_ADDR'],
+                $report);
         $stmt->execute();
         if ($stmt->affected_rows == 1) {
 //            return TRUE;
@@ -1448,7 +1450,7 @@ class dboperation {
             ;
 
 /*
- * 
+ *edit 
  */
 
             $dbh = null;

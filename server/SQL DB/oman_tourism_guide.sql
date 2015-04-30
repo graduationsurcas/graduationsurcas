@@ -1,13 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.2.11
+-- version 3.5.2.2
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 30, 2015 at 06:47 PM
--- Server version: 5.6.21
+-- Generation Time: Apr 30, 2015 at 11:40 PM
+-- Server version: 5.5.27
 -- PHP Version: 5.6.3
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -23,40 +23,19 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `action_report`
---
-
-CREATE TABLE IF NOT EXISTS `action_report` (
-`id_action_report` int(11) NOT NULL,
-  `admin` int(11) NOT NULL,
-  `source_ip` varchar(20) NOT NULL,
-  `report` text NOT NULL,
-  `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `action_report`
---
-
-INSERT INTO `action_report` (`id_action_report`, `admin`, `source_ip`, `report`, `create_date`) VALUES
-(1, 2, '::1', 'try', '2015-04-30 16:35:21'),
-(2, 2, '::1', 'USER INSERT NEW PLACE', '2015-04-30 16:39:12'),
-(3, 2, '::1', 'admin update place | item id = 208', '2015-04-30 16:44:44');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `admin`
 --
 
 CREATE TABLE IF NOT EXISTS `admin` (
-`admin_id` int(11) NOT NULL,
+  `admin_id` int(11) NOT NULL AUTO_INCREMENT,
   `admin_type` int(11) NOT NULL,
   `admin_email` varchar(100) NOT NULL,
   `admin_name` varchar(45) NOT NULL,
   `admin_password` varchar(65) NOT NULL,
-  `admin_create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  `admin_create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`admin_id`,`admin_type`),
+  KEY `admintype_id_key_idx` (`admin_type`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `admin`
@@ -72,9 +51,10 @@ INSERT INTO `admin` (`admin_id`, `admin_type`, `admin_email`, `admin_name`, `adm
 --
 
 CREATE TABLE IF NOT EXISTS `admin_type` (
-`admintype_id` int(11) NOT NULL,
-  `admintype_name` varchar(45) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+  `admintype_id` int(11) NOT NULL AUTO_INCREMENT,
+  `admintype_name` varchar(45) NOT NULL,
+  PRIMARY KEY (`admintype_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `admin_type`
@@ -91,11 +71,13 @@ INSERT INTO `admin_type` (`admintype_id`, `admintype_name`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `feadback` (
-`feadback_id` int(11) NOT NULL,
+  `feadback_id` int(11) NOT NULL AUTO_INCREMENT,
   `feadback_user_id` int(11) NOT NULL,
   `feadback_add_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `feadback_text` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `feadback_text` text NOT NULL,
+  PRIMARY KEY (`feadback_id`,`feadback_user_id`),
+  KEY `feadback_userid_key_idx` (`feadback_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -104,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `feadback` (
 --
 
 CREATE TABLE IF NOT EXISTS `item` (
-`item_id` int(11) NOT NULL,
+  `item_id` int(11) NOT NULL AUTO_INCREMENT,
   `item_type` int(11) NOT NULL,
   `item_admin_creator` int(11) NOT NULL,
   `item_place` int(11) NOT NULL,
@@ -112,8 +94,12 @@ CREATE TABLE IF NOT EXISTS `item` (
   `item_add_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `item_description` text NOT NULL,
   `status_view` int(11) NOT NULL DEFAULT '1' COMMENT '1 is disaplay for all\n0 is no',
-  `item_last_update` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=210 DEFAULT CHARSET=utf8;
+  `item_last_update` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`item_id`,`item_type`,`item_place`,`item_admin_creator`),
+  KEY `item_place_key_idx` (`item_place`),
+  KEY `item_admin_key_idx` (`item_admin_creator`),
+  KEY `item_itemtype_key_idx` (`item_type`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=210 ;
 
 --
 -- Dumping data for table `item`
@@ -211,10 +197,8 @@ INSERT INTO `item` (`item_id`, `item_type`, `item_admin_creator`, `item_place`, 
 (200, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
 (201, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
 (202, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(205, 1, 2, 4, 'uae', '2015-04-25 07:39:41', 'uae from ksa', 0, '2015-04-25 07:40:26'),
 (206, 1, 2, 4, 'new item', '2015-04-25 07:44:40', 'new item create by me', 1, NULL),
-(207, 1, 2, 4, 'oman', '2015-04-25 07:50:09', 'oman', 1, NULL),
-(208, 1, 2, 4, 'gh gh', '2015-04-25 07:52:20', 'text text text text text ', 1, '2015-04-30 16:44:44'),
+(208, 1, 2, 4, 'gh gh', '2015-04-25 07:52:20', 'ghh', 1, NULL),
 (209, 2, 2, 4, 'تطبيق إيثار', '2015-04-25 07:53:51', 'تم إنشاء هذا التطبيق بواسطة طلاب تطوير البرمجيات في صور', 1, NULL);
 
 -- --------------------------------------------------------
@@ -224,12 +208,15 @@ INSERT INTO `item` (`item_id`, `item_type`, `item_admin_creator`, `item_place`, 
 --
 
 CREATE TABLE IF NOT EXISTS `item_comment` (
-`itemcomment_id` int(11) NOT NULL,
+  `itemcomment_id` int(11) NOT NULL AUTO_INCREMENT,
   `itemcomment_item_id` int(11) NOT NULL,
   `itemcomment_user_id` int(11) NOT NULL,
   `itemcomment_text` text NOT NULL,
-  `itemcomment_add_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8;
+  `itemcomment_add_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`itemcomment_id`,`itemcomment_item_id`,`itemcomment_user_id`),
+  KEY `item_id_key_idx` (`itemcomment_item_id`),
+  KEY `itemcomment_user_id_idx` (`itemcomment_user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=75 ;
 
 --
 -- Dumping data for table `item_comment`
@@ -245,11 +232,13 @@ INSERT INTO `item_comment` (`itemcomment_id`, `itemcomment_item_id`, `itemcommen
 --
 
 CREATE TABLE IF NOT EXISTS `item_image` (
-`id_item_image` int(11) NOT NULL,
+  `id_item_image` int(11) NOT NULL AUTO_INCREMENT,
   `item_id` int(11) NOT NULL,
   `image_title` varchar(40) NOT NULL,
-  `image_path` varchar(60) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+  `image_path` varchar(60) DEFAULT NULL,
+  PRIMARY KEY (`id_item_image`,`item_id`),
+  KEY `item_image_key_idx` (`item_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `item_image`
@@ -270,9 +259,10 @@ INSERT INTO `item_image` (`id_item_image`, `item_id`, `image_title`, `image_path
 --
 
 CREATE TABLE IF NOT EXISTS `item_type` (
-`itemtype_id` int(11) NOT NULL,
-  `itemtype_name` varchar(45) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  `itemtype_id` int(11) NOT NULL AUTO_INCREMENT,
+  `itemtype_name` varchar(45) NOT NULL,
+  PRIMARY KEY (`itemtype_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `item_type`
@@ -289,10 +279,11 @@ INSERT INTO `item_type` (`itemtype_id`, `itemtype_name`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `language` (
-`lang_id` int(11) NOT NULL,
+  `lang_id` int(11) NOT NULL AUTO_INCREMENT,
   `lang_name` varchar(45) DEFAULT NULL,
-  `lang_shortcut` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  `lang_shortcut` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`lang_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `language`
@@ -300,7 +291,9 @@ CREATE TABLE IF NOT EXISTS `language` (
 
 INSERT INTO `language` (`lang_id`, `lang_name`, `lang_shortcut`) VALUES
 (1, 'arabic', 'ar'),
-(2, 'english', 'en');
+(2, 'english', 'en'),
+(3, 'france', 'fr'),
+(4, 'germany', 'gr');
 
 -- --------------------------------------------------------
 
@@ -309,7 +302,7 @@ INSERT INTO `language` (`lang_id`, `lang_name`, `lang_shortcut`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `place` (
-`place_id` int(11) NOT NULL,
+  `place_id` int(11) NOT NULL AUTO_INCREMENT,
   `place_type` int(11) NOT NULL,
   `place_name` varchar(45) NOT NULL,
   `address` varchar(132) DEFAULT NULL,
@@ -318,45 +311,48 @@ CREATE TABLE IF NOT EXISTS `place` (
   `place_admin_creator` int(11) NOT NULL,
   `view` int(1) NOT NULL DEFAULT '1',
   `description` text NOT NULL,
-  `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=utf8;
+  `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `last_update` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`place_id`,`place_type`,`place_admin_creator`),
+  KEY `place_type_id_idx` (`place_type`),
+  KEY `place_admin_creator_id_idx` (`place_admin_creator`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=106 ;
 
 --
 -- Dumping data for table `place`
 --
 
 INSERT INTO `place` (`place_id`, `place_type`, `place_name`, `address`, `place_location_lat`, `place_location_lng`, `place_admin_creator`, `view`, `description`, `create_date`, `last_update`) VALUES
-(4, 3, 'place test 101', 'oman 101', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:43:56', '2015-04-14 21:48:44'),
+(4, 6, 'place test 101', 'oman 101', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-30 18:53:39', '2015-04-14 21:48:44'),
 (5, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:04', '2015-04-14 21:44:04'),
 (6, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
-(7, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
+(7, 5, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-30 18:53:35', '2015-04-14 21:44:05'),
 (8, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
 (9, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
 (10, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
 (11, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
 (12, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
-(13, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
+(13, 4, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-30 18:53:31', '2015-04-14 21:44:05'),
 (14, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
 (15, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
 (16, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
-(17, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
-(18, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
-(19, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
+(17, 6, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-30 18:53:10', '2015-04-14 21:44:05'),
+(18, 5, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-30 18:53:07', '2015-04-14 21:44:05'),
+(19, 5, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-30 18:53:26', '2015-04-14 21:44:05'),
 (20, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
-(21, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
+(21, 6, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-30 18:53:01', '2015-04-14 21:44:05'),
 (22, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
 (23, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
 (24, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
-(25, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
+(25, 6, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-30 18:53:22', '2015-04-14 21:44:05'),
 (26, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
-(27, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
+(27, 5, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-30 18:53:04', '2015-04-14 21:44:05'),
 (28, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
-(29, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
+(29, 4, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-30 18:53:13', '2015-04-14 21:44:05'),
 (30, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
 (31, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
 (32, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
-(33, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:25', '2015-04-14 21:44:25'),
+(33, 6, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-30 18:53:17', '2015-04-14 21:44:25'),
 (34, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:25', '2015-04-14 21:44:25'),
 (35, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:25', '2015-04-14 21:44:25'),
 (36, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:25', '2015-04-14 21:44:25'),
@@ -427,8 +423,7 @@ INSERT INTO `place` (`place_id`, `place_type`, `place_name`, `address`, `place_l
 (101, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:46:25', '2015-04-14 21:46:25'),
 (102, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:46:25', '2015-04-14 21:46:25'),
 (104, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:46:39', '2015-04-14 21:46:39'),
-(105, 3, 'almehuar', 'Izke', 22.9451, 57.7594, 2, 1, 'بلدية إزكي', '2015-04-25 07:36:39', '2015-04-25 07:36:39'),
-(106, 3, 'gheith', 'gheith', 22.5623, 59.4724, 2, 1, 'bnn ', '2015-04-30 16:39:12', '2015-04-30 16:44:12');
+(105, 3, 'almehuar', 'Izke', 22.9451, 57.7594, 2, 1, 'بلدية إزكي', '2015-04-25 07:36:39', '2015-04-25 07:36:39');
 
 -- --------------------------------------------------------
 
@@ -437,9 +432,10 @@ INSERT INTO `place` (`place_id`, `place_type`, `place_name`, `address`, `place_l
 --
 
 CREATE TABLE IF NOT EXISTS `place_type` (
-`place_id` int(11) NOT NULL,
-  `place_name` varchar(45) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+  `place_id` int(11) NOT NULL AUTO_INCREMENT,
+  `place_name` varchar(45) NOT NULL,
+  PRIMARY KEY (`place_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `place_type`
@@ -447,7 +443,9 @@ CREATE TABLE IF NOT EXISTS `place_type` (
 
 INSERT INTO `place_type` (`place_id`, `place_name`) VALUES
 (3, 'museum'),
-(4, 'fort');
+(4, 'fort'),
+(5, 'castel'),
+(6, 'burg');
 
 -- --------------------------------------------------------
 
@@ -456,7 +454,7 @@ INSERT INTO `place_type` (`place_id`, `place_name`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `service` (
-`service_id` int(11) NOT NULL,
+  `service_id` int(11) NOT NULL AUTO_INCREMENT,
   `service_type` int(11) NOT NULL,
   `service_user_id` int(11) NOT NULL,
   `service_admin_add` int(11) NOT NULL,
@@ -464,8 +462,22 @@ CREATE TABLE IF NOT EXISTS `service` (
   `service_desc` text,
   `service_add_date` timestamp NULL DEFAULT NULL,
   `service_rate` int(11) DEFAULT NULL,
-  `service_title` varchar(250) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `service_title` varchar(250) NOT NULL,
+  PRIMARY KEY (`service_id`,`service_type`,`service_admin_add`,`service_user_id`),
+  KEY `service_type_key_idx` (`service_type`),
+  KEY `service_admin_key_idx` (`service_admin_add`),
+  KEY `service_user_key_idx` (`service_user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `service`
+--
+
+INSERT INTO `service` (`service_id`, `service_type`, `service_user_id`, `service_admin_add`, `service_location`, `service_desc`, `service_add_date`, `service_rate`, `service_title`) VALUES
+(1, 1, 1, 2, 'adam', 'test test test test test test test test test test test ', '2015-04-29 20:00:00', 5, 'test '),
+(2, 1, 1, 2, 'adam', 'test test test test test test test test test test test ', '2015-04-29 20:00:00', 5, 'test '),
+(3, 1, 1, 2, 'adam', 'test test test test test test test test test test test ', '2015-04-29 20:00:00', 5, 'test '),
+(4, 1, 1, 2, 'adam', 'test test test test test test test test test test test ', '2015-04-29 20:00:00', 5, 'test ');
 
 -- --------------------------------------------------------
 
@@ -474,15 +486,18 @@ CREATE TABLE IF NOT EXISTS `service` (
 --
 
 CREATE TABLE IF NOT EXISTS `service_request` (
-`servicerequest_id` int(11) NOT NULL,
+  `servicerequest_id` int(11) NOT NULL AUTO_INCREMENT,
   `servicerequest_title` varchar(250) NOT NULL,
   `servicerequest_type` int(11) NOT NULL,
   `servicerequest_user_id` int(11) NOT NULL,
   `servicerequest_location_lat` float NOT NULL,
   `servicerequest_location_lang` float NOT NULL,
   `servicerequest_desc` text NOT NULL,
-  `servicerequest_add_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `servicerequest_add_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`servicerequest_id`,`servicerequest_type`,`servicerequest_user_id`),
+  KEY `service_type_key_idx` (`servicerequest_type`),
+  KEY `service_user_key_idx` (`servicerequest_user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `service_request`
@@ -498,9 +513,10 @@ INSERT INTO `service_request` (`servicerequest_id`, `servicerequest_title`, `ser
 --
 
 CREATE TABLE IF NOT EXISTS `service_type` (
-`servicetype_id` int(11) NOT NULL,
-  `servicetype_name` varchar(45) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  `servicetype_id` int(11) NOT NULL AUTO_INCREMENT,
+  `servicetype_name` varchar(45) NOT NULL,
+  PRIMARY KEY (`servicetype_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `service_type`
@@ -517,13 +533,15 @@ INSERT INTO `service_type` (`servicetype_id`, `servicetype_name`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `share_area` (
-`sharearea_id` int(11) NOT NULL,
+  `sharearea_id` int(11) NOT NULL AUTO_INCREMENT,
   `sharearea_text` text,
   `sharearea_user_id` int(11) NOT NULL,
   `sharearea_image` longblob,
   `sharearea_add_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `sharearea_location` varchar(150) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `sharearea_location` varchar(150) DEFAULT NULL,
+  PRIMARY KEY (`sharearea_id`,`sharearea_user_id`),
+  KEY `sharearea_userid_key_idx` (`sharearea_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -532,12 +550,14 @@ CREATE TABLE IF NOT EXISTS `share_area` (
 --
 
 CREATE TABLE IF NOT EXISTS `share_comment` (
-`sharecomm_id` int(11) NOT NULL,
+  `sharecomm_id` int(11) NOT NULL AUTO_INCREMENT,
   `sharecomm_sharearea_id` int(11) DEFAULT NULL,
   `sharecomm_user_id` int(11) NOT NULL,
   `sharecomm_add_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `sharecomm_text` text
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `sharecomm_text` text,
+  PRIMARY KEY (`sharecomm_id`,`sharecomm_user_id`),
+  KEY `sharecomm_userid_key_idx` (`sharecomm_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -546,19 +566,25 @@ CREATE TABLE IF NOT EXISTS `share_comment` (
 --
 
 CREATE TABLE IF NOT EXISTS `user` (
-`user_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_name` varchar(45) NOT NULL,
   `user_password` varchar(160) NOT NULL,
   `user_lang` int(11) NOT NULL,
-  `user_email` varchar(150) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `user_email` varchar(150) NOT NULL,
+  PRIMARY KEY (`user_id`,`user_lang`),
+  UNIQUE KEY `user_name_UNIQUE` (`user_name`),
+  KEY `user_lang_key_idx` (`user_lang`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`user_id`, `user_name`, `user_password`, `user_lang`, `user_email`) VALUES
-(1, 'gheith', 'hamood', 1, 'ali');
+(1, 'gheith', 'hamood', 1, 'ali'),
+(2, 'user', 'user', 2, 'user@gmail.com'),
+(3, 'fruser', 'fruser', 3, 'fruser@gmail.com'),
+(4, 'gruser', 'gruser', 4, 'gruser@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -567,7 +593,7 @@ INSERT INTO `user` (`user_id`, `user_name`, `user_password`, `user_lang`, `user_
 --
 
 CREATE TABLE IF NOT EXISTS `user_service` (
-`useservice_id` int(11) NOT NULL,
+  `useservice_id` int(11) NOT NULL AUTO_INCREMENT,
   `useservice_name` varchar(45) DEFAULT NULL,
   `useservice_email` varchar(45) DEFAULT NULL,
   `useservice_phone` varchar(45) DEFAULT NULL,
@@ -575,8 +601,10 @@ CREATE TABLE IF NOT EXISTS `user_service` (
   `useservice_add_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `positive_evaluation` int(11) NOT NULL DEFAULT '0',
   `negative_evaluation` int(11) NOT NULL DEFAULT '0',
-  `account_status` varchar(2) NOT NULL DEFAULT '0' COMMENT 'if 0 mean is not block .. 1 it is block'
-) ENGINE=InnoDB AUTO_INCREMENT=250 DEFAULT CHARSET=utf8;
+  `account_status` varchar(2) NOT NULL DEFAULT '0' COMMENT 'if 0 mean is not block .. 1 it is block',
+  PRIMARY KEY (`useservice_id`),
+  UNIQUE KEY `useservice_email` (`useservice_email`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=250 ;
 
 --
 -- Dumping data for table `user_service`
@@ -736,7 +764,6 @@ INSERT INTO `user_service` (`useservice_id`, `useservice_name`, `useservice_emai
 (196, 'user name 146', '146usermail@gmail.com', '1465454455', '12345', '2015-04-30 22:37:53', 0, 0, '0'),
 (197, 'user name 147', '147usermail@gmail.com', '1475454455', '12345', '2015-04-30 22:37:53', 0, 0, '0'),
 (198, 'user name 148', '148usermail@gmail.com', '1485454455', '12345', '2015-04-30 22:37:53', 0, 0, '0'),
-(199, 'user name 149', '149usermail@gmail.com', '1495454455', '12345', '2015-04-30 22:37:53', 0, 0, '0'),
 (200, 'user name 150', '150usermail@gmail.com', '1505454455', '12345', '2015-04-30 22:37:53', 0, 0, '0'),
 (201, 'user name 151', '151usermail@gmail.com', '1515454455', '12345', '2015-04-30 22:37:53', 0, 0, '0'),
 (202, 'user name 152', '152usermail@gmail.com', '1525454455', '12345', '2015-04-30 22:37:53', 0, 0, '0'),
@@ -789,294 +816,82 @@ INSERT INTO `user_service` (`useservice_id`, `useservice_name`, `useservice_emai
 (249, 'user name 199', '199usermail@gmail.com', '1995454455', '12345', '2015-04-30 22:37:53', 0, 0, '1');
 
 --
--- Indexes for dumped tables
---
-
---
--- Indexes for table `action_report`
---
-ALTER TABLE `action_report`
- ADD PRIMARY KEY (`id_action_report`,`admin`), ADD KEY `admin_id_key_idx` (`admin`);
-
---
--- Indexes for table `admin`
---
-ALTER TABLE `admin`
- ADD PRIMARY KEY (`admin_id`,`admin_type`), ADD KEY `admintype_id_key_idx` (`admin_type`);
-
---
--- Indexes for table `admin_type`
---
-ALTER TABLE `admin_type`
- ADD PRIMARY KEY (`admintype_id`);
-
---
--- Indexes for table `feadback`
---
-ALTER TABLE `feadback`
- ADD PRIMARY KEY (`feadback_id`,`feadback_user_id`), ADD KEY `feadback_userid_key_idx` (`feadback_user_id`);
-
---
--- Indexes for table `item`
---
-ALTER TABLE `item`
- ADD PRIMARY KEY (`item_id`,`item_type`,`item_place`,`item_admin_creator`), ADD KEY `item_place_key_idx` (`item_place`), ADD KEY `item_admin_key_idx` (`item_admin_creator`), ADD KEY `item_itemtype_key_idx` (`item_type`);
-
---
--- Indexes for table `item_comment`
---
-ALTER TABLE `item_comment`
- ADD PRIMARY KEY (`itemcomment_id`,`itemcomment_item_id`,`itemcomment_user_id`), ADD KEY `item_id_key_idx` (`itemcomment_item_id`), ADD KEY `itemcomment_user_id_idx` (`itemcomment_user_id`);
-
---
--- Indexes for table `item_image`
---
-ALTER TABLE `item_image`
- ADD PRIMARY KEY (`id_item_image`,`item_id`), ADD KEY `item_image_key_idx` (`item_id`);
-
---
--- Indexes for table `item_type`
---
-ALTER TABLE `item_type`
- ADD PRIMARY KEY (`itemtype_id`);
-
---
--- Indexes for table `language`
---
-ALTER TABLE `language`
- ADD PRIMARY KEY (`lang_id`);
-
---
--- Indexes for table `place`
---
-ALTER TABLE `place`
- ADD PRIMARY KEY (`place_id`,`place_type`,`place_admin_creator`), ADD KEY `place_type_id_idx` (`place_type`), ADD KEY `place_admin_creator_id_idx` (`place_admin_creator`);
-
---
--- Indexes for table `place_type`
---
-ALTER TABLE `place_type`
- ADD PRIMARY KEY (`place_id`);
-
---
--- Indexes for table `service`
---
-ALTER TABLE `service`
- ADD PRIMARY KEY (`service_id`,`service_type`,`service_admin_add`,`service_user_id`), ADD KEY `service_type_key_idx` (`service_type`), ADD KEY `service_admin_key_idx` (`service_admin_add`), ADD KEY `service_user_key_idx` (`service_user_id`);
-
---
--- Indexes for table `service_request`
---
-ALTER TABLE `service_request`
- ADD PRIMARY KEY (`servicerequest_id`,`servicerequest_type`,`servicerequest_user_id`), ADD KEY `service_type_key_idx` (`servicerequest_type`), ADD KEY `service_user_key_idx` (`servicerequest_user_id`);
-
---
--- Indexes for table `service_type`
---
-ALTER TABLE `service_type`
- ADD PRIMARY KEY (`servicetype_id`);
-
---
--- Indexes for table `share_area`
---
-ALTER TABLE `share_area`
- ADD PRIMARY KEY (`sharearea_id`,`sharearea_user_id`), ADD KEY `sharearea_userid_key_idx` (`sharearea_user_id`);
-
---
--- Indexes for table `share_comment`
---
-ALTER TABLE `share_comment`
- ADD PRIMARY KEY (`sharecomm_id`,`sharecomm_user_id`), ADD KEY `sharecomm_userid_key_idx` (`sharecomm_user_id`);
-
---
--- Indexes for table `user`
---
-ALTER TABLE `user`
- ADD PRIMARY KEY (`user_id`,`user_lang`), ADD UNIQUE KEY `user_name_UNIQUE` (`user_name`), ADD KEY `user_lang_key_idx` (`user_lang`);
-
---
--- Indexes for table `user_service`
---
-ALTER TABLE `user_service`
- ADD PRIMARY KEY (`useservice_id`), ADD UNIQUE KEY `useservice_email` (`useservice_email`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `action_report`
---
-ALTER TABLE `action_report`
-MODIFY `id_action_report` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
---
--- AUTO_INCREMENT for table `admin`
---
-ALTER TABLE `admin`
-MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT for table `admin_type`
---
-ALTER TABLE `admin_type`
-MODIFY `admintype_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
---
--- AUTO_INCREMENT for table `feadback`
---
-ALTER TABLE `feadback`
-MODIFY `feadback_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `item`
---
-ALTER TABLE `item`
-MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=210;
---
--- AUTO_INCREMENT for table `item_comment`
---
-ALTER TABLE `item_comment`
-MODIFY `itemcomment_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=75;
---
--- AUTO_INCREMENT for table `item_image`
---
-ALTER TABLE `item_image`
-MODIFY `id_item_image` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
---
--- AUTO_INCREMENT for table `item_type`
---
-ALTER TABLE `item_type`
-MODIFY `itemtype_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT for table `language`
---
-ALTER TABLE `language`
-MODIFY `lang_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT for table `place`
---
-ALTER TABLE `place`
-MODIFY `place_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=107;
---
--- AUTO_INCREMENT for table `place_type`
---
-ALTER TABLE `place_type`
-MODIFY `place_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
---
--- AUTO_INCREMENT for table `service`
---
-ALTER TABLE `service`
-MODIFY `service_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `service_request`
---
-ALTER TABLE `service_request`
-MODIFY `servicerequest_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `service_type`
---
-ALTER TABLE `service_type`
-MODIFY `servicetype_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT for table `share_area`
---
-ALTER TABLE `share_area`
-MODIFY `sharearea_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `share_comment`
---
-ALTER TABLE `share_comment`
-MODIFY `sharecomm_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `user`
---
-ALTER TABLE `user`
-MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `user_service`
---
-ALTER TABLE `user_service`
-MODIFY `useservice_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=250;
---
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `action_report`
---
-ALTER TABLE `action_report`
-ADD CONSTRAINT `admin_id_key` FOREIGN KEY (`admin`) REFERENCES `admin` (`admin_id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `admin`
 --
 ALTER TABLE `admin`
-ADD CONSTRAINT `admintype_id_key` FOREIGN KEY (`admin_type`) REFERENCES `admin_type` (`admintype_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `admintype_id_key` FOREIGN KEY (`admin_type`) REFERENCES `admin_type` (`admintype_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `feadback`
 --
 ALTER TABLE `feadback`
-ADD CONSTRAINT `feadback_userid_key` FOREIGN KEY (`feadback_user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `feadback_userid_key` FOREIGN KEY (`feadback_user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `item`
 --
 ALTER TABLE `item`
-ADD CONSTRAINT `item_admin_key` FOREIGN KEY (`item_admin_creator`) REFERENCES `admin` (`admin_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `item_itemtype_key` FOREIGN KEY (`item_type`) REFERENCES `item_type` (`itemtype_id`) ON DELETE NO ACTION ON UPDATE CASCADE,
-ADD CONSTRAINT `item_place_key` FOREIGN KEY (`item_place`) REFERENCES `place` (`place_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `item_admin_key` FOREIGN KEY (`item_admin_creator`) REFERENCES `admin` (`admin_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `item_itemtype_key` FOREIGN KEY (`item_type`) REFERENCES `item_type` (`itemtype_id`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `item_place_key` FOREIGN KEY (`item_place`) REFERENCES `place` (`place_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `item_comment`
 --
 ALTER TABLE `item_comment`
-ADD CONSTRAINT `itemcomment_id_key` FOREIGN KEY (`itemcomment_item_id`) REFERENCES `item` (`item_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `itemcomment_user_id` FOREIGN KEY (`itemcomment_user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `itemcomment_id_key` FOREIGN KEY (`itemcomment_item_id`) REFERENCES `item` (`item_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `itemcomment_user_id` FOREIGN KEY (`itemcomment_user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `item_image`
 --
 ALTER TABLE `item_image`
-ADD CONSTRAINT `item_image_key` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `item_image_key` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `place`
 --
 ALTER TABLE `place`
-ADD CONSTRAINT `place_admin_creator_id` FOREIGN KEY (`place_admin_creator`) REFERENCES `admin` (`admin_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-ADD CONSTRAINT `place_ibfk_1` FOREIGN KEY (`place_type`) REFERENCES `place_type` (`place_id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `place_admin_creator_id` FOREIGN KEY (`place_admin_creator`) REFERENCES `admin` (`admin_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  ADD CONSTRAINT `place_ibfk_1` FOREIGN KEY (`place_type`) REFERENCES `place_type` (`place_id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `service`
 --
 ALTER TABLE `service`
-ADD CONSTRAINT `service_admin_key` FOREIGN KEY (`service_admin_add`) REFERENCES `admin` (`admin_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `service_ibfk_1` FOREIGN KEY (`service_type`) REFERENCES `service_type` (`servicetype_id`),
-ADD CONSTRAINT `service_user_key` FOREIGN KEY (`service_user_id`) REFERENCES `user_service` (`useservice_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `service_admin_key` FOREIGN KEY (`service_admin_add`) REFERENCES `admin` (`admin_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `service_ibfk_1` FOREIGN KEY (`service_type`) REFERENCES `service_type` (`servicetype_id`),
+  ADD CONSTRAINT `service_user_key` FOREIGN KEY (`service_user_id`) REFERENCES `user_service` (`useservice_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `service_request`
 --
 ALTER TABLE `service_request`
-ADD CONSTRAINT `service_request_ibfk_1` FOREIGN KEY (`servicerequest_type`) REFERENCES `service_type` (`servicetype_id`),
-ADD CONSTRAINT `servicerequest_user_key` FOREIGN KEY (`servicerequest_user_id`) REFERENCES `user_service` (`useservice_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `service_request_ibfk_1` FOREIGN KEY (`servicerequest_type`) REFERENCES `service_type` (`servicetype_id`),
+  ADD CONSTRAINT `servicerequest_user_key` FOREIGN KEY (`servicerequest_user_id`) REFERENCES `user_service` (`useservice_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `share_area`
 --
 ALTER TABLE `share_area`
-ADD CONSTRAINT `sharearea_userid_key` FOREIGN KEY (`sharearea_user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `sharearea_userid_key` FOREIGN KEY (`sharearea_user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `share_comment`
 --
 ALTER TABLE `share_comment`
-ADD CONSTRAINT `sharecomm_sharearea_id_key` FOREIGN KEY (`sharecomm_id`) REFERENCES `share_area` (`sharearea_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `sharecomm_userid_key` FOREIGN KEY (`sharecomm_user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `sharecomm_sharearea_id_key` FOREIGN KEY (`sharecomm_id`) REFERENCES `share_area` (`sharearea_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `sharecomm_userid_key` FOREIGN KEY (`sharecomm_user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `user`
 --
 ALTER TABLE `user`
-ADD CONSTRAINT `user_lang_key` FOREIGN KEY (`user_lang`) REFERENCES `language` (`lang_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `user_lang_key` FOREIGN KEY (`user_lang`) REFERENCES `language` (`lang_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
