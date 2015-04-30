@@ -14,12 +14,15 @@ $(document).ready(function () {
             $('#wait-spain-one').html('<i class="fa fa-spinner fa-pulse fa-4x"></i>');
             $('#wait-spain-two').html('<i class="fa fa-spinner fa-pulse fa-4x"></i>');
             $('#wait-spain-three').html('<i class="fa fa-spinner fa-pulse fa-4x"></i>');
+            $('#wait-spain-four').html('<i class="fa fa-spinner fa-pulse fa-4x"></i>');
+
 
         },
         complete: function (jqXHR, textStatus) {
             $('#wait-spain-one').html('');
             $('#wait-spain-two').html('');
              $('#wait-spain-three').html('');
+              $('#wait-spain-four').html('');
 
         },
         success: function (data, textStatus, jqXHR) {
@@ -81,7 +84,8 @@ $(document).ready(function () {
 
             ];
             //services
-            var polarData = [
+          
+                         var polarData = [
 				{
 					value: data.service.service,
 					color:"#F7464A",
@@ -96,12 +100,26 @@ $(document).ready(function () {
 				}
 
 			];
+                        
+                        var dabasize = [
+				{
+					value: data.DBSize.size,
+					color:"#F7464A",
+					highlight: "#FF5A5E",
+					label: "Used DataBase Size(MB)"
+				}
+
+			];
+                        console.log(data.DBSize.size)
             var language_element = document.getElementById("user-statistics").getContext("2d");
             window.myDoughnut = new Chart(language_element).Doughnut(doughnutData, {responsive: true});
             var place_element = document.getElementById("places-statistics").getContext("2d");
             window.myPie = new Chart(place_element).Pie(pieData, {responsive:true});
             var service_element = document.getElementById("service-statistics").getContext("2d");
             window.myPolarArea = new Chart(service_element).PolarArea(polarData, {responsive:true});
+            var dbsize_element = document.getElementById("dbsize-statistics").getContext("2d");
+            window.myPie = new Chart(dbsize_element).Pie(dabasize, {responsive:true});
+            
         },
         error: function (jqXHR, textStatus, errorThrown) {
             alert(errorThrown)

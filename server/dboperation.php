@@ -1302,7 +1302,7 @@ class dboperation {
     
      public static function getStatisticsCount() {
         try {
-          $response = array("languages"=>"", "place"=>"");
+          $response = array("languages"=>"", "place"=>"","services"=>"","dbsize"=>"");
 
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
             $sql = 'SELECT * 
@@ -1347,7 +1347,7 @@ class dboperation {
             FROM
            
            (SELECT COUNT(*) FROM service) as service, 
-(SELECT COUNT(*) FROM service_request ) as service_request';
+            (SELECT COUNT(*) FROM service_request ) as service_request';
             $service = array(
                 "service" => "",
                 "service_request" => "");
@@ -1358,6 +1358,34 @@ class dboperation {
                
             }
             $response["service"] =$service;
+            $sql = 'SELECT table_name AS "Table",  '
+                    . 'sum(cast(round((((data_length + index_length)) / 1024 / 1024), 2) '
+                    . 'as decimal(11,3))) as space   FROM information_schema.TABLES  WHERE '
+                    . 'table_schema = "oman_tourism_guide"  order by space';
+            $DBSize = array(
+                "size" => "");
+            foreach ($dbh->query($sql) as $row) {
+                $DBSize["size"] = $row[1];
+            }
+            $response["DBSize"] = $DBSize;
+            $sql = 'SELECT * 
+            FROM
+            (SELECT COUNT(*) FROM user WHERE user_lang = 1) as ar, 
+            (SELECT COUNT(*) FROM user WHERE user_lang = 2) as en, 
+            (SELECT COUNT(*) FROM user WHERE user_lang = 3) as fr,
+            (SELECT COUNT(*) FROM user WHERE user_lang = 4) as gr';
+            $languages = array(
+                "ar" => "",
+                "en" => "",
+                "fr" => "",
+                "gr" => "");
+            foreach ($dbh->query($sql) as $row) {
+                $languages["ar"] = $row[0];
+                $languages["en"] = $row[1];
+                $languages["fr"] = $row[2];
+                $languages["gr"] = $row[3];
+            }
+            $response["languages"] = $languages;
 ;
             
             
