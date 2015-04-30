@@ -9,7 +9,8 @@ include_once './class/cryptpass.php';
 //echo strlen(encrypt_pass("1234"));
 //dboperation::itemsSearch("oman");
 //$email = strval($_SESSION['login-admin-email']);
-echo dboperation::getServiceRequestsList(0, 25);
+ dboperation::action_report("try", 2);
+//echo dboperation::getServiceRequestsList(0, 25);
 //$changeoperation = substr(strval(")"), 0, 1);
 //echo $changeoperation;
 

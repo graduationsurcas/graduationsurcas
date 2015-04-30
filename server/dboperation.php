@@ -1,7 +1,29 @@
 <?php
 
 class dboperation {
-
+        public static function action_report($report, $adminid) {
+        $conn = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME)
+                or die(mysqli_error($conn));
+        $conn->set_charset('UTF-8');
+        $conn->query('SET NAMES utf8');
+        $query = 'INSERT INTO action_report(id_action_report, admin, source_ip,'
+                . ' report, create_date) VALUES '
+                . '(NULL, ?, ?, ?,CURRENT_TIMESTAMP)';
+        $stmt = $conn->prepare($query) or die(mysql_error());
+        $stmt->bind_param('iss', 
+                $adminid,
+                $_SERVER['REMOTE_ADDR'],
+                $report);
+        $stmt->execute();
+        if ($stmt->affected_rows == 1) {
+//            return TRUE;
+        } else {
+//            return FALSE;
+//             echo $stmt->error;
+        }
+        $conn->close();
+    }
+    
     public static function logIn($useremail, $userpass) {
         $data = array("status" => "false", "message" => "");
         try {
@@ -1249,4 +1271,5 @@ class dboperation {
         }
     }
 
+    
 }

@@ -7,6 +7,8 @@ session_start();
 if ($_SESSION['login'] && isset($_POST["destination"])) {
     include_once 'dboperation.php';
     include_once 'config.php';
+    include_once 'reports.php';
+    $adminid = $_SESSION['login-admin-id'];
     switch ($_POST["destination"]) {
         case "enternewplace":
             if (isset($_POST["placename"]) &&
@@ -18,6 +20,8 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
                     isset($_POST["placedescription"])
             ) {
                 dboperation::newPlace($_SESSION['login-admin-id'], $_POST["placename"], $_POST["placetype"], $_POST["placeaddress"], $_POST["placelocationlat"], $_POST["placelocationlng"], $_POST["placview"], $_POST["placedescription"]);
+                dboperation::action_report(ADDNEWPLACE, $adminid);
+                
             } else {
                 parmNotAccess();
             }
@@ -58,8 +62,10 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
                     isset($_POST['itemview']) &&
                     isset($_POST['itemview'])
             ) {
-
                 dboperation::updateItem($_POST['itemid'], $_POST['itemtype'], $_POST['itemname'], ($_POST['itemview'] == 1) ? 1 : 0, $_POST['itemdescription']);
+                $report = UPDATEPLACE . " | item id = " . $_POST['itemid'];
+                dboperation::action_report($report, $adminid);
+                
             } else {
                 parmNotAccess();
             }
@@ -76,7 +82,8 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
             ) {
 
                 dboperation::updatePlaces($_POST['placeid'], $_POST['placetype'], $_POST['placename'], $_POST['placeaddress'], $_POST['placelocationlat'], $_POST['placelocationlng'], $_POST['placview'], $_POST['placedescription']);
-            } else {
+                
+                } else {
                 parmNotAccess();
             }
             break;

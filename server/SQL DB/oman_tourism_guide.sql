@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 30, 2015 at 05:44 PM
+-- Generation Time: Apr 30, 2015 at 06:47 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -19,6 +19,29 @@ SET time_zone = "+00:00";
 --
 -- Database: `oman_tourism_guide`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `action_report`
+--
+
+CREATE TABLE IF NOT EXISTS `action_report` (
+`id_action_report` int(11) NOT NULL,
+  `admin` int(11) NOT NULL,
+  `source_ip` varchar(20) NOT NULL,
+  `report` text NOT NULL,
+  `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `action_report`
+--
+
+INSERT INTO `action_report` (`id_action_report`, `admin`, `source_ip`, `report`, `create_date`) VALUES
+(1, 2, '::1', 'try', '2015-04-30 16:35:21'),
+(2, 2, '::1', 'USER INSERT NEW PLACE', '2015-04-30 16:39:12'),
+(3, 2, '::1', 'admin update place | item id = 208', '2015-04-30 16:44:44');
 
 -- --------------------------------------------------------
 
@@ -191,7 +214,7 @@ INSERT INTO `item` (`item_id`, `item_type`, `item_admin_creator`, `item_place`, 
 (205, 1, 2, 4, 'uae', '2015-04-25 07:39:41', 'uae from ksa', 0, '2015-04-25 07:40:26'),
 (206, 1, 2, 4, 'new item', '2015-04-25 07:44:40', 'new item create by me', 1, NULL),
 (207, 1, 2, 4, 'oman', '2015-04-25 07:50:09', 'oman', 1, NULL),
-(208, 1, 2, 4, 'gh gh', '2015-04-25 07:52:20', 'ghh', 1, NULL),
+(208, 1, 2, 4, 'gh gh', '2015-04-25 07:52:20', 'text text text text text ', 1, '2015-04-30 16:44:44'),
 (209, 2, 2, 4, 'تطبيق إيثار', '2015-04-25 07:53:51', 'تم إنشاء هذا التطبيق بواسطة طلاب تطوير البرمجيات في صور', 1, NULL);
 
 -- --------------------------------------------------------
@@ -297,7 +320,7 @@ CREATE TABLE IF NOT EXISTS `place` (
   `description` text NOT NULL,
   `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `place`
@@ -404,7 +427,8 @@ INSERT INTO `place` (`place_id`, `place_type`, `place_name`, `address`, `place_l
 (101, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:46:25', '2015-04-14 21:46:25'),
 (102, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:46:25', '2015-04-14 21:46:25'),
 (104, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:46:39', '2015-04-14 21:46:39'),
-(105, 3, 'almehuar', 'Izke', 22.9451, 57.7594, 2, 1, 'بلدية إزكي', '2015-04-25 07:36:39', '2015-04-25 07:36:39');
+(105, 3, 'almehuar', 'Izke', 22.9451, 57.7594, 2, 1, 'بلدية إزكي', '2015-04-25 07:36:39', '2015-04-25 07:36:39'),
+(106, 3, 'gheith', 'gheith', 22.5623, 59.4724, 2, 1, 'bnn ', '2015-04-30 16:39:12', '2015-04-30 16:44:12');
 
 -- --------------------------------------------------------
 
@@ -769,6 +793,12 @@ INSERT INTO `user_service` (`useservice_id`, `useservice_name`, `useservice_emai
 --
 
 --
+-- Indexes for table `action_report`
+--
+ALTER TABLE `action_report`
+ ADD PRIMARY KEY (`id_action_report`,`admin`), ADD KEY `admin_id_key_idx` (`admin`);
+
+--
 -- Indexes for table `admin`
 --
 ALTER TABLE `admin`
@@ -875,6 +905,11 @@ ALTER TABLE `user_service`
 --
 
 --
+-- AUTO_INCREMENT for table `action_report`
+--
+ALTER TABLE `action_report`
+MODIFY `id_action_report` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+--
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
@@ -918,7 +953,7 @@ MODIFY `lang_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 -- AUTO_INCREMENT for table `place`
 --
 ALTER TABLE `place`
-MODIFY `place_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=106;
+MODIFY `place_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=107;
 --
 -- AUTO_INCREMENT for table `place_type`
 --
@@ -962,6 +997,12 @@ MODIFY `useservice_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=250;
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `action_report`
+--
+ALTER TABLE `action_report`
+ADD CONSTRAINT `admin_id_key` FOREIGN KEY (`admin`) REFERENCES `admin` (`admin_id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `admin`

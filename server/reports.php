@@ -1,3 +1,4 @@
 <?php
 
-define("REPORT_KEY", "report texts");
+define("ADDNEWPLACE", "USER INSERT NEW PLACE");
+define("UPDATEPLACE", "admin update place");
