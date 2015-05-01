@@ -68,7 +68,7 @@
                 <a href="javascript:;" data-toggle="collapse" data-target="#servicecollapse"><i class="fa fa-fw fa-arrows-v"></i> services <i class="fa fa-fw fa-caret-down"></i></a>
                 <ul id="servicecollapse" class="collapse">
                     <li>
-                        <a href="#">services</a>
+                        <a href="../pages/service.php">services</a>
                     </li>
                     <li>
                         <a href="../pages/servicesrequests.php">services requests</a>
