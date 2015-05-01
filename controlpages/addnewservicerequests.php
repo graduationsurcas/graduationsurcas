@@ -8,7 +8,7 @@
     <div class="col-lg-12 col-md-12">
         <div class="panel panel-primary">
             <div class="panel-body">
-                <table id="serviceproviders-list-table" class="table table-bordered table-hover">
+                <table id="servicerequest-list-table" class="table table-bordered table-hover">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -37,6 +37,7 @@
                                 <td><?php echo $request->servicerequesttypename ?></td>
                                 <td>
                         <center>
+                            
                             <span onclick="addnewservicesrequest.setprofiderinfomodale('<?php echo $request->providerid ?>')" data-toggle="modal" data-target="#serviceprovider_info_modal" class="btn btn-primary btn-sm">
                                 <i class="fa fa-user"></i>
                             </span>
@@ -44,11 +45,11 @@
                             $desc = str_replace("'", "\'", $request->desc);
                             ?>
                             <span onclick="addnewservicesrequest.setservicerequestmodelinf(
-                                        '<?php echo $request->title ?>',
-                                        '<?php echo $request->providername ?>',
-                                        '<?php echo $desc ?>',
-                                        '<?php echo $request->createdate ?>'
-                                        )" data-toggle="modal" data-target="#servicerequest_info_modal" class="btn btn-warning btn-sm">
+                                                '<?php echo $request->title ?>',
+                                                '<?php echo $request->providername ?>',
+                                                '<?php echo $desc ?>',
+                                                '<?php echo $request->createdate ?>'
+                                                )" data-toggle="modal" data-target="#servicerequest_info_modal" class="btn btn-warning btn-sm">
                                 <i class="fa fa-info-circle"></i>
                             </span>
                             <span data-toggle="modal" 
@@ -57,17 +58,16 @@
                                   class="btn btn-default btn-sm">
                                 <i class="fa fa-map-marker"></i>
                             </span>
-                            <span onclick="addnewservicesrequest.confirmServiceRequest('<?php echo $request->id ?>', '<?php echo $num?>')" 
-                                  
+                            <span onclick="addnewservicesrequest.confirmServiceRequest('<?php echo $request->id ?>', '<?php echo $num ?>')" 
+
                                   class="btn btn-success btn-sm">
                                 <i class="fa fa-check"></i>
                             </span>
-                            <span onclick="addnewservicesrequest.removeservicerequest('<?php echo $request->id ?>', '<?php echo $num?>')" class="btn btn-danger btn-sm remove-service-request">
+                            <span onclick="addnewservicesrequest.removeservicerequest('<?php echo $request->id ?>', '<?php echo $num ?>')" class="btn btn-danger btn-sm remove-service-request">
                                 <i class="fa fa-trash"></i>
                             </span>
                         </center>
                         </td>
-
                         </tr>
                         <?php
                         $num++;
@@ -100,9 +100,9 @@
                                 <li>
                                     <span 
 
-                                        onclick="servicesFunctions.serviceprovidernextpage('<?php echo $selectfrom; ?>', '<?php echo $selectamount ?>')"
+                                        onclick="addnewservicesrequest.servicerequestsxtpage('<?php echo $selectfrom; ?>', '<?php echo $selectamount ?>')"
                                         class="btn" style="border-radius: 0px;">
-                                            <?php echo $index + 1; ?>
+                                        <?php echo $index + 1; ?>
                                     </span>
                                 </li>
                                 <?php

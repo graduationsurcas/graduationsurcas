@@ -1299,6 +1299,7 @@ class dboperation {
     }
 
     public static function confirmServiceRequests($requestid, $adminid) {
+        $response = null;
         $response = array("status" => "false", "message" => "");
         try {
 
@@ -1311,7 +1312,9 @@ class dboperation {
             $stmt->bindParam(':id', $requestid, PDO::PARAM_INT);
             $stmt->execute();
             $request = $stmt->fetchAll(PDO::FETCH_ASSOC)[0];
-            
+//            
+//            print_r($request);
+//            
             $stmt = $dbh->prepare('INSERT INTO service 
                 (service_title, service_add_date, service_desc,
                 service_location_lang, service_location_lat,

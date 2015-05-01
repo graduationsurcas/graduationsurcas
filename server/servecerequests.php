@@ -9,6 +9,7 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
     include_once 'config.php';
     include_once 'reports.php';
     $adminid = $_SESSION['login-admin-id'];
+    
     switch ($_POST["destination"]) {
         case "enternewplace":
             if (isset($_POST["placename"]) &&
@@ -189,6 +190,13 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
         case "serviceproviderslist":
             if (isset($_POST['selectfrom']) && isset($_POST['selectamount'])) {
                 echo dboperation::getServiceProvidersList($_POST['selectfrom'], $_POST['selectamount']);
+            } else {
+                parmNotAccess();
+            }
+            break;
+        case "servicerequestslist":
+            if (isset($_POST['selectfrom']) && isset($_POST['selectamount'])) {
+                echo dboperation::getServiceRequestsList($_POST['selectfrom'], $_POST['selectamount']);
             } else {
                 parmNotAccess();
             }

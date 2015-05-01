@@ -275,6 +275,93 @@ $(document).ready(function () {
 
 
     addnewservicesrequest = {
+         servicerequestsxtpage: function (selectfrom, selectamount) {
+            Data = {
+                'destination': 'servicerequestslist',
+                'selectfrom': selectfrom,
+                'selectamount': selectamount
+            };
+//            alert("from = "+Data.selectfrom+", to = "+Data.selectto);
+
+            var url = sitelink + "/server/servecerequests.php";
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: Data,
+                dataType: 'json',
+                encode: true,
+                success: function (data, textStatus, jqXHR) {
+                    if (data.status == "true") {
+                        $("#servicerequest-list-table > tbody").empty();
+//                        console.log(data.data);
+                        var tdhtml = '';
+                        var index = Number(selectfrom);
+                        $.each(data.data, function (id, request) {
+                            var description = request.desc;
+                            description = description.replace(/'/g, '\''); 
+                            tdhtml =
+                                '<tr id="servicerequests_list_tr_'+index+'">'+
+                                '<td>'+(index + 1)+'</td>'+
+                                '<td>'+request.title+'</td>'+
+                                '<td>'+request.providername+'</td>'+
+                                '<td>'+request.servicerequesttypename+'</td>'+
+                                '<td>'+
+                        '<center>'+
+                            '<span onclick="addnewservicesrequest.setprofiderinfomodale('+
+                                '\'' + request.providerid + '\' ' +
+                               ' )" data-toggle="modal" data-target="#serviceprovider_info_modal" class="btn btn-primary btn-sm">'+
+                                '<i class="fa fa-user"></i>'+
+                            '</span>'+
+                            '&nbsp;<span onclick="addnewservicesrequest.setservicerequestmodelinf('+
+                                                '\'' + request.title + '\' ,' +
+                                                '\'' + request.providername + '\' ,' +
+                                                '\'' + description + '\' ,' +
+                                                '\'' + request.createdate + '\' ' +
+                                                ')" data-toggle="modal" data-target="#servicerequest_info_modal" class="btn btn-warning btn-sm">'+
+                               ' <i class="fa fa-info-circle"></i>'+
+                            '</span>'+
+                            '&nbsp;<span data-toggle="modal" '+
+                                  'data-target="#map_modal" '+
+                                  'onclick="addnewservicesrequest.setmapplacelocation('+
+                                  '\'' + request.locationlat + '\' ,' +
+                                  '\'' + request.locationlang + '\' ' +
+                                 ' )"'+
+                                  'class="btn btn-default btn-sm">'+
+                                '<i class="fa fa-map-marker"></i>'+
+                           ' </span>'+
+                            '&nbsp;<span onclick="addnewservicesrequest.confirmServiceRequest('+
+                            '\'' + request.id + '\' ,'+
+                            '\'' + index + '\' '+
+                            ')" '+
+                                    'class="btn btn-success btn-sm">'+
+                                '<i class="fa fa-check"></i>'+
+                            '</span>'+
+                            '&nbsp;<span onclick="addnewservicesrequest.removeservicerequest('+
+                            '\'' + request.id + '\' ,'+
+                            '\'' + index + '\' '+
+                           ' )" class="btn btn-danger btn-sm remove-service-request">'+
+                                '<i class="fa fa-trash"></i>'+
+                            '</span>'+
+                        '</center>';
+                        '</td>'+
+                        '</tr>';
+
+
+                            $("#servicerequest-list-table > tbody:last").append(tdhtml);
+                            index++;
+                        });
+
+                    } else if (data.status === "false") {
+                        alert("error")
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(errorThrown);
+                }
+            });
+
+        },
         confirmServiceRequest: function (id, trid){
              var Data = {
                 'destination': 'confirmservicerequest',
@@ -296,6 +383,7 @@ $(document).ready(function () {
                     $(".remove-service-request").prop("disabled", false);
                 },
                 success: function (data, textStatus, jqXHR) {
+                    
                     if (data.status == "true") {
                         $("#servicerequests_list_tr_" + trid).toggle();
                     } else {
