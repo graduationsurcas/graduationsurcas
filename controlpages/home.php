@@ -21,11 +21,15 @@
                             <canvas id="service-statistics" /></div>
 
                     <div class="col-xs-12"><hr></div>
-                    <div class="col-xs-6 col-sm-6 col-md-4 text-center leftspan" id="five"><h4>DataBase Statistics</h4>
+                    <div class="col-xs-6 col-sm-6 col-md-4 text-center leftspan" id="four"><h4>DataBase Statistics</h4>
                             <div id="wait-spain-four" style="margin-top: 9px"></div>
                             <canvas id="dbsize-statistics" /></div>
-                    <div class="col-xs-6 col-sm-6 col-md-4 text-center leftspan" id="six"><h5>Statistics 6</h5> <img src="images/searchengine.png"></div>
-                    <div class="col-xs-6 col-sm-6 col-md-4 text-center leftspan" id="seven"><h5>Statistics 6</h5> <img src="images/socialmedia.png"></div>
+                    <div class="col-xs-6 col-sm-6 col-md-4 text-center leftspan" id="four"><h4>Share Area Statistics</h4>
+                            <div id="wait-spain-five" style="margin-top: 9px"></div>
+                            <canvas id="sharearea-statistics" /></div>
+                    <div class="col-xs-6 col-sm-6 col-md-4 text-center leftspan" id="sex"><h4>Items Statistics</h4>
+                            <div id="wait-spain-six" style="margin-top: 9px"></div>
+                            <canvas id="item-statistics" /></div>
 
                     <hr>
                 </div> 

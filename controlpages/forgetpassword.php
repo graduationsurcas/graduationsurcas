@@ -24,18 +24,12 @@
                                 
                             </div>
 
-                            <div class="input-group">
-                                <div class="input-group-addon" ><span class="fa fa-lock">&nbsp;</span>Password</div>
-                                <input class="form-control" placeholder="Password" required="" name="userpassword" id="userpassword" type="password">
-                            </div>
-
-
-                            <input class="btn  btn-success btn-block" type="submit" id="login" value="Login">
+                            <input class="btn  btn-success btn-block" type="submit" id="login" value="Rest Password">
 
                             <hr>
 
                             <span class="pull-right">
-                                <a href="/pages/forgetPassword.php">forgot password</a>
+                                <a href="#">Log in</a>
                             </span>
                         </fieldset>
                     </form>

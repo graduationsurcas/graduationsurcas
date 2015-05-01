@@ -15,6 +15,8 @@ $(document).ready(function () {
             $('#wait-spain-two').html('<i class="fa fa-spinner fa-pulse fa-4x"></i>');
             $('#wait-spain-three').html('<i class="fa fa-spinner fa-pulse fa-4x"></i>');
             $('#wait-spain-four').html('<i class="fa fa-spinner fa-pulse fa-4x"></i>');
+            $('#wait-spain-five').html('<i class="fa fa-spinner fa-pulse fa-4x"></i>');
+            $('#wait-spain-six').html('<i class="fa fa-spinner fa-pulse fa-4x"></i>');
 
 
         },
@@ -23,6 +25,9 @@ $(document).ready(function () {
             $('#wait-spain-two').html('');
              $('#wait-spain-three').html('');
               $('#wait-spain-four').html('');
+              $('#wait-spain-five').html('');
+               $('#wait-spain-six').html('');
+
 
         },
         success: function (data, textStatus, jqXHR) {
@@ -110,7 +115,39 @@ $(document).ready(function () {
 				}
 
 			];
-                        console.log(data.DBSize.size)
+                       
+                        var sharearea = [
+				{
+					value: data.sharearea.sharearea,
+					color:"#F7464A",
+					highlight: "#FF5A5E",
+					label: "Share Area"
+				},
+                                {
+					value: data.sharearea.sharecomment,
+					color: "#46BFBD",
+                                        highlight: "#5AD3D1",
+					label: "Comment"
+				}
+
+			];
+                       
+                       
+                       var item = [
+				{
+					value: data.item.item,
+					color:"#F7464A",
+					highlight: "#FF5A5E",
+					label: "Items"
+				},
+                                {
+					value: data.item.item_comment,
+					color: "#46BFBD",
+                                        highlight: "#5AD3D1",
+					label: "Items Comment"
+				}
+
+			];
             var language_element = document.getElementById("user-statistics").getContext("2d");
             window.myDoughnut = new Chart(language_element).Doughnut(doughnutData, {responsive: true});
             var place_element = document.getElementById("places-statistics").getContext("2d");
@@ -119,7 +156,13 @@ $(document).ready(function () {
             window.myPolarArea = new Chart(service_element).PolarArea(polarData, {responsive:true});
             var dbsize_element = document.getElementById("dbsize-statistics").getContext("2d");
             window.myPie = new Chart(dbsize_element).Pie(dabasize, {responsive:true});
-            
+            var sharearea_element = document.getElementById("sharearea-statistics").getContext("2d");
+            window.myPie = new Chart(sharearea_element).Doughnut(sharearea, {responsive:true});
+            var item_element = document.getElementById("item-statistics").getContext("2d");
+            window.myPie = new Chart(item_element).Pie(item, {responsive:true});
+            console.log(data.item.item)
+                        console.log(data.item.item_comment)
+
         },
         error: function (jqXHR, textStatus, errorThrown) {
             alert(errorThrown)

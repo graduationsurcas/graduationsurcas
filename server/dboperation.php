@@ -47,7 +47,6 @@ class dboperation {
                 $stmt->execute();
                 $pass = $stmt->fetch(PDO::FETCH_ASSOC);
                 include_once '../class/cryptpass.php';
-
                 if (decrypt_pass($userpass, $pass['admin_password'])) {
                     $query = 'SELECT admin_id, admin_type.admintype_name as level, '
                             . ' admin_name '
@@ -1426,27 +1425,34 @@ class dboperation {
             $response["DBSize"] = $DBSize;
             $sql = 'SELECT * 
             FROM
-            (SELECT COUNT(*) FROM user WHERE user_lang = 1) as ar, 
-            (SELECT COUNT(*) FROM user WHERE user_lang = 2) as en, 
-            (SELECT COUNT(*) FROM user WHERE user_lang = 3) as fr,
-            (SELECT COUNT(*) FROM user WHERE user_lang = 4) as gr';
-            $languages = array(
-                "ar" => "",
-                "en" => "",
-                "fr" => "",
-                "gr" => "");
+            (SELECT COUNT(*) FROM share_area ) as sharearea, 
+            (SELECT COUNT(*) FROM share_comment ) as sharecomment';
+            $sharearea = array(
+                "sharearea" => "",
+                "sharecomment" => "");
             foreach ($dbh->query($sql) as $row) {
-                $languages["ar"] = $row[0];
-                $languages["en"] = $row[1];
-                $languages["fr"] = $row[2];
-                $languages["gr"] = $row[3];
+                $sharearea["sharearea"] = $row[0];
+                $sharearea["sharecomment"] = $row[1];
+                
             }
-            $response["languages"] = $languages;
+            $response["sharearea"] = $sharearea;
+            $sql = 'SELECT * 
+            FROM
+            (SELECT COUNT(*) FROM item ) as item, 
+            (SELECT COUNT(*) FROM item_comment ) as item_comment';
+            $item = array(
+                "item" => "",
+                "item_comment" => "");
+            foreach ($dbh->query($sql) as $row) {
+                $item["item"] = $row[0];
+                $item["item_comment"] = $row[1];
+                
+            }
+            $response["item"] = $item;
 ;
             
             
 
-            $response["service"] = $service;
             ;
 
 /*
