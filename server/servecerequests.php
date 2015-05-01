@@ -201,6 +201,14 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
                 parmNotAccess();
             }
             break;
+            case "service":
+            if (isset($_POST['selectfrom']) && isset($_POST['selectamount'])) {
+                echo dboperation::getServiceRequests($_POST['selectfrom'], $_POST['selectamount']);
+            } else {
+                parmNotAccess();
+            }
+            break;
+            
         case "getserviseproviderinfo":
             if (isset($_POST['providerid'])) {
                 echo dboperation::getServiceProviderInfo($_POST['providerid']);

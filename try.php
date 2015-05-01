@@ -7,4 +7,4 @@ include_once './server/dboperation.php';
 include_once './class/cryptpass.php';
 
 
-echo  dboperation::confirmServiceRequests(7, 2);
+echo  dboperation::getServicesList(0, 25);

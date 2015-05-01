@@ -13,57 +13,56 @@
                         <tr>
                             <th>#</th>
                             <th>TITLE</th>
-                            <th>PROVIDER NAME</th>
-                            <th>TYPE</th>
+                            <th>Service NAME</th>
+                            <th>Status</th>
                             <th>ACTION</th>
                         </tr>
                     </thead>
                     <tbody >
                         <?php
                         $selectamount = 25;
-                        $servicerequestlist = json_decode(dboperation::getServiceRequestsList(0, $selectamount));
+                        $servicerequest = json_decode(dboperation::getServicesList(0, $selectamount));
                         $num = 1;
-                        foreach ($servicerequestlist->data as $key => $request) {
+                        foreach ($servicerequest->data as $key => $service) {
+//                            {"id":"161","admin":"2","loclat":"196.584","loclan":"158.588",
+//                                    "dec":"servicequest","adddate":"2015-05-01 13:55:00",
+//                                    "prate":"0","nrate":"0","status":"0","title":"service request",
+//                                    "userid":"161","username":"user name 111","desc":"0"}
                             ?>
-                            <!--                        [{"id":"1","title":"Alafia ",
-                                                    "providername":"user name 0","providerid":"50",
-                                                    "servicerequesttypeid":"2","servicerequesttypename":"resturant",
-                                                    "locationlat":"10.5979","locationlang":"10.5945",
-                                                    "desc":"hgyghg yutyu' ygyty ty ghj","createdate":"2015-04-30"}]-->
                             <tr id="servicerequests_list_tr_<?php echo $num; ?>">
                                 <td><?php echo $num; ?></td>
-                                <td><?php echo $request->title ?></td>
-                                <td><?php echo $request->providername ?></td>
-                                <td><?php echo $request->servicerequesttypename ?></td>
+                                <td><?php echo $service->title ?></td>
+                                <td><?php echo $service->username ?></td>
+                                <td><?php echo ($service->status == "true") ? "block" : "active";   ?></td>
                                 <td>
                         <center>
                             
-                            <span onclick="addnewservicesrequest.setprofiderinfomodale('<?php echo $request->providerid ?>')" data-toggle="modal" data-target="#serviceprovider_info_modal" class="btn btn-primary btn-sm">
+                            <span onclick="addnewservicesrequest.setprofiderinfomodale('<?php echo $service->userid ?>')" data-toggle="modal" data-target="#serviceprovider_info_modal" class="btn btn-primary btn-sm">
                                 <i class="fa fa-user"></i>
                             </span>
                             <?php
-                            $desc = str_replace("'", "\'", $request->desc);
+                            $desc = str_replace("'", "\'", $service->desc);
                             ?>
                             <span onclick="addnewservicesrequest.setservicerequestmodelinf(
-                                                '<?php echo $request->title ?>',
-                                                '<?php echo $request->providername ?>',
+                                                '<?php echo $service->title ?>',
+                                                '<?php echo $service->providername ?>',
                                                 '<?php echo $desc ?>',
-                                                '<?php echo $request->createdate ?>'
+                                                '<?php echo $service->createdate ?>'
                                                 )" data-toggle="modal" data-target="#servicerequest_info_modal" class="btn btn-warning btn-sm">
                                 <i class="fa fa-info-circle"></i>
                             </span>
                             <span data-toggle="modal" 
                                   data-target="#map_modal" 
-                                  onclick="addnewservicesrequest.setmapplacelocation('<?php echo $request->locationlat ?>', '<?php echo $request->locationlang ?>')"
+                                  onclick="addnewservicesrequest.setmapplacelocation('<?php echo $service->locationlat ?>', '<?php echo $service->locationlang ?>')"
                                   class="btn btn-default btn-sm">
                                 <i class="fa fa-map-marker"></i>
                             </span>
-                            <span onclick="addnewservicesrequest.confirmServiceRequest('<?php echo $request->id ?>', '<?php echo $num ?>')" 
+                            <span onclick="addnewservicesrequest.confirmServiceRequest('<?php echo $service->id ?>', '<?php echo $num ?>')" 
 
                                   class="btn btn-success btn-sm">
                                 <i class="fa fa-check"></i>
                             </span>
-                            <span onclick="addnewservicesrequest.removeservicerequest('<?php echo $request->id ?>', '<?php echo $num ?>')" class="btn btn-danger btn-sm remove-service-request">
+                            <span onclick="addnewservicesrequest.removeservicerequest('<?php echo $service->id ?>', '<?php echo $num ?>')" class="btn btn-danger btn-sm remove-service-request">
                                 <i class="fa fa-trash"></i>
                             </span>
                         </center>
