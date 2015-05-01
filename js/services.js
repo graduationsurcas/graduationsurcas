@@ -1,5 +1,6 @@
 $(document).ready(function () {
     servicesFunctions = {
+        
         setserviceprovidermodalinfo: function (name, email, phone,
                 createdate, pevaluation, nevaluation, status) {
             $("#serviceprovider_info_name").text(name);
