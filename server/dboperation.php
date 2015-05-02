@@ -1253,6 +1253,86 @@ class dboperation {
             return json_encode($response);
         }
     }
+    
+    
+    
+    /*dservices*/
+    public static function getServicesList($selectfrom = 0, $selectamount = 25) {
+        $response = array("status" => "false", "data" => "");
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $dbh->prepare('SELECT
+                service.service_user_id,
+                service.service_admin_add,
+                service.service_location_lat,
+                service.service_location_lang,
+                service.service_desc,
+                service.service_add_date,
+                service.service_positive_rate,
+                service.service_negative_rate,
+                service.service_status,
+                service.service_title,
+                user_service.useservice_id,
+                user_service.useservice_name
+              FROM service
+                INNER JOIN user_service
+    ON service.service_user_id = user_service.useservice_id LIMIT ' . $selectfrom . ' , ' . $selectamount . '');
+
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            $response = array("status" => "false", "data" => "");
+            $service = array(
+                "id" => "",
+                "admin" => "",
+                "loclat" => "",
+                "loclan" => "",
+                "dec" => "",
+                "adddate" => "",
+                "prate" => "",
+                "nrate" => "",
+                "status" => "",
+                "title" => "",
+                "userid" => "",
+                "username" => "");
+            $data = array();
+            foreach ($result as $row) {
+                $service["id"] = $row['service_user_id'];
+                $service["admin"] = $row['service_admin_add'];
+                $service["loclat"] = $row['service_location_lat'];
+                $service["loclan"] = $row['service_location_lang'];
+                $service["dec"] = $row['service_desc'];
+                $service["adddate"] = $row['service_add_date'];
+                $service["prate"] = $row['service_positive_rate'];
+                $service["nrate"] = $row['service_negative_rate'];
+                $service["status"]  = ($row['service_status'] == "0") ? "false" : "true";
+                $service["desc"] = $row['service_status'];
+                $service["title"] = $row['service_title'];
+                $service["userid"] = $row['useservice_id'];
+                $service["username"] = $row['useservice_name'];
+                array_push($data, $service);
+            }
+            $response['data'] = $data;
+            $response["status"] = "true";
+        } catch (PDOException $e) {
+            $response["data"] = $e->getMessage();
+            $response["status"] = "false";
+            echo $e->getMessage();
+        } finally {
+            $dbh = null;
+            return json_encode($response);
+        }
+    }
+    
+    /*edn*/
+    
+    
+    
+    
+    
+    
+    
+    
 
     public static function ServiceRequestsTotalCount() {
         try {

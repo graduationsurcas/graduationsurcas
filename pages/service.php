@@ -42,8 +42,14 @@ include '../server/dboperation.php';
         include_once '../modals/serviceproviderinfo.php';
         include_once '../modals/updateserviceproviderinfo.php';
         include_once '../modals/removesetserviceprovidermodal.php';
+        include_once '../modals/servicerequestinfo.php';
+        include_once '../modals/mapmodel.php';
         ?>
+
         <script src="../js/services.js" type="text/javascript"></script>
+        <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAgrj58PbXr2YriiRDqbnL1RSqrCjdkglBijPNIIYrqkVvD1R4QxRl47Yh2D_0C1l5KXQJGrbkSDvXFA"
+        type="text/javascript"></script>
+        <script src="../js/map.js" type="text/javascript"></script>
     </body>
 
 </html>
