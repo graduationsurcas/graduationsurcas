@@ -1,0 +1,64 @@
+<?php
+include_once './server/config.php';
+include_once './server/appdboperations.php';
+$place = appdboperations::getPlaceInformation($_GET["id"]);
+?>
+
+<html>
+    <head>
+        <?php
+        require_once './includes/headers.html';
+        ?>
+        <link href="css/main.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body>
+
+        <!--         ( [place_id] => 98 [place_name] => place test 
+                 [description] => fsvtgegbtrbr t reb [createdate] => 2015-04-15 
+                 [last_update] => 2015-04-15 01:46:25 [create_date] => 2015-04-15 01:46:25 
+                 [view] => 1 [place_admin_creator] => 2 [place_location_lng] => 7878710 
+                 [place_location_lat] => 454578 [address] => oman [place_type] => 3
+                 [placetype] => museum )-->
+
+        <section class="main-placeinformation-section">
+            <div class="panel panel-default placeinformation-card">
+                <div class="panel-image">
+                    <img style="max-width: 100%; max-height: 10%" src="http://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Nizwa_%285%29.jpg/1024px-Nizwa_%285%29.jpg" class="panel-image-preview" />
+
+                </div>
+            </div>
+
+            <div class="panel panel-default placeinformation-card">
+
+                <div class="panel-body">
+                    <span style="float: left;" id="place-address"><?php echo $place["address"] ?></span>
+                    <span style="float: right;">
+                        <?php
+                        $itemcount = appdboperations::getItemsOnPlaceCount($_GET["id"]);
+                        if ($itemcount > 0) {
+                            ?>
+                            <a class="btn btn-sm">
+                                <i class="fa fa-diamond"></i>
+                                <i class="fa"><?php echo $itemcount; ?></i>
+                            </a>
+                            <?php
+                        }
+                        ?>
+                        <a href="*map~<?php echo $place["place_location_lat"]; ?>~<?php echo $place["place_location_lng"]; ?>" class="btn btn-sm" style=""><i class="fa fa-map-marker"></i></a>
+                    </span>
+                </div>
+            </div>
+            <div class="panel panel-default placeinformation-card">
+
+                <div class="panel-body">
+                    <p><?php echo $place["description"] ?></p>
+                </div>
+            </div>
+        </section>
+
+
+        <?php
+        require_once './includes/footers.html';
+        ?>
+    </body>
+</html>
