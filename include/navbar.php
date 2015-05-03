@@ -82,9 +82,6 @@
                 <a href="#"><i class="fa fa-fw fa-table"></i> share area</a>
             </li>
             <li>
-                <a href="#"><i class="fa fa-fw fa-edit"></i> destination's</a>
-            </li>
-            <li>
                 <a href="#"><i class="fa fa-fw fa-desktop"></i> users feedback</a>
             </li>
             <li>
