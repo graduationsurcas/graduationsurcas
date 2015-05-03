@@ -138,7 +138,7 @@ $(document).ready(function () {
 					value: data.item.item,
 					color:"#F7464A",
 					highlight: "#FF5A5E",
-					label: "Items"
+					label: "Items left"
 				},
                                 {
 					value: data.item.item_comment,

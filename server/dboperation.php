@@ -87,7 +87,51 @@ class dboperation {
             echo json_encode($data);
         }
     }
+    
+    
+    /* test/
+     * 
+     * 
+     */
 
+    public static function restpass($useremail) {
+        
+        $data = array("status" => "false", "message" => "");
+        try {
+            $randompass = rand(1, 9);
+            $place_type = ($randompass);
+            dboperation::senemail($useremail);
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $dbh->prepare('update admin
+                            SET admin_password = :password 
+                                where admin_email = :email');
+            $stmt->bindParam(':password', $place_type, PDO::PARAM_INT);
+            $stmt->bindParam(':email', $useremail, PDO::PARAM_INT);
+            $stmt->execute();
+            
+//            close the database connection
+        } catch (PDOException $e) {
+            $data["message"] = $e->getMessage();
+            $data["status"] = "false";
+        } finally {
+            $dbh = null;
+            echo json_encode($data);
+        }
+    }
+
+    /*
+     * 
+     */
+    public static function senemail($useremail) {
+         $to = $useremail;
+   $subject = "This is subject";
+   $message = "This is simple text message.";
+   $header = "From:albusaidi1231@gmail.com \r\n";
+   $retval = mail ($to,$subject,$message,$header);
+        
+    }
+    
     public static function getPlacesTypes() {
         try {
 
