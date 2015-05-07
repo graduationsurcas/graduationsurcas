@@ -36,9 +36,11 @@
                         <center>
                             <?php
                             $desc = str_replace("'", "\'", $item->itemdesc);
+//                            "omantourismguide~item~itemid~itemname"
+                            $itemqrdata = "omantourismguide~item~".$item->itemid."~".$item->itemname . " ". $item->itemtype;
                             ?>
                             <span data-toggle="modal" data-target="#qr_modal"
-                                        onclick="itemsListFunctions.setItemQrModal('<?php echo $item->itemid ?>',
+                                        onclick="itemsListFunctions.setItemQrModal('<?php echo $itemqrdata ?>',
                                         '<?php echo $item->itemname?>')" title="QR" 
                             class="qr-button btn btn-sm btn-default"><i class="fa fa-qrcode"></i></span>
                             <span onclick="itemsListFunctions.setdescriptionmodel('<?php echo $desc ?>')" data-toggle="modal" data-target="#place_desc_modal" class="btn btn-warning btn-sm">

@@ -1,13 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 3.5.2.2
+-- version 4.2.11
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 01, 2015 at 05:38 PM
--- Server version: 5.5.27
+-- Generation Time: May 07, 2015 at 06:51 PM
+-- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -23,19 +23,31 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `action_report`
+--
+
+CREATE TABLE IF NOT EXISTS `action_report` (
+  `id_action_report` int(11) NOT NULL,
+  `admin` int(11) NOT NULL,
+  `source_ip` varchar(20) NOT NULL,
+  `report` text NOT NULL,
+  `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `admin`
 --
 
 CREATE TABLE IF NOT EXISTS `admin` (
-  `admin_id` int(11) NOT NULL AUTO_INCREMENT,
+`admin_id` int(11) NOT NULL,
   `admin_type` int(11) NOT NULL,
   `admin_email` varchar(100) NOT NULL,
   `admin_name` varchar(45) NOT NULL,
   `admin_password` varchar(65) NOT NULL,
-  `admin_create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`admin_id`,`admin_type`),
-  KEY `admintype_id_key_idx` (`admin_type`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+  `admin_create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `admin`
@@ -51,10 +63,9 @@ INSERT INTO `admin` (`admin_id`, `admin_type`, `admin_email`, `admin_name`, `adm
 --
 
 CREATE TABLE IF NOT EXISTS `admin_type` (
-  `admintype_id` int(11) NOT NULL AUTO_INCREMENT,
-  `admintype_name` varchar(45) NOT NULL,
-  PRIMARY KEY (`admintype_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+`admintype_id` int(11) NOT NULL,
+  `admintype_name` varchar(45) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `admin_type`
@@ -71,13 +82,11 @@ INSERT INTO `admin_type` (`admintype_id`, `admintype_name`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `feadback` (
-  `feadback_id` int(11) NOT NULL AUTO_INCREMENT,
+`feadback_id` int(11) NOT NULL,
   `feadback_user_id` int(11) NOT NULL,
   `feadback_add_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `feadback_text` text NOT NULL,
-  PRIMARY KEY (`feadback_id`,`feadback_user_id`),
-  KEY `feadback_userid_key_idx` (`feadback_user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `feadback_text` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -86,7 +95,7 @@ CREATE TABLE IF NOT EXISTS `feadback` (
 --
 
 CREATE TABLE IF NOT EXISTS `item` (
-  `item_id` int(11) NOT NULL AUTO_INCREMENT,
+`item_id` int(11) NOT NULL,
   `item_type` int(11) NOT NULL,
   `item_admin_creator` int(11) NOT NULL,
   `item_place` int(11) NOT NULL,
@@ -94,112 +103,18 @@ CREATE TABLE IF NOT EXISTS `item` (
   `item_add_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `item_description` text NOT NULL,
   `status_view` int(11) NOT NULL DEFAULT '1' COMMENT '1 is disaplay for all\n0 is no',
-  `item_last_update` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`item_id`,`item_type`,`item_place`,`item_admin_creator`),
-  KEY `item_place_key_idx` (`item_place`),
-  KEY `item_admin_key_idx` (`item_admin_creator`),
-  KEY `item_itemtype_key_idx` (`item_type`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=210 ;
+  `item_last_update` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=211 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `item`
 --
 
 INSERT INTO `item` (`item_id`, `item_type`, `item_admin_creator`, `item_place`, `item_name`, `item_add_date`, `item_description`, `status_view`, `item_last_update`) VALUES
-(107, 1, 2, 24, 'ghak t', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(108, 1, 2, 24, 'with comment', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(109, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(110, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(111, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(112, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(113, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(114, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(115, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(116, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(117, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(118, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(119, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(120, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(121, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(122, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(123, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(124, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(125, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(126, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(127, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(128, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(129, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(130, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(131, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(132, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(133, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(134, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(135, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(136, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(137, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(138, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(139, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(140, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(141, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(142, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(143, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(144, 1, 2, 24, 'test', '2015-04-14 22:00:32', 'fgsdfh', 1, NULL),
-(149, 2, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 0, '2015-04-15 16:09:06'),
-(150, 2, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 0, '2015-04-15 16:09:30'),
-(152, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(153, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(154, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(155, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(156, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(157, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(158, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(159, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(160, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(161, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(162, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(163, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(164, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(165, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(166, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(167, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(168, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(169, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(170, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(171, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(172, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(173, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(174, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(175, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(176, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(177, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(178, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(179, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(180, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(181, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(182, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(183, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(184, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(185, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(186, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(187, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(188, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(189, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(190, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(191, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(192, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(193, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(194, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(195, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(196, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(197, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(198, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(199, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(200, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(201, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
-(202, 1, 2, 24, 'test', '2015-04-14 22:00:33', 'fgsdfh', 1, NULL),
 (206, 1, 2, 4, 'new item', '2015-04-25 07:44:40', 'new item create by me', 1, NULL),
 (208, 1, 2, 4, 'gh gh', '2015-04-25 07:52:20', 'ghh', 1, NULL),
-(209, 2, 2, 4, 'تطبيق إيثار', '2015-04-25 07:53:51', 'تم إنشاء هذا التطبيق بواسطة طلاب تطوير البرمجيات في صور', 1, NULL);
+(209, 2, 2, 4, 'تطبيق إيثار', '2015-04-25 07:53:51', 'تم إنشاء هذا التطبيق بواسطة طلاب تطوير البرمجيات في صور', 1, NULL),
+(210, 1, 2, 4, 'try by me', '2015-05-07 14:06:44', 'try', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -208,15 +123,12 @@ INSERT INTO `item` (`item_id`, `item_type`, `item_admin_creator`, `item_place`, 
 --
 
 CREATE TABLE IF NOT EXISTS `item_comment` (
-  `itemcomment_id` int(11) NOT NULL AUTO_INCREMENT,
+`itemcomment_id` int(11) NOT NULL,
   `itemcomment_item_id` int(11) NOT NULL,
   `itemcomment_user_id` int(11) NOT NULL,
   `itemcomment_text` text NOT NULL,
-  `itemcomment_add_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`itemcomment_id`,`itemcomment_item_id`,`itemcomment_user_id`),
-  KEY `item_id_key_idx` (`itemcomment_item_id`),
-  KEY `itemcomment_user_id_idx` (`itemcomment_user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=75 ;
+  `itemcomment_add_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `item_comment`
@@ -232,13 +144,11 @@ INSERT INTO `item_comment` (`itemcomment_id`, `itemcomment_item_id`, `itemcommen
 --
 
 CREATE TABLE IF NOT EXISTS `item_image` (
-  `id_item_image` int(11) NOT NULL AUTO_INCREMENT,
+`id_item_image` int(11) NOT NULL,
   `item_id` int(11) NOT NULL,
   `image_title` varchar(40) NOT NULL,
-  `image_path` varchar(60) DEFAULT NULL,
-  PRIMARY KEY (`id_item_image`,`item_id`),
-  KEY `item_image_key_idx` (`item_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
+  `image_path` varchar(60) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `item_image`
@@ -250,7 +160,9 @@ INSERT INTO `item_image` (`id_item_image`, `item_id`, `image_title`, `image_path
 (9, 209, '8295fa79f30c2e663f6abc2ebde674c8.PNG', '../uploadsimages/'),
 (10, 209, 'a90c6ace23f2e7f1bf2c73e0c2810167.PNG', '../uploadsimages/'),
 (11, 209, '8da42305857c1b5db13c892da5c1a14b.PNG', '../uploadsimages/'),
-(12, 209, '1c548f5ebec85b57bb7ebac9b0dd8431.PNG', '../uploadsimages/');
+(12, 209, '1c548f5ebec85b57bb7ebac9b0dd8431.PNG', '../uploadsimages/'),
+(13, 210, '23eb7ddb5cecee9dafb8d1a0d6c284fa.jpg', '../uploadsimages/'),
+(14, 210, 'd7f5de7d06e7a89efdec50f3eb11451c.jpg', '../uploadsimages/');
 
 -- --------------------------------------------------------
 
@@ -259,10 +171,9 @@ INSERT INTO `item_image` (`id_item_image`, `item_id`, `image_title`, `image_path
 --
 
 CREATE TABLE IF NOT EXISTS `item_type` (
-  `itemtype_id` int(11) NOT NULL AUTO_INCREMENT,
-  `itemtype_name` varchar(45) NOT NULL,
-  PRIMARY KEY (`itemtype_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+`itemtype_id` int(11) NOT NULL,
+  `itemtype_name` varchar(45) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `item_type`
@@ -279,11 +190,10 @@ INSERT INTO `item_type` (`itemtype_id`, `itemtype_name`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `language` (
-  `lang_id` int(11) NOT NULL AUTO_INCREMENT,
+`lang_id` int(11) NOT NULL,
   `lang_name` varchar(45) DEFAULT NULL,
-  `lang_shortcut` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`lang_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+  `lang_shortcut` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `language`
@@ -302,52 +212,25 @@ INSERT INTO `language` (`lang_id`, `lang_name`, `lang_shortcut`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `place` (
-  `place_id` int(11) NOT NULL AUTO_INCREMENT,
+`place_id` int(11) NOT NULL,
   `place_type` int(11) NOT NULL,
   `place_name` varchar(45) NOT NULL,
   `address` varchar(132) DEFAULT NULL,
   `place_location_lat` float DEFAULT NULL,
   `place_location_lng` float DEFAULT NULL,
   `place_admin_creator` int(11) NOT NULL,
-  `view` int(1) NOT NULL DEFAULT '1',
+  `view` int(1) NOT NULL DEFAULT '1' COMMENT '1 view , 0 unview',
   `description` text NOT NULL,
-  `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `last_update` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (`place_id`,`place_type`,`place_admin_creator`),
-  KEY `place_type_id_idx` (`place_type`),
-  KEY `place_admin_creator_id_idx` (`place_admin_creator`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=106 ;
+  `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `place`
 --
 
 INSERT INTO `place` (`place_id`, `place_type`, `place_name`, `address`, `place_location_lat`, `place_location_lng`, `place_admin_creator`, `view`, `description`, `create_date`, `last_update`) VALUES
-(4, 6, 'place test 101', 'oman 101', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-30 18:53:39', '2015-04-14 21:48:44'),
-(5, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:04', '2015-04-14 21:44:04'),
-(6, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
-(7, 5, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-30 18:53:35', '2015-04-14 21:44:05'),
-(8, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
-(9, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
-(10, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
-(11, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
-(12, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
-(13, 4, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-30 18:53:31', '2015-04-14 21:44:05'),
-(14, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
-(15, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
-(16, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
-(17, 6, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-30 18:53:10', '2015-04-14 21:44:05'),
-(18, 5, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-30 18:53:07', '2015-04-14 21:44:05'),
-(19, 5, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-30 18:53:26', '2015-04-14 21:44:05'),
-(20, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
-(21, 6, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-30 18:53:01', '2015-04-14 21:44:05'),
-(22, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
-(23, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
-(24, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
-(25, 6, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-30 18:53:22', '2015-04-14 21:44:05'),
-(26, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
-(27, 5, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-30 18:53:04', '2015-04-14 21:44:05'),
-(28, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
+(4, 4, 'Nizwa ', ' Nizwa, Oman', 22.9332, 57.5302, 2, 1, 'It was built in the 1650s by the second Ya’rubi Imam; Imam Sultan Bin Saif Al Ya''rubi,although its underlying structure goes back to the 12th Century.It is Oman''s most visited national monument. The fort was the administrative seat of authority for the presiding Imams and Walis in times of peace and conflict.[3] The main bulk of the fort took about 12 years to complete and was built above an underground stream. The fort is a powerful reminder of the town''s significance through turbulent periods in Oman''s long history. It was a formidable stronghold against raiding forces that desired Nizwa''s abundant natural wealth and its strategic location at the crossroads of vital routes.', '2015-04-30 18:53:39', '2015-04-14 21:48:44'),
 (29, 4, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-30 18:53:13', '2015-04-14 21:44:05'),
 (30, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
 (31, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
@@ -421,9 +304,29 @@ INSERT INTO `place` (`place_id`, `place_type`, `place_name`, `address`, `place_l
 (99, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:46:25', '2015-04-14 21:46:25'),
 (100, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:46:25', '2015-04-14 21:46:25'),
 (101, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:46:25', '2015-04-14 21:46:25'),
-(102, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:46:25', '2015-04-14 21:46:25'),
-(104, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:46:39', '2015-04-14 21:46:39'),
-(105, 3, 'almehuar', 'Izke', 22.9451, 57.7594, 2, 1, 'بلدية إزكي', '2015-04-25 07:36:39', '2015-04-25 07:36:39');
+(102, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:46:25', '2015-04-14 21:46:25');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `place_image`
+--
+
+CREATE TABLE IF NOT EXISTS `place_image` (
+`place_image_id` int(11) NOT NULL,
+  `place_id` int(11) NOT NULL,
+  `image_title` tinytext NOT NULL,
+  `image_path` tinytext NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `place_image`
+--
+
+INSERT INTO `place_image` (`place_image_id`, `place_id`, `image_title`, `image_path`) VALUES
+(10, 4, 'b13709679152509b0de72c84387fa599.jpg', '../uploadsimages/'),
+(11, 4, 'f9321648a3b3ebeadc009ec4ef881a70.jpg', '../uploadsimages/'),
+(12, 4, '2f5dd2825661c23bcfece2e5467e4ff0.jpg', '../uploadsimages/');
 
 -- --------------------------------------------------------
 
@@ -432,10 +335,9 @@ INSERT INTO `place` (`place_id`, `place_type`, `place_name`, `address`, `place_l
 --
 
 CREATE TABLE IF NOT EXISTS `place_type` (
-  `place_id` int(11) NOT NULL AUTO_INCREMENT,
-  `place_name` varchar(45) NOT NULL,
-  PRIMARY KEY (`place_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+`place_id` int(11) NOT NULL,
+  `place_name` varchar(45) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `place_type`
@@ -454,55 +356,41 @@ INSERT INTO `place_type` (`place_id`, `place_name`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `service` (
-  `service_id` int(11) NOT NULL AUTO_INCREMENT,
+`service_id` int(11) NOT NULL,
   `service_type` int(11) NOT NULL,
   `service_user_id` int(11) NOT NULL,
   `service_admin_add` int(11) NOT NULL,
   `service_location_lat` float DEFAULT NULL,
-  `service_location_lang` float NOT NULL,
+  `service_location_lang` float DEFAULT NULL,
   `service_desc` text,
   `service_add_date` timestamp NULL DEFAULT NULL,
-  `service_positive_rate` int(11) DEFAULT '0',
-  `service_negative_rate` int(11) NOT NULL DEFAULT '0',
-  `service_status` varchar(4) NOT NULL DEFAULT '0' COMMENT '0 -> active. 1 block',
+  `service_rate_positive` int(11) DEFAULT '0',
   `service_title` varchar(250) NOT NULL,
-  PRIMARY KEY (`service_id`,`service_type`,`service_admin_add`,`service_user_id`),
-  KEY `service_type_key_idx` (`service_type`),
-  KEY `service_admin_key_idx` (`service_admin_add`),
-  KEY `service_user_key_idx` (`service_user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=32 ;
+  `service_rate_negative` int(11) DEFAULT '0'
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `service`
 --
 
-INSERT INTO `service` (`service_id`, `service_type`, `service_user_id`, `service_admin_add`, `service_location_lat`, `service_location_lang`, `service_desc`, `service_add_date`, `service_positive_rate`, `service_negative_rate`, `service_status`, `service_title`) VALUES
-(6, 1, 161, 2, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-05-01 09:54:34', 2, 3, '0', 'service request'),
-(7, 1, 161, 2, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-05-01 09:54:59', 0, 0, '0', 'service request'),
-(8, 1, 161, 2, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-05-01 09:55:00', 0, 0, '0', 'service request'),
-(9, 1, 161, 2, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-05-01 09:55:01', 0, 0, '0', 'service request'),
-(10, 1, 161, 2, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-05-01 09:58:04', 0, 0, '0', 'service request'),
-(11, 1, 161, 2, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-05-01 09:58:04', 0, 0, '0', 'service request'),
-(12, 1, 161, 2, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-05-01 09:58:05', 0, 0, '0', 'service request'),
-(13, 1, 161, 2, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-05-01 09:58:05', 0, 0, '0', 'service request'),
-(14, 1, 161, 2, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-05-01 09:58:05', 0, 0, '0', 'service request'),
-(15, 1, 161, 2, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-05-01 09:58:05', 0, 0, '0', 'service request'),
-(16, 1, 161, 2, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-05-01 09:58:06', 0, 0, '0', 'service request'),
-(17, 1, 161, 2, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-05-01 09:58:06', 0, 0, '0', 'service request'),
-(18, 1, 161, 2, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-05-01 09:58:06', 0, 0, '0', 'service request'),
-(19, 1, 161, 2, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-05-01 09:58:06', 0, 0, '0', 'service request'),
-(20, 1, 161, 2, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-05-01 09:58:06', 0, 0, '0', 'service request'),
-(21, 1, 161, 2, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-05-01 09:58:07', 0, 0, '0', 'service request'),
-(22, 1, 161, 2, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-05-01 09:58:07', 0, 0, '0', 'service request'),
-(23, 1, 161, 2, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-05-01 09:58:07', 0, 0, '0', 'service request'),
-(24, 1, 161, 2, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-05-01 09:58:07', 0, 0, '0', 'service request'),
-(25, 1, 161, 2, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-05-01 09:58:07', 0, 0, '0', 'service request'),
-(26, 1, 161, 2, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-05-01 09:58:08', 0, 0, '0', 'service request'),
-(27, 1, 161, 2, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-05-01 09:58:08', 0, 0, '0', 'service request'),
-(28, 1, 161, 2, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-05-01 09:58:08', 0, 0, '0', 'service request'),
-(29, 1, 161, 2, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-05-01 09:58:08', 0, 0, '0', 'service request'),
-(30, 1, 161, 2, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-05-01 09:58:08', 0, 0, '0', 'service request'),
-(31, 1, 161, 2, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-05-01 09:58:09', 0, 0, '0', 'service request');
+INSERT INTO `service` (`service_id`, `service_type`, `service_user_id`, `service_admin_add`, `service_location_lat`, `service_location_lang`, `service_desc`, `service_add_date`, `service_rate_positive`, `service_title`, `service_rate_negative`) VALUES
+(1, 1, 1, 2, NULL, NULL, 'test test test test test test test test test test test ', '2015-04-29 20:00:00', 0, 'test ', 0),
+(2, 1, 1, 2, NULL, NULL, 'test test test test test test test test test test test ', '2015-04-29 20:00:00', 0, 'test ', 0),
+(3, 1, 1, 2, NULL, NULL, 'test test test test test test test test test test test ', '2015-04-29 20:00:00', 0, 'test ', 0),
+(4, 1, 1, 2, NULL, NULL, 'test test test test test test test test test test test ', '2015-04-29 20:00:00', 0, 'test ', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `service_rate`
+--
+
+CREATE TABLE IF NOT EXISTS `service_rate` (
+  `service_rate_id` int(11) NOT NULL,
+  `service_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `rate_value` varchar(2) NOT NULL COMMENT '1 positiev\n0 negative'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -511,34 +399,22 @@ INSERT INTO `service` (`service_id`, `service_type`, `service_user_id`, `service
 --
 
 CREATE TABLE IF NOT EXISTS `service_request` (
-  `servicerequest_id` int(11) NOT NULL AUTO_INCREMENT,
+`servicerequest_id` int(11) NOT NULL,
   `servicerequest_title` varchar(250) NOT NULL,
   `servicerequest_type` int(11) NOT NULL,
   `servicerequest_user_id` int(11) NOT NULL,
   `servicerequest_location_lat` float NOT NULL,
   `servicerequest_location_lang` float NOT NULL,
   `servicerequest_desc` text NOT NULL,
-  `servicerequest_add_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`servicerequest_id`,`servicerequest_type`,`servicerequest_user_id`),
-  KEY `service_type_key_idx` (`servicerequest_type`),
-  KEY `service_user_key_idx` (`servicerequest_user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=46 ;
+  `servicerequest_add_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `service_request`
 --
 
 INSERT INTO `service_request` (`servicerequest_id`, `servicerequest_title`, `servicerequest_type`, `servicerequest_user_id`, `servicerequest_location_lat`, `servicerequest_location_lang`, `servicerequest_desc`, `servicerequest_add_date`) VALUES
-(36, 'service request', 1, 161, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-04-30 21:51:09'),
-(37, 'service request', 1, 161, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-04-30 21:51:09'),
-(38, 'service request', 1, 161, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-04-30 21:51:09'),
-(39, 'service request', 1, 161, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-04-30 21:51:09'),
-(40, 'service request', 1, 161, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-04-30 21:51:09'),
-(41, 'service request', 1, 161, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-04-30 21:51:09'),
-(42, 'service request', 1, 161, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-04-30 21:51:09'),
-(43, 'service request', 1, 161, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-04-30 21:51:09'),
-(44, 'service request', 1, 161, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-04-30 21:51:09'),
-(45, 'service request', 1, 161, 196.584, 158.588, 'service request service request service request service request service request service request service request service request service request service request service request', '2015-04-30 21:51:09');
+(1, 'Alafia ', 2, 50, 10.5979, 10.5945, 'hgyghg yutyu'' ygyty ty ghj', '2015-04-30 10:44:40');
 
 -- --------------------------------------------------------
 
@@ -547,10 +423,9 @@ INSERT INTO `service_request` (`servicerequest_id`, `servicerequest_title`, `ser
 --
 
 CREATE TABLE IF NOT EXISTS `service_type` (
-  `servicetype_id` int(11) NOT NULL AUTO_INCREMENT,
-  `servicetype_name` varchar(45) NOT NULL,
-  PRIMARY KEY (`servicetype_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+`servicetype_id` int(11) NOT NULL,
+  `servicetype_name` varchar(45) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `service_type`
@@ -567,23 +442,13 @@ INSERT INTO `service_type` (`servicetype_id`, `servicetype_name`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `share_area` (
-  `sharearea_id` int(11) NOT NULL AUTO_INCREMENT,
+`sharearea_id` int(11) NOT NULL,
   `sharearea_text` text,
   `sharearea_user_id` int(11) NOT NULL,
   `sharearea_image` longblob,
   `sharearea_add_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `sharearea_location` varchar(150) DEFAULT NULL,
-  PRIMARY KEY (`sharearea_id`,`sharearea_user_id`),
-  KEY `sharearea_userid_key_idx` (`sharearea_user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-
---
--- Dumping data for table `share_area`
---
-
-INSERT INTO `share_area` (`sharearea_id`, `sharearea_text`, `sharearea_user_id`, `sharearea_image`, `sharearea_add_date`, `sharearea_location`) VALUES
-(1, 'share area share area share area share area share area share area share area share area ', 3, NULL, '2015-05-01 13:39:16', '254287578'),
-(2, 'share area share area share area share area share area share area share area ', 3, NULL, '2015-05-01 13:39:16', '75345345');
+  `sharearea_location` varchar(150) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -592,22 +457,12 @@ INSERT INTO `share_area` (`sharearea_id`, `sharearea_text`, `sharearea_user_id`,
 --
 
 CREATE TABLE IF NOT EXISTS `share_comment` (
-  `sharecomm_id` int(11) NOT NULL AUTO_INCREMENT,
+`sharecomm_id` int(11) NOT NULL,
   `sharecomm_sharearea_id` int(11) DEFAULT NULL,
   `sharecomm_user_id` int(11) NOT NULL,
   `sharecomm_add_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `sharecomm_text` text,
-  PRIMARY KEY (`sharecomm_id`,`sharecomm_user_id`),
-  KEY `sharecomm_userid_key_idx` (`sharecomm_user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-
---
--- Dumping data for table `share_comment`
---
-
-INSERT INTO `share_comment` (`sharecomm_id`, `sharecomm_sharearea_id`, `sharecomm_user_id`, `sharecomm_add_date`, `sharecomm_text`) VALUES
-(1, NULL, 3, '2015-05-01 13:40:01', 'comment comment comment comment comment comment comment '),
-(2, NULL, 3, '2015-05-01 13:40:01', 'comment comment comment comment comment comment comment comment comment ');
+  `sharecomm_text` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -616,15 +471,12 @@ INSERT INTO `share_comment` (`sharecomm_id`, `sharecomm_sharearea_id`, `sharecom
 --
 
 CREATE TABLE IF NOT EXISTS `user` (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+`user_id` int(11) NOT NULL,
   `user_name` varchar(45) NOT NULL,
   `user_password` varchar(160) NOT NULL,
   `user_lang` int(11) NOT NULL,
-  `user_email` varchar(150) NOT NULL,
-  PRIMARY KEY (`user_id`,`user_lang`),
-  UNIQUE KEY `user_name_UNIQUE` (`user_name`),
-  KEY `user_lang_key_idx` (`user_lang`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+  `user_email` varchar(150) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `user`
@@ -643,7 +495,7 @@ INSERT INTO `user` (`user_id`, `user_name`, `user_password`, `user_lang`, `user_
 --
 
 CREATE TABLE IF NOT EXISTS `user_service` (
-  `useservice_id` int(11) NOT NULL AUTO_INCREMENT,
+`useservice_id` int(11) NOT NULL,
   `useservice_name` varchar(45) DEFAULT NULL,
   `useservice_email` varchar(45) DEFAULT NULL,
   `useservice_phone` varchar(45) DEFAULT NULL,
@@ -651,10 +503,8 @@ CREATE TABLE IF NOT EXISTS `user_service` (
   `useservice_add_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `positive_evaluation` int(11) NOT NULL DEFAULT '0',
   `negative_evaluation` int(11) NOT NULL DEFAULT '0',
-  `account_status` varchar(2) NOT NULL DEFAULT '0' COMMENT 'if 0 mean is not block .. 1 it is block',
-  PRIMARY KEY (`useservice_id`),
-  UNIQUE KEY `useservice_email` (`useservice_email`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=250 ;
+  `account_status` varchar(2) NOT NULL DEFAULT '0' COMMENT 'if 0 mean is not block .. 1 it is block'
+) ENGINE=InnoDB AUTO_INCREMENT=250 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `user_service`
@@ -669,6 +519,47 @@ INSERT INTO `user_service` (`useservice_id`, `useservice_name`, `useservice_emai
 (28, 'Ahmed mansour ', 'omanman@gmail.com', '12345678', '45454545', '2015-04-29 22:37:53', 0, 0, '0'),
 (49, 'naser sultan alrawahi', 'naser90@gmail.com', '98258791', '45454545', '2015-04-29 22:37:53', 0, 0, '0'),
 (50, 'user name 0', '0usermail@gmail.com', '5454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(51, 'user name 1', '1usermail@gmail.com', '15454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(52, 'user name 2', '2usermail@gmail.com', '25454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(53, 'user name 3', '3usermail@gmail.com', '35454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(54, 'user name 4', '4usermail@gmail.com', '45454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(55, 'user name 5', '5usermail@gmail.com', '55454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(56, 'user name 6', '6usermail@gmail.com', '65454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(58, 'user name 8', '8usermail@gmail.com', '85454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(60, 'user name 10', '10usermail@gmail.com', '105454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(61, 'user name 11', '11usermail@gmail.com', '115454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(62, 'user name 12', '12usermail@gmail.com', '125454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(63, 'user name 13', '13usermail@gmail.com', '135454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(64, 'user name 14', '14usermail@gmail.com', '145454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(65, 'user name 15', '15usermail@gmail.com', '155454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(66, 'user name 16', '16usermail@gmail.com', '165454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(67, 'user name 17', '17usermail@gmail.com', '175454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(68, 'user name 18', '18usermail@gmail.com', '185454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(69, 'user name 19', '19usermail@gmail.com', '195454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(70, 'user name 20', '20usermail@gmail.com', '205454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(71, 'user name 21', '21usermail@gmail.com', '215454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(72, 'user name 22', '22usermail@gmail.com', '225454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(73, 'user name 23', '23usermail@gmail.com', '235454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(74, 'user name 24', '24usermail@gmail.com', '245454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(75, 'user name 25', '25usermail@gmail.com', '255454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(76, 'user name 26', '26usermail@gmail.com', '265454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(77, 'user name 27', '27usermail@gmail.com', '275454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(78, 'user name 28', '28usermail@gmail.com', '285454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(79, 'user name 29', '29usermail@gmail.com', '295454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(80, 'user name 30', '30usermail@gmail.com', '305454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(81, 'user name 31', '31usermail@gmail.com', '315454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(82, 'user name 32', '32usermail@gmail.com', '325454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(83, 'user name 33', '33usermail@gmail.com', '335454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(84, 'user name 34', '34usermail@gmail.com', '345454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(85, 'user name 35', '35usermail@gmail.com', '355454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(86, 'user name 36', '36usermail@gmail.com', '365454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(87, 'user name 37', '37usermail@gmail.com', '375454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(88, 'user name 38', '38usermail@gmail.com', '385454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(89, 'user name 39', '39usermail@gmail.com', '395454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(90, 'user name 40', '40usermail@gmail.com', '405454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(91, 'user name 41', '41usermail@gmail.com', '415454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(92, 'user name 42', '42usermail@gmail.com', '425454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
+(93, 'user name 43', '43usermail@gmail.com', '435454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
 (94, 'user name 44', '44usermail@gmail.com', '445454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
 (95, 'user name 45', '45usermail@gmail.com', '455454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
 (96, 'user name 46', '46usermail@gmail.com', '465454455', '12345', '2015-04-29 22:37:53', 0, 0, '0'),
@@ -824,83 +715,346 @@ INSERT INTO `user_service` (`useservice_id`, `useservice_name`, `useservice_emai
 (248, 'user name 198', '198usermail@gmail.com', '1985454455', '12345', '2015-04-30 22:37:53', 0, 0, '0'),
 (249, 'user name 199', '199usermail@gmail.com', '1995454455', '12345', '2015-04-30 22:37:53', 0, 0, '1');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_service_rate`
+--
+
+CREATE TABLE IF NOT EXISTS `user_service_rate` (
+  `user_service_rate_id` int(11) NOT NULL,
+  `user_service_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `rate_value` varchar(2) NOT NULL DEFAULT '1' COMMENT '1 positiev\n0 negative'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `action_report`
+--
+ALTER TABLE `action_report`
+ ADD PRIMARY KEY (`id_action_report`,`admin`), ADD KEY `admin_id_key_idx` (`admin`);
+
+--
+-- Indexes for table `admin`
+--
+ALTER TABLE `admin`
+ ADD PRIMARY KEY (`admin_id`,`admin_type`), ADD KEY `admintype_id_key_idx` (`admin_type`);
+
+--
+-- Indexes for table `admin_type`
+--
+ALTER TABLE `admin_type`
+ ADD PRIMARY KEY (`admintype_id`);
+
+--
+-- Indexes for table `feadback`
+--
+ALTER TABLE `feadback`
+ ADD PRIMARY KEY (`feadback_id`,`feadback_user_id`), ADD KEY `feadback_userid_key_idx` (`feadback_user_id`);
+
+--
+-- Indexes for table `item`
+--
+ALTER TABLE `item`
+ ADD PRIMARY KEY (`item_id`,`item_type`,`item_place`,`item_admin_creator`), ADD KEY `item_place_key_idx` (`item_place`), ADD KEY `item_admin_key_idx` (`item_admin_creator`), ADD KEY `item_itemtype_key_idx` (`item_type`);
+
+--
+-- Indexes for table `item_comment`
+--
+ALTER TABLE `item_comment`
+ ADD PRIMARY KEY (`itemcomment_id`,`itemcomment_item_id`,`itemcomment_user_id`), ADD KEY `item_id_key_idx` (`itemcomment_item_id`), ADD KEY `itemcomment_user_id_idx` (`itemcomment_user_id`);
+
+--
+-- Indexes for table `item_image`
+--
+ALTER TABLE `item_image`
+ ADD PRIMARY KEY (`id_item_image`,`item_id`), ADD KEY `item_image_key_idx` (`item_id`);
+
+--
+-- Indexes for table `item_type`
+--
+ALTER TABLE `item_type`
+ ADD PRIMARY KEY (`itemtype_id`);
+
+--
+-- Indexes for table `language`
+--
+ALTER TABLE `language`
+ ADD PRIMARY KEY (`lang_id`);
+
+--
+-- Indexes for table `place`
+--
+ALTER TABLE `place`
+ ADD PRIMARY KEY (`place_id`,`place_type`,`place_admin_creator`), ADD KEY `place_type_id_idx` (`place_type`), ADD KEY `place_admin_creator_id_idx` (`place_admin_creator`);
+
+--
+-- Indexes for table `place_image`
+--
+ALTER TABLE `place_image`
+ ADD PRIMARY KEY (`place_image_id`,`place_id`), ADD KEY `place_image_place_id_key_idx` (`place_id`);
+
+--
+-- Indexes for table `place_type`
+--
+ALTER TABLE `place_type`
+ ADD PRIMARY KEY (`place_id`);
+
+--
+-- Indexes for table `service`
+--
+ALTER TABLE `service`
+ ADD PRIMARY KEY (`service_id`,`service_type`,`service_user_id`,`service_admin_add`), ADD KEY `service_type_key_idx` (`service_type`), ADD KEY `service_admin_key_idx` (`service_admin_add`), ADD KEY `service_user_key_idx` (`service_user_id`);
+
+--
+-- Indexes for table `service_rate`
+--
+ALTER TABLE `service_rate`
+ ADD PRIMARY KEY (`service_rate_id`,`user_id`,`service_id`), ADD KEY `service_rate_service_id_idx` (`service_id`), ADD KEY `service_rate_user_id_key_idx` (`user_id`);
+
+--
+-- Indexes for table `service_request`
+--
+ALTER TABLE `service_request`
+ ADD PRIMARY KEY (`servicerequest_id`,`servicerequest_type`,`servicerequest_user_id`), ADD KEY `service_type_key_idx` (`servicerequest_type`), ADD KEY `service_user_key_idx` (`servicerequest_user_id`);
+
+--
+-- Indexes for table `service_type`
+--
+ALTER TABLE `service_type`
+ ADD PRIMARY KEY (`servicetype_id`);
+
+--
+-- Indexes for table `share_area`
+--
+ALTER TABLE `share_area`
+ ADD PRIMARY KEY (`sharearea_id`,`sharearea_user_id`), ADD KEY `sharearea_userid_key_idx` (`sharearea_user_id`);
+
+--
+-- Indexes for table `share_comment`
+--
+ALTER TABLE `share_comment`
+ ADD PRIMARY KEY (`sharecomm_id`,`sharecomm_user_id`), ADD KEY `sharecomm_userid_key_idx` (`sharecomm_user_id`);
+
+--
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
+ ADD PRIMARY KEY (`user_id`,`user_lang`), ADD UNIQUE KEY `user_name_UNIQUE` (`user_name`), ADD KEY `user_lang_key_idx` (`user_lang`);
+
+--
+-- Indexes for table `user_service`
+--
+ALTER TABLE `user_service`
+ ADD PRIMARY KEY (`useservice_id`), ADD UNIQUE KEY `useservice_email` (`useservice_email`);
+
+--
+-- Indexes for table `user_service_rate`
+--
+ALTER TABLE `user_service_rate`
+ ADD PRIMARY KEY (`user_service_rate_id`,`user_id`,`user_service_id`), ADD KEY `user_service_rate_user_service_id_key_idx` (`user_service_id`), ADD KEY `user_service_rate_user_id_key_idx` (`user_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `admin`
+--
+ALTER TABLE `admin`
+MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `admin_type`
+--
+ALTER TABLE `admin_type`
+MODIFY `admintype_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `feadback`
+--
+ALTER TABLE `feadback`
+MODIFY `feadback_id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `item`
+--
+ALTER TABLE `item`
+MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=211;
+--
+-- AUTO_INCREMENT for table `item_comment`
+--
+ALTER TABLE `item_comment`
+MODIFY `itemcomment_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=75;
+--
+-- AUTO_INCREMENT for table `item_image`
+--
+ALTER TABLE `item_image`
+MODIFY `id_item_image` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
+--
+-- AUTO_INCREMENT for table `item_type`
+--
+ALTER TABLE `item_type`
+MODIFY `itemtype_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `language`
+--
+ALTER TABLE `language`
+MODIFY `lang_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `place`
+--
+ALTER TABLE `place`
+MODIFY `place_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=103;
+--
+-- AUTO_INCREMENT for table `place_image`
+--
+ALTER TABLE `place_image`
+MODIFY `place_image_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
+--
+-- AUTO_INCREMENT for table `place_type`
+--
+ALTER TABLE `place_type`
+MODIFY `place_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT for table `service`
+--
+ALTER TABLE `service`
+MODIFY `service_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `service_request`
+--
+ALTER TABLE `service_request`
+MODIFY `servicerequest_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `service_type`
+--
+ALTER TABLE `service_type`
+MODIFY `servicetype_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `share_area`
+--
+ALTER TABLE `share_area`
+MODIFY `sharearea_id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `share_comment`
+--
+ALTER TABLE `share_comment`
+MODIFY `sharecomm_id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `user`
+--
+ALTER TABLE `user`
+MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `user_service`
+--
+ALTER TABLE `user_service`
+MODIFY `useservice_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=250;
 --
 -- Constraints for dumped tables
 --
 
 --
+-- Constraints for table `action_report`
+--
+ALTER TABLE `action_report`
+ADD CONSTRAINT `admin_id_key` FOREIGN KEY (`admin`) REFERENCES `admin` (`admin_id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
 -- Constraints for table `admin`
 --
 ALTER TABLE `admin`
-  ADD CONSTRAINT `admintype_id_key` FOREIGN KEY (`admin_type`) REFERENCES `admin_type` (`admintype_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT `admintype_id_key` FOREIGN KEY (`admin_type`) REFERENCES `admin_type` (`admintype_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `feadback`
 --
 ALTER TABLE `feadback`
-  ADD CONSTRAINT `feadback_userid_key` FOREIGN KEY (`feadback_user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT `feadback_userid_key` FOREIGN KEY (`feadback_user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `item`
 --
 ALTER TABLE `item`
-  ADD CONSTRAINT `item_admin_key` FOREIGN KEY (`item_admin_creator`) REFERENCES `admin` (`admin_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `item_itemtype_key` FOREIGN KEY (`item_type`) REFERENCES `item_type` (`itemtype_id`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `item_place_key` FOREIGN KEY (`item_place`) REFERENCES `place` (`place_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `item_admin_key` FOREIGN KEY (`item_admin_creator`) REFERENCES `admin` (`admin_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `item_itemtype_key` FOREIGN KEY (`item_type`) REFERENCES `item_type` (`itemtype_id`) ON DELETE NO ACTION ON UPDATE CASCADE,
+ADD CONSTRAINT `item_place_key` FOREIGN KEY (`item_place`) REFERENCES `place` (`place_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `item_comment`
 --
 ALTER TABLE `item_comment`
-  ADD CONSTRAINT `itemcomment_id_key` FOREIGN KEY (`itemcomment_item_id`) REFERENCES `item` (`item_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `itemcomment_user_id` FOREIGN KEY (`itemcomment_user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT `itemcomment_id_key` FOREIGN KEY (`itemcomment_item_id`) REFERENCES `item` (`item_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `itemcomment_user_id` FOREIGN KEY (`itemcomment_user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `item_image`
 --
 ALTER TABLE `item_image`
-  ADD CONSTRAINT `item_image_key` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `item_image_key` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `place`
 --
 ALTER TABLE `place`
-  ADD CONSTRAINT `place_admin_creator_id` FOREIGN KEY (`place_admin_creator`) REFERENCES `admin` (`admin_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  ADD CONSTRAINT `place_ibfk_1` FOREIGN KEY (`place_type`) REFERENCES `place_type` (`place_id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+ADD CONSTRAINT `place_admin_creator_id` FOREIGN KEY (`place_admin_creator`) REFERENCES `admin` (`admin_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+ADD CONSTRAINT `place_ibfk_1` FOREIGN KEY (`place_type`) REFERENCES `place_type` (`place_id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Constraints for table `place_image`
+--
+ALTER TABLE `place_image`
+ADD CONSTRAINT `place_image_place_id_key` FOREIGN KEY (`place_id`) REFERENCES `place` (`place_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `service`
 --
 ALTER TABLE `service`
-  ADD CONSTRAINT `service_admin_key` FOREIGN KEY (`service_admin_add`) REFERENCES `admin` (`admin_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `service_ibfk_1` FOREIGN KEY (`service_type`) REFERENCES `service_type` (`servicetype_id`),
-  ADD CONSTRAINT `service_user_key` FOREIGN KEY (`service_user_id`) REFERENCES `user_service` (`useservice_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT `service_admin_key` FOREIGN KEY (`service_admin_add`) REFERENCES `admin` (`admin_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `service_ibfk_1` FOREIGN KEY (`service_type`) REFERENCES `service_type` (`servicetype_id`),
+ADD CONSTRAINT `service_user_key` FOREIGN KEY (`service_user_id`) REFERENCES `user_service` (`useservice_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `service_rate`
+--
+ALTER TABLE `service_rate`
+ADD CONSTRAINT `service_rate_service_id` FOREIGN KEY (`service_id`) REFERENCES `service` (`service_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `service_rate_user_id_key` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `service_request`
 --
 ALTER TABLE `service_request`
-  ADD CONSTRAINT `service_request_ibfk_1` FOREIGN KEY (`servicerequest_type`) REFERENCES `service_type` (`servicetype_id`),
-  ADD CONSTRAINT `servicerequest_user_key` FOREIGN KEY (`servicerequest_user_id`) REFERENCES `user_service` (`useservice_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT `service_request_ibfk_1` FOREIGN KEY (`servicerequest_type`) REFERENCES `service_type` (`servicetype_id`),
+ADD CONSTRAINT `servicerequest_user_key` FOREIGN KEY (`servicerequest_user_id`) REFERENCES `user_service` (`useservice_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `share_area`
 --
 ALTER TABLE `share_area`
-  ADD CONSTRAINT `sharearea_userid_key` FOREIGN KEY (`sharearea_user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+ADD CONSTRAINT `sharearea_userid_key` FOREIGN KEY (`sharearea_user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `share_comment`
 --
 ALTER TABLE `share_comment`
-  ADD CONSTRAINT `sharecomm_sharearea_id_key` FOREIGN KEY (`sharecomm_id`) REFERENCES `share_area` (`sharearea_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `sharecomm_userid_key` FOREIGN KEY (`sharecomm_user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT `sharecomm_sharearea_id_key` FOREIGN KEY (`sharecomm_id`) REFERENCES `share_area` (`sharearea_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `sharecomm_userid_key` FOREIGN KEY (`sharecomm_user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `user`
 --
 ALTER TABLE `user`
-  ADD CONSTRAINT `user_lang_key` FOREIGN KEY (`user_lang`) REFERENCES `language` (`lang_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `user_lang_key` FOREIGN KEY (`user_lang`) REFERENCES `language` (`lang_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `user_service_rate`
+--
+ALTER TABLE `user_service_rate`
+ADD CONSTRAINT `user_service_rate_user_id_key` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `user_service_rate_user_service_id_key` FOREIGN KEY (`user_service_id`) REFERENCES `user_service` (`useservice_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -62,6 +62,7 @@
                            class="form-control"
                            placeholder="item name">
                 </div>
+                
                 <div class="form-group input-group">
                     <span class="input-group-addon"><i class="fa fa-image">&nbsp;Images</i>
                     </span>

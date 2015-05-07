@@ -176,7 +176,9 @@ class dboperation {
         }
     }
 
-    public static function newPlace($admin_id, $place_name, $place_type, $address, $location_lat, $location_lng, $view, $description) {
+    public static function newPlace($admin_id, $place_name, $place_type, 
+            $address, $location_lat, $location_lng,
+            $view, $description, $images) {
 
         $data = array("status" => "false", "message" => "");
 //        require_once 'DB_coninfo.php';
@@ -184,11 +186,8 @@ class dboperation {
 
 
         try {
-
-            $conn = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME)
-                    or die(mysqli_error($conn));
-            $conn->set_charset('UTF-8');
-            $conn->query('SET NAMES utf8');
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $query = 'INSERT INTO oman_tourism_guide.place '
                     . '(place_id, '
                     . 'place_type, '
@@ -199,22 +198,50 @@ class dboperation {
                     . 'place_admin_creator, '
                     . 'view, '
                     . 'description) '
-                    . 'VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?)';
-            $stmt = $conn->prepare($query) or die(mysql_error());
-            $stmt->bind_param('issddiis', intval($place_type), strval($place_name), strval($address), doubleval($location_lat), doubleval($location_lng), intval($admin_id), intval($view), strval($description)
-            );
+                    . 'VALUES (NULL, '
+                    . ' :place_type,'
+                    . ' :place_name,'
+                    . ' :address,'
+                    . ' :place_location_lat,'
+                    . ' :place_location_lng,'
+                    . ' :place_admin_creator,'
+                    . ' :view ,'
+                    . ' :description)';
+            $stmt = $dbh->prepare($query) or die(mysql_error());
+            $stmt->bindParam(':place_type', $place_type, PDO::PARAM_INT);
+            $stmt->bindParam(':place_name', $place_name, PDO::PARAM_STR);
+            $stmt->bindParam(':address', $address, PDO::PARAM_STR);
+            $stmt->bindParam(':place_location_lat', $location_lat, PDO::PARAM_STR);
+            $stmt->bindParam(':place_location_lng', $location_lng, PDO::PARAM_STR);
+            $stmt->bindParam(':place_admin_creator', $admin_id, PDO::PARAM_INT);
+            $stmt->bindParam(':view', $view, PDO::PARAM_INT);
+            $stmt->bindParam(':description', $description, PDO::PARAM_STR);
             $stmt->execute();
-            if ($stmt->affected_rows == 1) {
+             if ($stmt->rowCount() == 1) {
                 $data["status"] = "true";
+                $idofinserteditem = $dbh->lastInsertId();
+                $placeimage = dboperation::uploadItemImages($images);
+                if (count($placeimage["success"]) > 0) {
+                    $stmt = $dbh->prepare('INSERT INTO place_image
+                        (place_image_id, place_id, image_title, image_path) 
+                      VALUES(:id, :placeid, :imageurl, :path)');
+                    foreach ($placeimage["success"] as $imagename) {
+                        $stmt->bindValue(':id', 'NULL');
+                        $stmt->bindValue(':placeid', $idofinserteditem);
+                        $stmt->bindValue(':imageurl', $imagename);
+                        $stmt->bindValue(':path', '../uploadsimages/');
+                        $stmt->execute();
+                    }
+                }
             } else {
-                $data["message"] = $stmt->error;
+                $data["message"] = $stmt->errorInfo();
                 $data["status"] = "false";
             }
         } catch (Exception $e) {
             $data["message"] = $e->getMessage();
             $data["status"] = "false";
         } finally {
-            $conn->close();
+            $dbh = null;
             echo json_encode($data);
         }
     }
@@ -526,7 +553,8 @@ class dboperation {
         }
     }
 
-    public static function newItem($creatorid, $itemtype, $itemplace, $itemname, $itemdesc, $itemview, $images) {
+    public static function newItem($creatorid, $itemtype, $itemplace, $itemname,
+            $itemdesc, $itemview, $images) {
         $data = array("status" => "false", "message" => "");
         try {
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));

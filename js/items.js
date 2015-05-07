@@ -3,19 +3,7 @@ $(document).ready(function () {
 
     var singleitemcommentscount = 0;
 
-    //  To add new input file field dynamically,
-    //   on click of "Add More Files" button below
-    //    function will be executed.
-    $('#add_more').click(function () {
-        $(this).before($("<div/>", {
-            id: 'filediv'
-        }).fadeIn('slow').append($("<input/>", {
-            name: 'file[]',
-            type: 'file',
-            id: 'new_item_name_image',
-            class: 'form-control'
-        }), $("<br/><br/>")));
-    });
+   
 
 
     $("#form_add_new_item").submit(function (event) {
@@ -77,6 +65,9 @@ $(document).ready(function () {
                         var tdhtml = '';
                         var index = Number(selectfrom);
                         $.each(data.data, function (id, item) {
+//                            "omantourismguide~item~itemid~itemname"
+                            var itemqrdata = "omantourismguide~item~"+ item.itemid
+                                    +"~"+ item.itemname +" "+ item.itemtype;
                             var description = item.itemdesc;
                             description = description.replace(/'/g, '\'');
                             tdhtml = '<tr id="item_list_tr_' + index + '">' +
@@ -88,7 +79,7 @@ $(document).ready(function () {
                                     '<td>' +
                                     '<center>' +
                                     ' <span data-toggle="modal" data-target="#qr_modal"' +
-                                    'onclick="itemsListFunctions.setItemQrModal(\'' + item.itemid + '\', \'' + item.itemname + '\')" title="QR" ' +
+                                    'onclick="itemsListFunctions.setItemQrModal(\'' + itemqrdata + '\', \'' + item.itemname + '\')" title="QR" ' +
                                     'class="qr-button btn btn-sm btn-default"><i class="fa fa-qrcode"></i></span>' +
                                     '&nbsp;<span onclick="itemsListFunctions.setdescriptionmodel(\'' + description + '\')" data-toggle="modal" data-target="#place_desc_modal" class="btn btn-warning btn-sm">' +
                                     '<i class="fa fa-file-text"></i>' +
@@ -136,10 +127,11 @@ $(document).ready(function () {
             });
 
         },
-        setItemQrModal: function (itemid, itemname) {
-            var info = 'placeid=' + itemid + '&qrtitle=' + itemname + '&qrfor=place';
-            $('#qr_modal_image').attr("src", sitelink + '/qr/QRcreator.php?' + info);
-            $('#qr_event_modal_download').attr("href", sitelink + '/qr/QRcreator.php?' + info);
+        setItemQrModal: function (itemdata, itemname) {
+            var imageinfo = 'qrdata=' + itemdata;
+            $('#qr_modal_image').attr("src", sitelink + '/qr/QRcreator.php?'+imageinfo);
+            var imageinfodownload = 'qrdata=' + itemdata + '&save=true&qrtitle='+itemname;
+            $('#qr_event_modal_download').attr("href", sitelink + '/qr/QRcreator.php?'+imageinfodownload);
             $('#QR_title').text(" " + itemname);
         },
         itemsimagegallery: function (itemid) {
@@ -312,6 +304,8 @@ $(document).ready(function () {
 //                            console.log(item.itemtype)
                             var description = item.itemdescr;
                             description = description.replace(/'/g, '\'');
+                            var itemqrdata = "omantourismguide~item~"+ item.itemid
+                                    +"~"+ item.itemname +" "+ item.itemtype;
                             var newitem =
                                     ' <div id="item_list_search_' + index + '" class="col-lg-4 col-md-4">' +
                                     '<div class="panel panel-default">' +
@@ -346,7 +340,7 @@ $(document).ready(function () {
                                     '<div class="panel-footer">' +
                                     '<center>' +
                                     ' <span data-toggle="modal" data-target="#qr_modal"' +
-                                    'onclick="itemsListFunctions.setItemQrModal(\'' + item.itemid + '\', \'' + item.itemname + '\')" title="QR" ' +
+                                    'onclick="itemsListFunctions.setItemQrModal(\'' + itemqrdata + '\', \'' + item.itemname + '\')" title="QR" ' +
                                     'class="qr-button btn btn-sm btn-default"><i class="fa fa-qrcode"></i></span>' +
                                     '&nbsp;<span onclick="itemsListFunctions.setdescriptionmodel(\'' + item.itemdescr + '\')" data-toggle="modal" data-target="#place_desc_modal" class="btn btn-warning btn-sm">' +
                                     '<i class="fa fa-file-text"></i>' +

@@ -8,7 +8,12 @@
 <!--new place form-->
 <div class="row">
     <div class="col-lg-7 col-md-7">
-        <form accept-charset="UTF-8" method="POST" class="forms" role="form" id="form-add-new-places">
+        <form accept-charset="UTF-8" 
+              method="POST" 
+              enctype="multipart/form-data" 
+              class="forms" 
+              role="form"
+              id="form-add-new-places">
             <fieldset>
 
                 <div class="form-group input-group">
@@ -16,6 +21,7 @@
                     </span>
                     <select class="form-control"
                             id="new-place-type"
+                            name="new-place-type"
                             >
                         <option value="1000" selected="false">  </option>
                         <?php
@@ -26,7 +32,6 @@
                         }
                         ?>
                     </select>
-                    <span  class="input-group-addon error-mark" id="new-place-type-error-mark"></span>
                 </div>
 
                 <div class="form-group input-group">
@@ -38,7 +43,6 @@
                            type="text"
                            class="form-control"
                            placeholder="place name">
-                    <span  class="input-group-addon error-mark" id="new-place-name-error" ></span>
                 </div>
 
 
@@ -51,7 +55,6 @@
                            type="text"
                            class="form-control"
                            placeholder="place address">
-                    <span  class="input-group-addon error-mark" id="new-place-address-error" ></span>
                 </div>
 
                 <div class="form-group input-group">
@@ -71,8 +74,26 @@
                            placeholder="Longitude" step="any" >
                     <span id="new-place-form-open-map-modale" title="open map" data-toggle="modal" data-target="#map_modal"  class="btn input-group-addon"><i class="fa fa-map-marker"></i>
                     </span>
-                    <span  class="input-group-addon error-mark" id="new-place-location-h-error" ></span>
                 </div>
+                
+                
+                <div class="form-group input-group">
+                    <span class="input-group-addon"><i class="fa fa-image">&nbsp;Images</i>
+                    </span>
+                    <input 
+                        class="form-control"
+                        name="file[]" 
+                        type="file" 
+                        id="file"/>
+                    <input type="button"
+                           class="form-control btn btn-default"
+                           id="add_more"
+                           class="upload"
+                           value="Add More Image"/>
+                  
+                </div>
+                
+                
                 <div class="form-group input-group">
                     <span class="input-group-addon"><i class="fa fa-edit">&nbsp;Description</i>
                     </span>
@@ -83,8 +104,6 @@
                         id="new-place-desc"
                         name="new-place-desc"
                         ></textarea>
-                    <span  class="input-group-addon error-mark" id="new-place-description" ></span>
-
                 </div>
                 <div class="form-group">
                     <label>display status &nbsp;&nbsp;</label>
@@ -96,7 +115,8 @@
                     </label>
                 </div>
 
-
+                
+            <input type="hidden" name="destination" id="destination" value="enternewplace"/>
                 <input class="btn  btn-success submit-button" type="submit" id="add-new-place" value="Add Place">
             </fieldset>
 

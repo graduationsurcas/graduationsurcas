@@ -11,7 +11,21 @@ $(document).ready(function () {
         String.prototype.trim = function () {
             return this.replace(/^\s+|\s+$/g, '');
         }
-    }
+    };
+    
+     //  To add new input file field dynamically,
+    //   on click of "Add More Files" button below
+    //    function will be executed.
+    $('#add_more').click(function () {
+        $(this).before($("<div/>", {
+            id: 'filediv'
+        }).fadeIn('slow').append($("<input/>", {
+            name: 'file[]',
+            type: 'file',
+            id: 'new_item_name_image',
+            class: 'form-control'
+        }), $("<br/><br/>")));
+    });
     
 });
 

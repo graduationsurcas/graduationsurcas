@@ -41,7 +41,7 @@ a:active {
     margin-left: 3px;
     margin-right: 3px;
     margin-top: 3px;
-    margin-bottom: 50px;
+    margin-bottom: 10px;
 }
 .panel{
     margin: 0px;
@@ -53,9 +53,7 @@ a:active {
 .place-card .panel{
     border-radius: 0px;
 }
-#place-title{
-    
-}
+
 #place-add-date{
     float: right; 
     font-size: 12px;

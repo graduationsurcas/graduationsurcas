@@ -39,8 +39,11 @@
                             <?php
                             $desc = str_replace("'", "\'", $object->desc);
                             ?>
-                            
-                            <span data-toggle="modal" data-target="#qr_modal" onclick="PlaceOperations.setPlaceQrModal('<?php echo $object->id ?>',  '<?php echo $object->name?>')" title="QR" class="qr-button btn btn-sm btn-default"><i class="fa fa-qrcode"></i></span>
+                            <?php
+//                            "omantourismguide~place~itemid~itemname"
+                            $itemqrdata = "omantourismguide~place~".$object->id."~".$object->name . " ". $object->type;
+                            ?>
+                            <span data-toggle="modal" data-target="#qr_modal" onclick="PlaceOperations.setPlaceQrModal('<?php echo $itemqrdata ;?>', '<?php echo $object->name ;?>')" title="QR" class="qr-button btn btn-sm btn-default"><i class="fa fa-qrcode"></i></span>
                             <span data-toggle="modal" data-target="#map_modal" onclick="PlaceOperations.setmapplacelocation('<?php echo $object->locationlat ?>', '<?php echo $object->locationlang ?>')"title="open on the map" class="btn btn-sm btn-primary"><i class="fa fa-map-marker"></i></span>
                             <span onclick="PlaceOperations.setplacedesc('<?php echo $desc;?>')" data-toggle="modal" data-target="#place_desc_modal" title="descrption" class="btn btn-sm btn-warning "><i class="fa fa-file"></i></span>
                             <span onclick="PlaceOperations.setupdateplacemodelforminfo(

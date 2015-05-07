@@ -1,5 +1,6 @@
 $(document).ready(function () {
-    
+
+    /*
     $('#form-add-new-places').submit(function (event) {
 
         $('#form-add-new-places-message').text("");
@@ -110,6 +111,48 @@ $(document).ready(function () {
         // stop the form from submitting the normal way and refreshing the page
         event.preventDefault();
     });
+*/
+
+    $("#form-add-new-places").submit(function (event) {
+        console.log($("input[name=new-place-name]").val());
+        $(".submit-form-spinner").hide();
+        var url = sitelink + "/server/servecerequests.php";
+        $.ajax({
+            url: url,
+            type: 'POST',
+            xhr: function () {
+                var myXhr = $.ajaxSettings.xhr();
+                return myXhr;
+            },
+           beforeSend: function (xhr) {
+               
+                $('#new-place-form-icon').html('<span class="fa fa-spinner fa-pulse"></span>');
+                $("#form-add-new-places :input").prop("disabled", true);
+            },
+             success: function (data, textStatus, jqXHR) {
+                $('#new-place-form-icon').html('<span class="fa fa-plus"></span>')
+                $("#form-add-new-places :input").prop("disabled", false);
+                if (data.status == "true") {
+                    $('#form-add-new-places-message').text("place is inserted");
+                    document.getElementById("form-add-new-places").reset();
+                    $("#form-add-new-places :input").prop("disabled", false);
+                } else if (data.status == "false") {
+                    $("#form-add-new-places :input").prop("disabled", false);
+                    $('#form-add-new-places-message').text(data.message);
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $("#form-add-new-places :input").prop("disabled", false);
+                alert(errorThrown);
+            },
+            data: new FormData(this),
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+        event.preventDefault();
+    });
+
 
     placesListFunctions = {
         placesnextpage: function (selectfrom, selectamount) {
@@ -135,6 +178,8 @@ $(document).ready(function () {
                         var tdhtml = '';
                         var index = Number(selectfrom);
                         $.each(data.data, function (id, place) {
+                            "omantourismguide~itemid~itemname"
+                            var qrinfdata = "omantourismguide~place~"+place.id+"~"+place.name+" "+place.type;
                             tdhtml = '<tr id="place_list_tr_' + index + '">' +
                                     ' <td>' + (index + 1) + '</td>' +
                                     ' <td>' + place.name + '</td>' +
@@ -143,7 +188,7 @@ $(document).ready(function () {
                                     '<td>' + place.creatdate + '</td>' +
                                     '<td>' +
                                     '<center>' +
-                                    '<span data-toggle="modal" data-target="#qr_modal" onclick="PlaceOperations.setPlaceQrModal(\'' + place.id + '\', \'' + place.name + '\')" title="QR" class="qr-button btn btn-sm btn-default"><i class="fa fa-qrcode"></i></span>'+
+                                    '<span data-toggle="modal" data-target="#qr_modal" onclick="PlaceOperations.setPlaceQrModal(\'' + qrinfdata + '\', \'' + place.name + '\')" title="QR" class="qr-button btn btn-sm btn-default"><i class="fa fa-qrcode"></i></span>'+
                                     '&nbsp;<span data-toggle="modal" data-target="#map_modal" onclick="PlaceOperations.setmapplacelocation(\'' + place.locationlat + '\', \'' + place.locationlang + '\')" title="open on the map" class="btn btn-sm btn-primary"><i class="fa fa-map-marker"></i></span>' +
                                     '&nbsp;<span onclick="PlaceOperations.setplacedesc(\'' + place.desc + '\')" data-toggle="modal" data-target="#place_desc_modal" title="descrption" class="btn btn-sm btn-warning "><i class="fa fa-file"></i></span>' +
                                     '&nbsp;<span onclick="PlaceOperations.setupdateplacemodelforminfo(' +
@@ -211,10 +256,11 @@ $(document).ready(function () {
             load(lat, lng);
 
         },
-        setPlaceQrModal: function (placeid, placename) {
-            var info = 'placeid=' + placeid +'&qrtitle='+placename+'&qrfor=place';
-            $('#qr_modal_image').attr("src", sitelink + '/qr/QRcreator.php?'+info);
-            $('#qr_event_modal_download').attr("href", sitelink + '/qr/QRcreator.php?'+info);
+        setPlaceQrModal: function (placedata, placename) {
+            var imageinfo = 'qrdata=' + placedata;
+            $('#qr_modal_image').attr("src", sitelink + '/qr/QRcreator.php?'+imageinfo);
+            var imageinfodownload = 'qrdata=' + placedata + '&save=true&qrtitle='+placename;
+            $('#qr_event_modal_download').attr("href", sitelink + '/qr/QRcreator.php?'+imageinfodownload);
             $('#QR_title').text(" " + placename);
         }
     };
@@ -250,6 +296,7 @@ $(document).ready(function () {
                         var html = "";
                         var index = 1;
                         $.each(data.data, function (id, object) {
+                            var qrinfdata = "omantourismguide~place~"+object.id+"~"+object.name+" "+object.placetype;
                             var newplace =
                                     '<div id="place_list_search_' + index + '" class="col-lg-4 col-md-4">' +
                                     '<div class="panel panel-default">' +
@@ -286,7 +333,7 @@ $(document).ready(function () {
                                     '</div>' +
                                     '<div class="panel-footer">' +
                                     '<center>' +
-                                    '<span data-toggle="modal" data-target="#qr_modal" onclick="PlaceOperations.setPlaceQrModal(\'' + object.id + '\', \'' + object.name + '\')" title="QR" class="qr-button btn btn-sm btn-default"><i class="fa fa-qrcode"></i></span>'+
+                                    '<span data-toggle="modal" data-target="#qr_modal" onclick="PlaceOperations.setPlaceQrModal(\'' + qrinfdata + '\', \'' + object.name + '\')" title="QR" class="qr-button btn btn-sm btn-default"><i class="fa fa-qrcode"></i></span>'+
                                     '&nbsp;<span data-toggle="modal" data-target="#map_modal" onclick="PlaceOperations.setmapplacelocation(\'' + object.locationlat + '\', \'' + object.locationlang + '\')" title="open on the map" class="btn btn-sm btn-primary"><i class="fa fa-map-marker"></i></span>' +
                                     '&nbsp;<span onclick="PlaceOperations.setplacedesc(\'' + object.desc + '\')" data-toggle="modal" data-target="#place_desc_modal" title="descrption" class="btn btn-sm btn-warning "><i class="fa fa-file"></i></span>' +
                                     '&nbsp;<span onclick="PlaceOperations.setupdateplacemodelforminfo(' +

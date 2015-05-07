@@ -9,18 +9,25 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
     include_once 'config.php';
     include_once 'reports.php';
     $adminid = $_SESSION['login-admin-id'];
-    
+
     switch ($_POST["destination"]) {
         case "enternewplace":
-            if (isset($_POST["placename"]) &&
-                    isset($_POST["placetype"]) &&
-                    isset($_POST["placeaddress"]) &&
-                    isset($_POST["placelocationlat"]) &&
-                    isset($_POST["placelocationlng"]) &&
-                    isset($_POST["placview"]) &&
-                    isset($_POST["placedescription"])
+            if (isset($_POST["new-place-name"]) &&
+                    isset($_POST["new-place-type"]) &&
+                    isset($_POST["new-place-address"]) &&
+                    isset($_POST["new-place-location-latitude"]) &&
+                    isset($_POST["new-place-location-Longitude"]) &&
+                    isset($_POST["new-place-view"]) &&
+                    isset($_POST["new-place-desc"]) &&
+                    isset($_FILES["file"])
             ) {
-                dboperation::newPlace($_SESSION['login-admin-id'], $_POST["placename"], $_POST["placetype"], $_POST["placeaddress"], $_POST["placelocationlat"], $_POST["placelocationlng"], $_POST["placview"], $_POST["placedescription"]);
+                dboperation::newPlace($_SESSION['login-admin-id'], 
+                        $_POST["new-place-name"], $_POST["new-place-type"],
+                        $_POST["new-place-address"],
+                        $_POST["new-place-location-latitude"], 
+                        $_POST["new-place-location-Longitude"],
+                        $_POST["new-place-view"], $_POST["new-place-desc"],
+                        $_FILES["file"]);
                 dboperation::action_report(ADDNEWPLACE, $adminid);
             } else {
                 parmNotAccess();
@@ -201,14 +208,14 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
                 parmNotAccess();
             }
             break;
-            case "service":
+        case "service":
             if (isset($_POST['selectfrom']) && isset($_POST['selectamount'])) {
                 echo dboperation::getServiceRequests($_POST['selectfrom'], $_POST['selectamount']);
             } else {
                 parmNotAccess();
             }
             break;
-            
+
         case "getserviseproviderinfo":
             if (isset($_POST['providerid'])) {
                 echo dboperation::getServiceProviderInfo($_POST['providerid']);
