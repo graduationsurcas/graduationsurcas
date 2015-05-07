@@ -1,8 +1,14 @@
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 // magic.js
 $(document).ready(function () {
 
     // process the form
-    $('#form-signin').submit(function (event) {
+    $('#form-forgetpassword').submit(function (event) {
 
 
         var emailFilter = /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/;
@@ -16,16 +22,11 @@ $(document).ready(function () {
             $('input[name=userpassword]').focus();
             return false;
         }
-        if ($('input[name=userpassword]').val().trim() == '') {
-            $('#login_result').text("enter your password");
-            $('input[name=userpassword]').focus();
-            return false;
-        }
+       
 
         // get the form data
         var formData = {
-            'useremail': $('input[name=useremail]').val(),
-            'userpassword': $('input[name=userpassword]').val()
+            'useremail': $('input[name=useremail]').val()
         };
 
 
@@ -34,8 +35,7 @@ $(document).ready(function () {
         $('input[name=userpassword]').attr('disabled', 'disabled');
         $('input[name=useremail]').attr('disabled', 'disabled');
         $('input[type="submit"]').attr('disabled', 'disabled');
-        var url = sitelink + "/server/loginrequest.php"; // the script where you handle the form input.
-
+        var url = sitelink + "/server/passwordrequest.php"; // the script where you handle the form input.
         // process the form
         $.ajax({
             type: 'POST',
@@ -44,13 +44,8 @@ $(document).ready(function () {
             dataType: "json",
             encode: true,
             success: function (data, textStatus, jqXHR) {
-                if (data.status == "true") {
-                    window.location.assign(sitelink + "/pages/home.php");
-                } else if (data.status == "false") {
-                    $('input[type="submit"]').removeAttr('disabled');
-                    $('input[name=useremail]').removeAttr('disabled');
-                    $('#login_result').text(data.message);
-                }
+                
+                    $('#login_result').text('Sucess reset');
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 alert(errorThrown);
@@ -63,4 +58,5 @@ $(document).ready(function () {
     });
 
 });
+
 

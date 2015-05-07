@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header" style="text-transform: uppercase"><span class="fa fa-plus-square"></span>&nbsp;add new service requests</h1>
+        <h1 class="page-header" style="text-transform: uppercase"><span class="fa fa-plus-square"></span>&nbsp;service</h1>
     </div>
 </div>
 
@@ -13,7 +13,7 @@
                         <tr>
                             <th>#</th>
                             <th>TITLE</th>
-                            <th>Service NAME</th>
+                            <th>User NAME</th>
                             <th>Status</th>
                             <th>ACTION</th>
                         </tr>
@@ -45,26 +45,29 @@
                             ?>
                             <span onclick="addnewservicesrequest.setservicerequestmodelinf(
                                                 '<?php echo $service->title ?>',
-                                                '<?php echo $service->providername ?>',
-                                                '<?php echo $desc ?>',
-                                                '<?php echo $service->createdate ?>'
+                                                '<?php echo $service->username ?>',
+                                                '<?php echo $service->dec ?>',
+                                                '<?php echo $service->adddate ?>'
                                                 )" data-toggle="modal" data-target="#servicerequest_info_modal" class="btn btn-warning btn-sm">
                                 <i class="fa fa-info-circle"></i>
                             </span>
                             <span data-toggle="modal" 
                                   data-target="#map_modal" 
-                                  onclick="addnewservicesrequest.setmapplacelocation('<?php echo $service->locationlat ?>', '<?php echo $service->locationlang ?>')"
+                                  onclick="addnewservicesrequest.setmapplacelocation('<?php echo $service->loclat ?>', '<?php echo $service->loclan ?>')"
                                   class="btn btn-default btn-sm">
                                 <i class="fa fa-map-marker"></i>
                             </span>
-                            <span onclick="addnewservicesrequest.confirmServiceRequest('<?php echo $service->id ?>', '<?php echo $num ?>')" 
-
+                             <span onclick="addnewservicesrequest.setservicerequestmodelinf(
+                                        '<?php echo $service->id ?>',
+                                        '<?php echo $service->username ?>',
+                                        '<?php echo $service->dec ?>',
+                                        '<?php echo $service->adddate ?>',
+                                        '<?php echo ($service->blockstatus == "true")? "block" : "active" ?>'
+                                        )" data-toggle="modal"
+                                  data-target="#update_serviceproviderinfo_modal"
                                   class="btn btn-success btn-sm">
-                                <i class="fa fa-check"></i>
-                            </span>
-                            <span onclick="addnewservicesrequest.removeservicerequest('<?php echo $service->id ?>', '<?php echo $num ?>')" class="btn btn-danger btn-sm remove-service-request">
-                                <i class="fa fa-trash"></i>
-                            </span>
+                                <i class="fa fa-edit"></i>
+                             </span>
                         </center>
                         </td>
                         </tr>

@@ -11,7 +11,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <form accept-charset="UTF-8" method="POST" role="form" id="form-signin">
+                    <form accept-charset="UTF-8" method="POST" role="form" id="form-forgetpassword">
                         <fieldset>
                             <center>
                                 <label id="login_result">
@@ -24,18 +24,12 @@
                                 
                             </div>
 
-                            <div class="input-group">
-                                <div class="input-group-addon" ><span class="fa fa-lock">&nbsp;</span>Password</div>
-                                <input class="form-control" placeholder="Password" required="" name="userpassword" id="userpassword" type="password">
-                            </div>
-
-
-                            <input class="btn  btn-success btn-block" type="submit" id="login" value="Login">
+                            <input class="btn  btn-success btn-block" type="submit" id="password" value="Get Password">
 
                             <hr>
 
                             <span class="pull-right">
-                                <a href="forgetPassword.php">forgot password</a>
+                                <a href="index.php">Sing in</a>
                             </span>
                         </fieldset>
                     </form>
