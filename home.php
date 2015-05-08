@@ -8,6 +8,7 @@ include './server/config.php';
 
     <head>
         <?php include_once './include/headerlink.html'; ?>
+        
     </head>
 
     <body>

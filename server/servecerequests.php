@@ -114,6 +114,29 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
                     dboperation::action_report($report, $adminid);
                 }
             }break;
+            
+            
+            case "sheararearemove": {
+                if (isset($_POST['itemid']) && isset($_POST['pass'])) {
+
+                    include_once '../class/cryptpass.php';
+                    $email = strval($_SESSION['login-admin-email']);
+                    dboperation::removesharearea($_POST['itemid'], $_POST['pass'], $email);
+                    $report = REMOVEITEM . " | item id = " . $_POST['itemid'];
+                    dboperation::action_report($report, $adminid);
+                }
+            }break;
+            
+            case "feedbackremove": {
+                if (isset($_POST['itemid']) && isset($_POST['pass'])) {
+
+                    include_once '../class/cryptpass.php';
+                    $email = strval($_SESSION['login-admin-email']);
+                    dboperation::removefeedback($_POST['itemid'], $_POST['pass'], $email);
+                    $report = REMOVEITEM . " | item id = " . $_POST['itemid'];
+                    dboperation::action_report($report, $adminid);
+                }
+            }break;
         case "newitem": {
                 if (
                         $_POST['new_item_place'] &&

@@ -4,4 +4,5 @@
                     $_SESSION['login-admin-level-title'] = $row['level'];
                     $_SESSION['login-admin-level-priority'] = $row['priority'];
                     $_SESSION['login'] = true;
+                    $_SESSION['root-admin-sign-in'] = false;
 

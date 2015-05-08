@@ -65,6 +65,7 @@ class dboperation {
                     $_SESSION['login-admin-email'] = $useremail;
                     $_SESSION['login-admin-level'] = $row['level'];
                     $_SESSION['login'] = true;
+                    $_SESSION['root-admin-sign-in'] = false;
 
 
                     $data["message"] = "some message";
@@ -84,7 +85,7 @@ class dboperation {
             $data["status"] = "false";
         } finally {
             $dbh = null;
-            echo json_encode($data);
+            return $data;
         }
     }
     
@@ -596,7 +597,99 @@ class dboperation {
             $dbh = null;
         }
     }
+    
+    
+    
+    public static function removesharearea($itemid, $password, $email) {
+        $response = array("status" => "false", "message" => "");
 
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+
+            $stmt = $dbh->prepare("SELECT admin_password FROM admin WHERE admin_email = :useremail");
+            $stmt->bindParam(':useremail', $email, PDO::PARAM_STR);
+            $stmt->execute();
+            $pass = $stmt->fetchAll();
+//            $response["message"] = $pass[0]["admin_password"];
+
+            if (decrypt_pass($password, $pass[0]['admin_password'])) {
+                $response["status"] = "true";
+
+                $stmt = $dbh->prepare('DELETE
+                                        FROM share_area
+
+                                      WHERE sharearea_id = :itemid');
+                $stmt->bindParam(':itemid', $itemid, PDO::PARAM_INT);
+                $stmt->execute();
+                if ($stmt->rowCount() > 0) {
+                    $response["message"] = "done";
+                    $response["status"] = "true";
+                } else {
+                    $response["message"] = $stmt->errorInfo();
+                    $response["status"] = "false";
+                }
+            } else {
+                $response["message"] = "wrong password";
+                $response["status"] = "false";
+            }
+        } catch (PDOException $e) {
+            $response["message"] = $e->getMessage();
+            $response["status"] = "false";
+        } finally {
+            echo json_encode($response);
+            $dbh = null;
+        }
+    }
+
+    
+    public static function removefeedback($itemid, $password, $email) {
+        $response = array("status" => "false", "message" => "");
+
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+
+            $stmt = $dbh->prepare("SELECT admin_password FROM admin WHERE admin_email = :useremail");
+            $stmt->bindParam(':useremail', $email, PDO::PARAM_STR);
+            $stmt->execute();
+            $pass = $stmt->fetchAll();
+//            $response["message"] = $pass[0]["admin_password"];
+
+            if (decrypt_pass($password, $pass[0]['admin_password'])) {
+                $response["status"] = "true";
+
+                $stmt = $dbh->prepare('DELETE
+                                        FROM feadback
+
+                                      WHERE feadback_id = :itemid');
+                $stmt->bindParam(':itemid', $itemid, PDO::PARAM_INT);
+                $stmt->execute();
+                if ($stmt->rowCount() > 0) {
+                    $response["message"] = "done";
+                    $response["status"] = "true";
+                } else {
+                    $response["message"] = $stmt->errorInfo();
+                    $response["status"] = "false";
+                }
+            } else {
+                $response["message"] = "wrong password";
+                $response["status"] = "false";
+            }
+        } catch (PDOException $e) {
+            $response["message"] = $e->getMessage();
+            $response["status"] = "false";
+        } finally {
+            echo json_encode($response);
+            $dbh = null;
+        }
+    }
+    
+    
+    
+    
     public static function newItem($creatorid, $itemtype, $itemplace, $itemname,
             $itemdesc, $itemview, $images) {
         $data = array("status" => "false", "message" => "");

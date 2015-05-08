@@ -7,15 +7,17 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
+            
         </button>
         <a class="navbar-brand" href="index.php">Oman tourism guide</a>
     </div>
 
-
     <!-- Top Menu Items -->
     <ul class="nav navbar-right top-nav">
         <li class="dropdown">
-            <a href="#" ><i class="fa fa-bell"></i></a>
+            <span  data-toggle="modal" data-target="#notification_modal" class="btn btn-danger btn-sm">
+                                <i class="fa fa-bell"></i>
+                            </span>
         </li>
         <li class="dropdown">
             <a href="#" ><i class="fa fa-user"></i> <?php echo $_SESSION['login-admin-name']; ?></a>
@@ -85,11 +87,12 @@
                 <a href="../pages/feedback.php"><i class="fa fa-fw fa-desktop"></i> users feedback</a>
             </li>
             <li>
-                <a href="#"><i class="fa fa-fw fa-desktop"></i> administration tools</a>
+                <a href="../pages/admin.php"><i class="fa fa-fw fa-desktop"></i> administration tools</a>
                 
             </li>
 
         </ul>
+        
     </div>
     <!-- /.navbar-collaps -->
 </nav>

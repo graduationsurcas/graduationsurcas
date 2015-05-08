@@ -43,7 +43,7 @@ $(document).ready(function () {
         event.preventDefault();
     });
 
-    sheararealistfuntion = {
+    feedbackfuntion = {
         itemsnextpage: function (selectfrom, selectamount) {
             Data = {
                 'destination': 'shararealist',
@@ -242,7 +242,7 @@ $(document).ready(function () {
 
     $("#form-remove-item").submit(function (event) {
         var Data = {
-            'destination': 'sheararearemove',
+            'destination': 'feedbackremove',
             'itemid': $('input[id=remove-item-id]').val(),
             'pass': $('input[id=remove-item-admin-pass]').val()
         };

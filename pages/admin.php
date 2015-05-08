@@ -25,11 +25,13 @@ include '../server/dboperation.php';
                 <div class="container-fluid">
 
                     <?php
-                    include_once '../controlpages/feedback.php';
+                    if($_SESSION['root-admin-sign-in'] == false){
+                        include_once '../controlpages/adminlogin.php';
+                    }else{
+                        include_once '../controlpages/home.php';
+                    }
+                    
                     ?>
-
-
-
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -37,14 +39,12 @@ include '../server/dboperation.php';
 
         </div>
         <!-- /#wrapper -->
-
-        <?php
+        
+         <?php
         include_once '../include/footerlinkspages.html';
-        include_once '../modals/descptionmodal.html';
-        include_once '../modals/removefeedbackmodel.php';
         ?>
-        <script src="../js/feedback.js" type="text/javascript"></script>
-
+        
+        <script src="../js/adminlogin.js" type="text/javascript"></script>
 
     </body>
 

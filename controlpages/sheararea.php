@@ -50,8 +50,9 @@
                             <span onclick="sheararealistfuntion.setdescriptionmodel('<?php echo $desc; ?>')" data-toggle="modal" data-target="#place_desc_modal" class="btn btn-warning btn-sm">
                                 <i class="fa fa-file-text"></i>
                             </span>
+                           </span>
                            
-                            &nbsp;<span onclick="sheararealistfuntion.setremovemodel('<?php echo $item->shareareaid ?>', '<?php echo $num; ?>' )" data-toggle="modal" data-target="#remove_sharearea_modal" class="btn btn-danger btn-sm">
+                            &nbsp;<span onclick="sheararealistfuntion.setremovemodel('<?php echo $item->shareareaid ?>', '<?php echo $num; ?>' )" data-toggle="modal" data-target="#remove_item_modal" class="btn btn-danger btn-sm">
                                 <i class="fa fa-trash"></i>
                             </span>
                         </center>

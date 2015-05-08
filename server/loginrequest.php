@@ -8,7 +8,16 @@ if (isset($_POST["useremail"]) && isset($_POST["userpassword"])) {
     
     $email = strval($_POST["useremail"]);
     $pass = strval($_POST["userpassword"]);
-    dboperation::logIn($email, $pass);
+   $data = dboperation::logIn($email, $pass);
+    if(isset($_POST["rootadmin"])){
+        if($_POST["rootadmin"] == "true" && $data["status"] == "true"){
+            $_SESSION['root-admin-sign-in'] = true;
+        }
+    } 
+    echo json_encode($data);
+    
+    
+    
 }
 
 

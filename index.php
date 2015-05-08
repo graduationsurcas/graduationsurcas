@@ -13,7 +13,6 @@
         include_once 'controlpages/login.php';
         ?>
 
-
         <?php
             include_once 'include/fotterlink.html';
         ?>

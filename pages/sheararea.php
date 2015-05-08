@@ -41,16 +41,13 @@ include '../server/dboperation.php';
         <?php
         include_once '../include/footerlinkspages.html';
         ?>
-        <script src="../js/Chart.js" type="text/javascript"></script>
-        <script src="../js/home.js" type="text/javascript"></script>
-        <script src="../js/items.js" type="text/javascript"></script>
+
            <?php
         include_once '../include/footerlinkspages.html';
-        include_once '../modals/shearareadelmodal.php';
         include_once '../modals/descptionmodal.html';
-
+include_once '../modals/removeshearareamodel.php';
         ?>
-        <script src="../js/sheararea.js" type="text/javascript"></script>
+                <script src="../js/sheararea.js" type="text/javascript"></script>
 
 
     </body>
