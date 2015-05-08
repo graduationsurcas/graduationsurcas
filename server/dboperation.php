@@ -1341,12 +1341,16 @@ class dboperation {
                 service.service_location_lang,
                 service.service_desc,
                 service.service_add_date,
-                service.service_positive_rate,
-                service.service_negative_rate,
                 service.service_status,
                 service.service_title,
                 user_service.useservice_id,
-                user_service.useservice_name
+                user_service.useservice_name,
+                (SELECT COUNT(*) FROM service_rate 
+                    WHERE service_rate.service_id = service.service_id 
+                    AND rate_value = 1) AS service_positive_rate,
+                (SELECT COUNT(*) FROM service_rate 
+                    WHERE service_rate.service_id = service.service_id 
+                    AND rate_value = 0) AS service_negative_rate
               FROM service
                 INNER JOIN user_service
     ON service.service_user_id = user_service.useservice_id LIMIT ' . $selectfrom . ' , ' . $selectamount . '');

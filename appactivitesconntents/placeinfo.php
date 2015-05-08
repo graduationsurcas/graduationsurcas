@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: text/html; charset=utf-8');
 try {
     include_once './server/config.php';
     include_once './server/appdboperations.php';
@@ -57,7 +58,7 @@ try {
                             $itemcount = appdboperations::getItemsOnPlaceCount($_GET["id"]);
                             if ($itemcount > 0) {
                                 ?>
-                                <i class="fa fa-heart"></i>
+                            <a><i class="fa fa-heart"></i></a>
                                 <a class="btn btn-sm">
                                     <i class="fa fa-diamond"></i>
                                     <i class="fa"><?php echo $itemcount; ?></i>
