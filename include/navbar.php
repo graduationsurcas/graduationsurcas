@@ -79,13 +79,14 @@
                 </ul>
             </li>
             <li>
-                <a href="#"><i class="fa fa-fw fa-table"></i> share area</a>
+                <a href="../pages/sheararea.php"><i class="fa fa-fw fa-table"></i> share area</a>
             </li>
             <li>
-                <a href="#"><i class="fa fa-fw fa-desktop"></i> users feedback</a>
+                <a href="../pages/feedback.php"><i class="fa fa-fw fa-desktop"></i> users feedback</a>
             </li>
             <li>
                 <a href="#"><i class="fa fa-fw fa-desktop"></i> administration tools</a>
+                
             </li>
 
         </ul>

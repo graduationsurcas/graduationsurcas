@@ -31,7 +31,7 @@ $(document).ready(function () {
 
         },
         success: function (data, textStatus, jqXHR) {
-            console.log(data);
+            
 
             var doughnutData = [
                 {
