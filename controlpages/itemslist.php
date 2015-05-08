@@ -37,7 +37,7 @@
                             <?php
                             $desc = str_replace("'", "\'", $item->itemdesc);
 //                            "omantourismguide~item~itemid~itemname"
-                            $itemqrdata = "omantourismguide~item~".$item->itemid."~".$item->itemname . " ". $item->itemtype;
+                            $itemqrdata = "omantourismguide~item~".$item->itemid."~".$item->itemname;
                             ?>
                             <span data-toggle="modal" data-target="#qr_modal"
                                         onclick="itemsListFunctions.setItemQrModal('<?php echo $itemqrdata ?>',

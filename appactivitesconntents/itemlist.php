@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: text/html; charset=utf-8');
 include_once './server/config.php';
 include_once './server/appdboperations.php';
 ?>
@@ -11,12 +12,12 @@ include_once './server/appdboperations.php';
         <link href="css/main.css" rel="stylesheet" type="text/css"/>
         <style>
             #place-title{
-                font-size: 100%;
+                font-size: 95%;
                 font-weight: 600;
                 color: #2196F3;
             }
             .card-icon{
-                color: #03A9F4;
+                color: #999999;
             }
         </style>
     </head>

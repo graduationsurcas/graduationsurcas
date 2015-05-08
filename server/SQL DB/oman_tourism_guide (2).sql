@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 07, 2015 at 06:51 PM
+-- Generation Time: May 08, 2015 at 08:32 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS `item` (
   `item_description` text NOT NULL,
   `status_view` int(11) NOT NULL DEFAULT '1' COMMENT '1 is disaplay for all\n0 is no',
   `item_last_update` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=211 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=212 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `item`
@@ -114,7 +114,8 @@ INSERT INTO `item` (`item_id`, `item_type`, `item_admin_creator`, `item_place`, 
 (206, 1, 2, 4, 'new item', '2015-04-25 07:44:40', 'new item create by me', 1, NULL),
 (208, 1, 2, 4, 'gh gh', '2015-04-25 07:52:20', 'ghh', 1, NULL),
 (209, 2, 2, 4, 'تطبيق إيثار', '2015-04-25 07:53:51', 'تم إنشاء هذا التطبيق بواسطة طلاب تطوير البرمجيات في صور', 1, NULL),
-(210, 1, 2, 4, 'try by me', '2015-05-07 14:06:44', 'try', 1, NULL);
+(210, 1, 2, 4, 'try by me', '2015-05-07 14:06:44', 'try', 1, NULL),
+(211, 2, 2, 4, 'Alaimam ', '2015-05-08 13:20:40', 'You can test your application in different ways. If you have real device you can directly test the application by installing your application. If you don’t have one, you can test the app using local emulator.\r\n\r\nAfter starting the emulator open DDMS tool form EClipse Windows ⇒ Show Perspective ⇒ DDMS ( Also you can find it on the right corner of IDE)\r\n\r\nIn the DDMS tool you can find list of emulators you opened. Select the appropriate emulator. In Emulator Controls tab you can manually pass your latitude and longitude to emulator.\r\n\r\nYou can find Emulator testing in demo video of this tutorial.', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -148,7 +149,7 @@ CREATE TABLE IF NOT EXISTS `item_image` (
   `item_id` int(11) NOT NULL,
   `image_title` varchar(40) NOT NULL,
   `image_path` varchar(60) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `item_image`
@@ -162,7 +163,8 @@ INSERT INTO `item_image` (`id_item_image`, `item_id`, `image_title`, `image_path
 (11, 209, '8da42305857c1b5db13c892da5c1a14b.PNG', '../uploadsimages/'),
 (12, 209, '1c548f5ebec85b57bb7ebac9b0dd8431.PNG', '../uploadsimages/'),
 (13, 210, '23eb7ddb5cecee9dafb8d1a0d6c284fa.jpg', '../uploadsimages/'),
-(14, 210, 'd7f5de7d06e7a89efdec50f3eb11451c.jpg', '../uploadsimages/');
+(14, 210, 'd7f5de7d06e7a89efdec50f3eb11451c.jpg', '../uploadsimages/'),
+(15, 211, '8b7f4767cbc08c92270c87f4fbb22c18.JPG', '../uploadsimages/');
 
 -- --------------------------------------------------------
 
@@ -223,88 +225,16 @@ CREATE TABLE IF NOT EXISTS `place` (
   `description` text NOT NULL,
   `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `place`
 --
 
 INSERT INTO `place` (`place_id`, `place_type`, `place_name`, `address`, `place_location_lat`, `place_location_lng`, `place_admin_creator`, `view`, `description`, `create_date`, `last_update`) VALUES
-(4, 4, 'Nizwa ', ' Nizwa, Oman', 22.9332, 57.5302, 2, 1, 'It was built in the 1650s by the second Ya’rubi Imam; Imam Sultan Bin Saif Al Ya''rubi,although its underlying structure goes back to the 12th Century.It is Oman''s most visited national monument. The fort was the administrative seat of authority for the presiding Imams and Walis in times of peace and conflict.[3] The main bulk of the fort took about 12 years to complete and was built above an underground stream. The fort is a powerful reminder of the town''s significance through turbulent periods in Oman''s long history. It was a formidable stronghold against raiding forces that desired Nizwa''s abundant natural wealth and its strategic location at the crossroads of vital routes.', '2015-04-30 18:53:39', '2015-04-14 21:48:44'),
-(29, 4, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-30 18:53:13', '2015-04-14 21:44:05'),
-(30, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
-(31, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
-(32, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:05', '2015-04-14 21:44:05'),
-(33, 6, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-30 18:53:17', '2015-04-14 21:44:25'),
-(34, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:25', '2015-04-14 21:44:25'),
-(35, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:25', '2015-04-14 21:44:25'),
-(36, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:25', '2015-04-14 21:44:25'),
-(37, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:25', '2015-04-14 21:44:25'),
-(38, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:25', '2015-04-14 21:44:25'),
-(39, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:25', '2015-04-14 21:44:25'),
-(40, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:25', '2015-04-14 21:44:25'),
-(41, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:25', '2015-04-14 21:44:25'),
-(42, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:25', '2015-04-14 21:44:25'),
-(43, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:25', '2015-04-14 21:44:25'),
-(44, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:25', '2015-04-14 21:44:25'),
-(45, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:25', '2015-04-14 21:44:25'),
-(46, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:25', '2015-04-14 21:44:25'),
-(47, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:25', '2015-04-14 21:44:25'),
-(48, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:25', '2015-04-14 21:44:25'),
-(49, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:25', '2015-04-14 21:44:25'),
-(50, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:25', '2015-04-14 21:44:25'),
-(51, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:25', '2015-04-14 21:44:25'),
-(52, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:25', '2015-04-14 21:44:25'),
-(53, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:25', '2015-04-14 21:44:25'),
-(54, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:25', '2015-04-14 21:44:25'),
-(55, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:25', '2015-04-14 21:44:25'),
-(56, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:25', '2015-04-14 21:44:25'),
-(57, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:25', '2015-04-14 21:44:25'),
-(58, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:25', '2015-04-14 21:44:25'),
-(59, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:25', '2015-04-14 21:44:25'),
-(60, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:44:25', '2015-04-14 21:44:25'),
-(61, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:45:27', '2015-04-14 21:45:27'),
-(62, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:45:27', '2015-04-14 21:45:27'),
-(63, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:45:27', '2015-04-14 21:45:27'),
-(64, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:45:27', '2015-04-14 21:45:27'),
-(65, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:45:27', '2015-04-14 21:45:27'),
-(66, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:45:27', '2015-04-14 21:45:27'),
-(67, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:45:28', '2015-04-14 21:45:28'),
-(68, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:45:28', '2015-04-14 21:45:28'),
-(69, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:45:28', '2015-04-14 21:45:28'),
-(70, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:45:28', '2015-04-14 21:45:28'),
-(71, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:45:28', '2015-04-14 21:45:28'),
-(72, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:45:28', '2015-04-14 21:45:28'),
-(73, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:45:28', '2015-04-14 21:45:28'),
-(74, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:45:28', '2015-04-14 21:45:28'),
-(75, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:45:28', '2015-04-14 21:45:28'),
-(76, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:45:28', '2015-04-14 21:45:28'),
-(77, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:45:28', '2015-04-14 21:45:28'),
-(78, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:45:28', '2015-04-14 21:45:28'),
-(79, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:45:28', '2015-04-14 21:45:28'),
-(80, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:45:28', '2015-04-14 21:45:28'),
-(81, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:45:28', '2015-04-14 21:45:28'),
-(82, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:45:28', '2015-04-14 21:45:28'),
-(83, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:45:28', '2015-04-14 21:45:28'),
-(84, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:45:28', '2015-04-14 21:45:28'),
-(85, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:45:28', '2015-04-14 21:45:28'),
-(86, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:45:28', '2015-04-14 21:45:28'),
-(87, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:45:28', '2015-04-14 21:45:28'),
-(88, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:45:28', '2015-04-14 21:45:28'),
-(89, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:46:25', '2015-04-14 21:46:25'),
-(90, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:46:25', '2015-04-14 21:46:25'),
-(91, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:46:25', '2015-04-14 21:46:25'),
-(92, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:46:25', '2015-04-14 21:46:25'),
-(93, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:46:25', '2015-04-14 21:46:25'),
-(94, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:46:25', '2015-04-14 21:46:25'),
-(95, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:46:25', '2015-04-14 21:46:25'),
-(96, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:46:25', '2015-04-14 21:46:25'),
-(97, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:46:25', '2015-04-14 21:46:25'),
-(98, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:46:25', '2015-04-14 21:46:25'),
-(99, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:46:25', '2015-04-14 21:46:25'),
-(100, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:46:25', '2015-04-14 21:46:25'),
-(101, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:46:25', '2015-04-14 21:46:25'),
-(102, 3, 'place test ', 'oman', 454578, 7878710, 2, 1, 'fsvtgegbtrbr t reb', '2015-04-14 21:46:25', '2015-04-14 21:46:25');
+(4, 4, 'Nizwa ', ' Nizwa, Oman', 22.9332, 57.5302, 2, 1, 'It was built in the 1650s by the second Ya’rubi Imam; Imam Sultan Bin Saif Al Ya''rubi,although its underlying structure goes back to the 12th Century.It is Oman''s most visited national monument. The fort was the administrative seat of authority for the presiding Imams and Walis in times of peace and conflict.[3] The main bulk of the fort took about 12 years to complete and was built above an underground stream. The fort is a powerful reminder of the town''s significance through turbulent periods in Oman''s long history. It was a formidable stronghold against raiding forces that desired Nizwa''s abundant natural wealth and its strategic location at the crossroads of vital routes.', '2015-05-09 18:53:39', '2015-04-14 21:48:44'),
+(103, 4, 'Sunaysilah', 'Sur', 22.5794, 59.5041, 2, 1, 'This fort now has an enviable hilltop location by the sea, in centuries past it was the city''s first line of defense against sea-borne attack. The four corner towers were fitted with slits for cannon. Inside the courtyard is a typical example of Omani-style rooftop crenellation.', '2015-05-08 07:41:00', '2015-05-08 07:41:00'),
+(104, 3, 'sur college of applied science', 'Sur', 22.5627, 59.4713, 2, 1, 'CAS Sur is a public college that offers a range of programs in the field of Applied Sciences. The college, as planned one of the MOHE s Centres of Excellence, awards degrees in Information Technology, Communication Studies and Biotechnology.', '2015-05-08 12:16:55', '2015-05-08 12:16:55');
 
 -- --------------------------------------------------------
 
@@ -317,7 +247,7 @@ CREATE TABLE IF NOT EXISTS `place_image` (
   `place_id` int(11) NOT NULL,
   `image_title` tinytext NOT NULL,
   `image_path` tinytext NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `place_image`
@@ -326,7 +256,10 @@ CREATE TABLE IF NOT EXISTS `place_image` (
 INSERT INTO `place_image` (`place_image_id`, `place_id`, `image_title`, `image_path`) VALUES
 (10, 4, 'b13709679152509b0de72c84387fa599.jpg', '../uploadsimages/'),
 (11, 4, 'f9321648a3b3ebeadc009ec4ef881a70.jpg', '../uploadsimages/'),
-(12, 4, '2f5dd2825661c23bcfece2e5467e4ff0.jpg', '../uploadsimages/');
+(12, 4, '2f5dd2825661c23bcfece2e5467e4ff0.jpg', '../uploadsimages/'),
+(13, 103, '84de9fae23ded75bd8bc0571d69b88e8.jpg', '../uploadsimages/'),
+(14, 103, '2085e6e8dd77c16e5ce4872f4b0e868d.jpg', '../uploadsimages/'),
+(15, 104, '9e7ef91498cc6c4b71ce18fce8ce0e4b.JPG', '../uploadsimages/');
 
 -- --------------------------------------------------------
 
@@ -364,20 +297,16 @@ CREATE TABLE IF NOT EXISTS `service` (
   `service_location_lang` float DEFAULT NULL,
   `service_desc` text,
   `service_add_date` timestamp NULL DEFAULT NULL,
-  `service_rate_positive` int(11) DEFAULT '0',
   `service_title` varchar(250) NOT NULL,
-  `service_rate_negative` int(11) DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+  `service_status` varchar(2) DEFAULT NULL COMMENT '1 active, 0 block'
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `service`
 --
 
-INSERT INTO `service` (`service_id`, `service_type`, `service_user_id`, `service_admin_add`, `service_location_lat`, `service_location_lang`, `service_desc`, `service_add_date`, `service_rate_positive`, `service_title`, `service_rate_negative`) VALUES
-(1, 1, 1, 2, NULL, NULL, 'test test test test test test test test test test test ', '2015-04-29 20:00:00', 0, 'test ', 0),
-(2, 1, 1, 2, NULL, NULL, 'test test test test test test test test test test test ', '2015-04-29 20:00:00', 0, 'test ', 0),
-(3, 1, 1, 2, NULL, NULL, 'test test test test test test test test test test test ', '2015-04-29 20:00:00', 0, 'test ', 0),
-(4, 1, 1, 2, NULL, NULL, 'test test test test test test test test test test test ', '2015-04-29 20:00:00', 0, 'test ', 0);
+INSERT INTO `service` (`service_id`, `service_type`, `service_user_id`, `service_admin_add`, `service_location_lat`, `service_location_lang`, `service_desc`, `service_add_date`, `service_title`, `service_status`) VALUES
+(5, 2, 50, 2, 10.5979, 10.5945, 'hgyghg yutyu'' ygyty ty ghj', '2015-05-08 17:42:27', 'Alafia ', NULL);
 
 -- --------------------------------------------------------
 
@@ -408,13 +337,6 @@ CREATE TABLE IF NOT EXISTS `service_request` (
   `servicerequest_desc` text NOT NULL,
   `servicerequest_add_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `service_request`
---
-
-INSERT INTO `service_request` (`servicerequest_id`, `servicerequest_title`, `servicerequest_type`, `servicerequest_user_id`, `servicerequest_location_lat`, `servicerequest_location_lang`, `servicerequest_desc`, `servicerequest_add_date`) VALUES
-(1, 'Alafia ', 2, 50, 10.5979, 10.5945, 'hgyghg yutyu'' ygyty ty ghj', '2015-04-30 10:44:40');
 
 -- --------------------------------------------------------
 
@@ -881,7 +803,7 @@ MODIFY `feadback_id` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `item`
 --
 ALTER TABLE `item`
-MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=211;
+MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=212;
 --
 -- AUTO_INCREMENT for table `item_comment`
 --
@@ -891,7 +813,7 @@ MODIFY `itemcomment_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=75;
 -- AUTO_INCREMENT for table `item_image`
 --
 ALTER TABLE `item_image`
-MODIFY `id_item_image` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
+MODIFY `id_item_image` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=16;
 --
 -- AUTO_INCREMENT for table `item_type`
 --
@@ -906,12 +828,12 @@ MODIFY `lang_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 -- AUTO_INCREMENT for table `place`
 --
 ALTER TABLE `place`
-MODIFY `place_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=103;
+MODIFY `place_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=105;
 --
 -- AUTO_INCREMENT for table `place_image`
 --
 ALTER TABLE `place_image`
-MODIFY `place_image_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
+MODIFY `place_image_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=16;
 --
 -- AUTO_INCREMENT for table `place_type`
 --
@@ -921,7 +843,7 @@ MODIFY `place_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 -- AUTO_INCREMENT for table `service`
 --
 ALTER TABLE `service`
-MODIFY `service_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+MODIFY `service_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `service_request`
 --
@@ -960,34 +882,34 @@ MODIFY `useservice_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=250;
 -- Constraints for table `action_report`
 --
 ALTER TABLE `action_report`
-ADD CONSTRAINT `admin_id_key` FOREIGN KEY (`admin`) REFERENCES `admin` (`admin_id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+ADD CONSTRAINT `admin_id_key` FOREIGN KEY (`admin`) REFERENCES `admin` (`admin_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `admin`
 --
 ALTER TABLE `admin`
-ADD CONSTRAINT `admintype_id_key` FOREIGN KEY (`admin_type`) REFERENCES `admin_type` (`admintype_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT `admintype_id_key` FOREIGN KEY (`admin_type`) REFERENCES `admin_type` (`admintype_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `feadback`
 --
 ALTER TABLE `feadback`
-ADD CONSTRAINT `feadback_userid_key` FOREIGN KEY (`feadback_user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT `feadback_userid_key` FOREIGN KEY (`feadback_user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `item`
 --
 ALTER TABLE `item`
-ADD CONSTRAINT `item_admin_key` FOREIGN KEY (`item_admin_creator`) REFERENCES `admin` (`admin_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `item_itemtype_key` FOREIGN KEY (`item_type`) REFERENCES `item_type` (`itemtype_id`) ON DELETE NO ACTION ON UPDATE CASCADE,
+ADD CONSTRAINT `item_admin_key` FOREIGN KEY (`item_admin_creator`) REFERENCES `admin` (`admin_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `item_itemtype_key` FOREIGN KEY (`item_type`) REFERENCES `item_type` (`itemtype_id`) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD CONSTRAINT `item_place_key` FOREIGN KEY (`item_place`) REFERENCES `place` (`place_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `item_comment`
 --
 ALTER TABLE `item_comment`
-ADD CONSTRAINT `itemcomment_id_key` FOREIGN KEY (`itemcomment_item_id`) REFERENCES `item` (`item_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `itemcomment_user_id` FOREIGN KEY (`itemcomment_user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT `itemcomment_id_key` FOREIGN KEY (`itemcomment_item_id`) REFERENCES `item` (`item_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `itemcomment_user_id` FOREIGN KEY (`itemcomment_user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `item_image`
@@ -999,8 +921,8 @@ ADD CONSTRAINT `item_image_key` FOREIGN KEY (`item_id`) REFERENCES `item` (`item
 -- Constraints for table `place`
 --
 ALTER TABLE `place`
-ADD CONSTRAINT `place_admin_creator_id` FOREIGN KEY (`place_admin_creator`) REFERENCES `admin` (`admin_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-ADD CONSTRAINT `place_ibfk_1` FOREIGN KEY (`place_type`) REFERENCES `place_type` (`place_id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+ADD CONSTRAINT `place_admin_creator_id` FOREIGN KEY (`place_admin_creator`) REFERENCES `admin` (`admin_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `place_ibfk_1` FOREIGN KEY (`place_type`) REFERENCES `place_type` (`place_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `place_image`
@@ -1012,36 +934,36 @@ ADD CONSTRAINT `place_image_place_id_key` FOREIGN KEY (`place_id`) REFERENCES `p
 -- Constraints for table `service`
 --
 ALTER TABLE `service`
-ADD CONSTRAINT `service_admin_key` FOREIGN KEY (`service_admin_add`) REFERENCES `admin` (`admin_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `service_ibfk_1` FOREIGN KEY (`service_type`) REFERENCES `service_type` (`servicetype_id`),
-ADD CONSTRAINT `service_user_key` FOREIGN KEY (`service_user_id`) REFERENCES `user_service` (`useservice_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT `service_admin_key` FOREIGN KEY (`service_admin_add`) REFERENCES `admin` (`admin_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `service_ibfk_1` FOREIGN KEY (`service_type`) REFERENCES `service_type` (`servicetype_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `service_user_key` FOREIGN KEY (`service_user_id`) REFERENCES `user_service` (`useservice_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `service_rate`
 --
 ALTER TABLE `service_rate`
-ADD CONSTRAINT `service_rate_service_id` FOREIGN KEY (`service_id`) REFERENCES `service` (`service_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `service_rate_user_id_key` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT `service_rate_service_id` FOREIGN KEY (`service_id`) REFERENCES `service` (`service_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `service_rate_user_id_key` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `service_request`
 --
 ALTER TABLE `service_request`
-ADD CONSTRAINT `service_request_ibfk_1` FOREIGN KEY (`servicerequest_type`) REFERENCES `service_type` (`servicetype_id`),
+ADD CONSTRAINT `service_request_ibfk_1` FOREIGN KEY (`servicerequest_type`) REFERENCES `service_type` (`servicetype_id`) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD CONSTRAINT `servicerequest_user_key` FOREIGN KEY (`servicerequest_user_id`) REFERENCES `user_service` (`useservice_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `share_area`
 --
 ALTER TABLE `share_area`
-ADD CONSTRAINT `sharearea_userid_key` FOREIGN KEY (`sharearea_user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+ADD CONSTRAINT `sharearea_userid_key` FOREIGN KEY (`sharearea_user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `share_comment`
 --
 ALTER TABLE `share_comment`
-ADD CONSTRAINT `sharecomm_sharearea_id_key` FOREIGN KEY (`sharecomm_id`) REFERENCES `share_area` (`sharearea_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `sharecomm_userid_key` FOREIGN KEY (`sharecomm_user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT `sharecomm_sharearea_id_key` FOREIGN KEY (`sharecomm_id`) REFERENCES `share_area` (`sharearea_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `sharecomm_userid_key` FOREIGN KEY (`sharecomm_user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `user`
@@ -1053,8 +975,8 @@ ADD CONSTRAINT `user_lang_key` FOREIGN KEY (`user_lang`) REFERENCES `language` (
 -- Constraints for table `user_service_rate`
 --
 ALTER TABLE `user_service_rate`
-ADD CONSTRAINT `user_service_rate_user_id_key` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `user_service_rate_user_service_id_key` FOREIGN KEY (`user_service_id`) REFERENCES `user_service` (`useservice_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT `user_service_rate_user_id_key` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `user_service_rate_user_service_id_key` FOREIGN KEY (`user_service_id`) REFERENCES `user_service` (`useservice_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

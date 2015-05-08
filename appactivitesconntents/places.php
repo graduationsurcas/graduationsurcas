@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: text/html; charset=utf-8');
 include_once './server/config.php';
 include_once './server/appdboperations.php';
 ?>
@@ -16,7 +17,7 @@ include_once './server/appdboperations.php';
                 color: #2196F3;
             }
             .card-icon{
-                color: #03A9F4;
+                color: #999999;
             }
         </style>
     </head>
@@ -26,7 +27,21 @@ include_once './server/appdboperations.php';
         <section class="main-places-section">
 
             <?php
-            $places = appdboperations::getPlacesList(250);
+            $places = array();
+            if(isset($_GET["orderby"])){
+                switch ($_GET["orderby"]) {
+                    case "date":
+                        $places = appdboperations::getPlacesList($_GET["selectamount"]);
+                        break;
+                    case "location":
+                        $places = appdboperations::getPlacesListOrderByLocation
+                            ($_GET["selectamount"], $_GET["locationlat"], $_GET["locationlong"]);
+                        break;
+                    default:
+                        break;
+                }
+                
+            }
 
             foreach ($places as $places) {
                 ?>
