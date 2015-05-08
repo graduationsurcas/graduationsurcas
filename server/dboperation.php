@@ -1657,6 +1657,120 @@ class dboperation {
         }
     }
     
+    public static function getsheaareaist($selectfrom = 1, $selectamount = 25) {
+        $response = array("status" => "false", "data" => "");
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $dbh->prepare('SELECT
+                user.user_id,
+                user.user_name,
+                share_area.sharearea_id,
+                share_area.sharearea_text,
+                share_area.sharearea_user_id,
+                share_area.sharearea_add_date,
+                share_area.sharearea_location
+                FROM share_area
+                INNER JOIN user
+                  ON share_area.sharearea_user_id = user.user_id
+                                   LIMIT ' . intval($selectfrom) . ' , ' . intval($selectamount) . '');
+
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            $response = array("status" => "false", "data" => "");
+            $item = array(
+                "user_id" => "",
+                "user_name" => "",
+                "sharearea_id" => "",
+                "sharearea_text" => "",
+                "sharearea_user_id" => "",
+                "sharearea_user_id" => "",
+                "sharearea_add_date" => "",
+                "sharearea_location" => ""
+              
+            );
+            $data = array();
+            foreach ($result as $row) {
+                $item['userid'] = $row['user_id'];
+                $item['username'] = $row['user_name'];
+                $item['shareareaid'] = $row['sharearea_id'];
+                $item['sheareatext'] = $row['sharearea_text'];
+                $item['shearareaid'] = $row['sharearea_user_id'];
+                $item['shearareauserid'] = $row['sharearea_user_id'];
+                $item['sheaareaadddate'] = $row['sharearea_add_date'];
+                $item['shearareallocation'] = $row['sharearea_location'];
+                array_push($data, $item);
+            }
+            $response['data'] = $data;
+            $response["status"] = "true";
+        } catch (PDOException $e) {
+            $response["data"] = $e->getMessage();
+            $response["status"] = "false";
+            echo $e->getMessage();
+        } finally {
+            return json_encode($response);
+            $dbh = null;
+        }
+    }
+
+    
+    
+    
+    public static function getuserfeedbacllist($selectfrom = 1, $selectamount = 25) {
+        $response = array("status" => "false", "data" => "");
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $dbh->prepare('SELECT
+                user.user_name,
+                user.user_id,
+                feadback.feadback_id,
+                feadback.feadback_user_id,
+                feadback.feadback_add_date,
+                feadback.feadback_text
+              FROM feadback
+                INNER JOIN user
+                  ON feadback.feadback_user_id = user.user_id
+                                   LIMIT ' . intval($selectfrom) . ' , ' . intval($selectamount) . '');
+
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            $response = array("status" => "false", "data" => "");
+            $item = array(
+                "user_name" => "",
+                "user_id" => "",
+                "feadback_id" => "",
+                "feadback_user_id" => "",
+                "feadback_add_date" => "",
+                "feadback_text" => ""
+              
+            );
+            $data = array();
+            foreach ($result as $row) {
+                $item['username'] = $row['user_name'];
+                $item['userid'] = $row['user_id'];
+                $item['feedbackid'] = $row['feadback_id'];
+                $item['feedbackuserid'] = $row['feadback_user_id'];
+                $item['feedbackadddate'] = $row['feadback_add_date'];
+                $item['feedbacktext'] = $row['feadback_text'];
+                array_push($data, $item);
+            }
+            $response['data'] = $data;
+            $response["status"] = "true";
+        } catch (PDOException $e) {
+            $response["data"] = $e->getMessage();
+            $response["status"] = "false";
+            echo $e->getMessage();
+        } finally {
+            return json_encode($response);
+            $dbh = null;
+        }
+    }
+    
+    
+    
+    
+    
     
     
 
