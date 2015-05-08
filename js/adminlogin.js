@@ -4,7 +4,7 @@ $(document).ready(function () {
     // process the form
     $('#form-root-admin-signin').submit(function (event) {
 
-        alert("here")
+      
         var emailFilter = /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/;
         if ($('input[name=useremail]').val().trim() == '') {
             $('#login_result').text("enter your email");

@@ -10,7 +10,6 @@ include '../server/dboperation.php';
     <head>
         <?php include_once '../include/headerlinkpages.html'; ?>
     </head>
-
     <body>
 
         <div id="wrapper">
@@ -28,7 +27,7 @@ include '../server/dboperation.php';
                     if($_SESSION['root-admin-sign-in'] == false){
                         include_once '../controlpages/adminlogin.php';
                     }else{
-                        include_once '../controlpages/home.php';
+                        include_once '../controlpages/adminpanel.php';
                     }
                     
                     ?>

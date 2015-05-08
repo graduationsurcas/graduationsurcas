@@ -50,19 +50,19 @@
                 </ul>
             </li>
             <li>
-                <a href="javascript:;" data-toggle="collapse" data-target="#itemscolntrollcollapse"><i class="fa fa-fw fa-cubes"></i>&nbsp;Items<i class="fa fa-fw fa-caret-down"></i></a>
+                <a href="javascript:;" data-toggle="collapse" data-target="#itemscolntrollcollapse"><i class="fa fa-fw fa-cubes"></i>&nbsp;Souvenir<i class="fa fa-fw fa-caret-down"></i></a>
                 <ul id="itemscolntrollcollapse" class="collapse">
                     <li>
-                        <a href="../pages/newitems.php"><span class="fa fa-arrow-circle-o-right"></span>&nbsp;New Item</a>
+                        <a href="../pages/newitems.php"><span class="fa fa-arrow-circle-o-right"></span>&nbsp;New Souvenir</a>
                     </li>
                     <li>
-                        <a href="../pages/itemslist.php"><span class="fa fa-arrow-circle-o-right"></span>&nbsp;Items List</a>
+                        <a href="../pages/itemslist.php"><span class="fa fa-arrow-circle-o-right"></span>&nbsp;Souvenir List</a>
                     </li>
                     <li>
-                        <a href="../pages/itemsearch.php"><span class="fa fa-arrow-circle-o-right"></span>&nbsp;Items Search</a>
+                        <a href="../pages/itemsearch.php"><span class="fa fa-arrow-circle-o-right"></span>&nbsp;Souvenir Search</a>
                     </li>
                     <li>
-                        <a href="../pages/itemcomments.php"><span class="fa fa-arrow-circle-o-right"></span>&nbsp;Items Comments</a>
+                        <a href="../pages/itemcomments.php"><span class="fa fa-arrow-circle-o-right"></span>&nbsp;Souvenir Comments</a>
                     </li>
                 </ul>
             </li>
