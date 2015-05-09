@@ -44,7 +44,7 @@ include '../server/dboperation.php';
         ?>
         
         <script src="../js/adminlogin.js" type="text/javascript"></script>
-
+        <script src="../js/adminpanel.js" type="text/javascript"></script>
     </body>
 
 </html>

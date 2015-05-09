@@ -15,7 +15,7 @@
     <!-- Top Menu Items -->
     <ul class="nav navbar-right top-nav">
         <li class="dropdown">
-            <span  data-toggle="modal" data-target="#notification_modal" class="btn btn-danger btn-sm">
+            <span class="badge">42</span><span  data-toggle="modal" data-target="#notification_modal" class="btn btn-danger btn-sm">
                                 <i class="fa fa-bell"></i>
                             </span>
         </li>

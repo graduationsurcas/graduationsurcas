@@ -9,4 +9,5 @@ define("ADDNEWITEM", "Admin inserted new item");
 define("UPDATESERVICEPROVIDER", "Admin updated services provider");
 define("REMOVESERVICEPROVIDER", "Admin removed services provider");
 define("UPDATESERVICEPROVIDERPASS", "Admin updated services provider password");
+define("ADDNEWADMIN", "New Addmin Added");
 

@@ -154,6 +154,32 @@ class dboperation {
         }
     }
 
+    
+    public static function getadminTypes() {
+        try {
+
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $sql = "SELECT admintype_id, admintype_name FROM admin_type WHERE 1";
+            $getPlacesTypes = array();
+            foreach ($dbh->query($sql) as $row) {
+                $id = $row['admintype_id'];
+                $type = $row['admintype_name'];
+                $getadminTypes[$id] = $type;
+            }
+
+            return $getadminTypes;
+
+            /*             * * close the database connection ** */
+            $dbh = null;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+    
+    
+    
+    
+    
     public static function getAllPlacesx() {
         try {
 
@@ -195,6 +221,29 @@ class dboperation {
             echo $e->getMessage();
         }
     }
+    
+   public static function getAllserviceTypes() {
+        try {
+
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $sql = "SELECT servicetype_id, servicetype_name FROM service_type WHERE 1";
+            $getAllItemTypes = array();
+            foreach ($dbh->query($sql) as $row) {
+                $id = $row['servicetype_id'];
+                $type = $row['servicetype_name'];
+                $getAllservicesTypes[$id] = $type;
+            }
+
+            return $getAllservicesTypes;
+
+            /*             * * close the database connection ** */
+            $dbh = null;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    } 
+    
+    
 
     public static function getAllPlaces() {
         try {
@@ -220,7 +269,151 @@ class dboperation {
             echo $e->getMessage();
         }
     }
+    
+    
+    
+    
+    
+    
+    
+    
+ public static function newadmin($admin_name, $admin_email,$admin_type, 
+            $admin_password) {
 
+        $data = array("status" => "false", "message" => "");
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $query = 'INSERT INTO oman_tourism_guide.admin '
+                    . '(admin_id, '
+                    . 'admin_type, '
+                    . 'admin_email, '
+                    . 'admin_name, '
+                    . 'admin_password,'
+                    . ' admin_create_date) '
+                     . 'VALUES (NULL, '
+                    . ' :admin_type,'
+                    . ' :admin_email,'
+                    . ' :admin_name,'
+                    . ' :admin_password, CURRENT_TIMESTAMP())';
+            $stmt = $dbh->prepare($query) or die(mysql_error());
+            $stmt->bindParam(':admin_type', $admin_type, PDO::PARAM_INT);
+            $stmt->bindParam(':admin_email', $admin_email, PDO::PARAM_STR);
+            $stmt->bindParam(':admin_name', $admin_name, PDO::PARAM_STR);
+            $stmt->bindParam(':admin_password', encrypt_pass($admin_password), PDO::PARAM_STR);
+            $stmt->execute();
+             if ($stmt->rowCount() == 1) {
+                $data["status"] = "true";
+                $idofinserteditem = $dbh->lastInsertId();
+            } else {
+                $data["message"] = $stmt->errorInfo();
+                $data["status"] = "false";
+            }
+        } catch (Exception $e) {
+            $data["message"] = $e->getMessage();
+            $data["status"] = "false";
+        } finally {
+            $dbh = null;
+            echo json_encode($data);
+        }
+    }
+    
+    
+    public static function addnewaplace($place_name) {
+
+        $data = array("status" => "false", "message" => "");
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $query = 'INSERT INTO oman_tourism_guide.place_type '
+                    . '(place_id, '
+                    . 'place_name) '
+                     . 'VALUES (NULL, '
+                    . ':place_name)';
+            $stmt = $dbh->prepare($query) or die(mysql_error());
+            $stmt->bindParam(':place_name', $place_name, PDO::PARAM_INT);
+            $stmt->execute();
+             if ($stmt->rowCount() == 1) {
+                $data["status"] = "true";
+                $idofinserteditem = $dbh->lastInsertId();
+            } else {
+                $data["message"] = $stmt->errorInfo();
+                $data["status"] = "false";
+            }
+        } catch (Exception $e) {
+            $data["message"] = $e->getMessage();
+            $data["status"] = "false";
+        } finally {
+            $dbh = null;
+            echo json_encode($data);
+        }
+    }
+    public static function addnewaservices($services_name) {
+
+        $data = array("status" => "false", "message" => "");
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $query = 'INSERT INTO oman_tourism_guide.service_type '
+                    . '(servicetype_id, '
+                    . 'servicetype_name) '
+                     . 'VALUES (NULL, '
+                    . ':servicetype_name)';
+            $stmt = $dbh->prepare($query) or die(mysql_error());
+            $stmt->bindParam(':servicetype_name', $services_name, PDO::PARAM_INT);
+            $stmt->execute();
+             if ($stmt->rowCount() == 1) {
+                $data["status"] = "true";
+                $idofinserteditem = $dbh->lastInsertId();
+            } else {
+                $data["message"] = $stmt->errorInfo();
+                $data["status"] = "false";
+            }
+        } catch (Exception $e) {
+            $data["message"] = $e->getMessage();
+            $data["status"] = "false";
+        } finally {
+            $dbh = null;
+            echo json_encode($data);
+        }
+    }
+    
+    public static function addnewaitem($itemtype_name) {
+
+        $data = array("status" => "false", "message" => "");
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $query = 'INSERT INTO oman_tourism_guide.item_type '
+                    . '(itemtype_id, '
+                    . 'itemtype_name) '
+                     . 'VALUES (NULL, '
+                    . ':itemtype_name)';
+            $stmt = $dbh->prepare($query) or die(mysql_error());
+            $stmt->bindParam(':itemtype_name', $itemtype_name, PDO::PARAM_INT);
+            $stmt->execute();
+             if ($stmt->rowCount() == 1) {
+                $data["status"] = "true";
+                $idofinserteditem = $dbh->lastInsertId();
+            } else {
+                $data["message"] = $stmt->errorInfo();
+                $data["status"] = "false";
+            }
+        } catch (Exception $e) {
+            $data["message"] = $e->getMessage();
+            $data["status"] = "false";
+        } finally {
+            $dbh = null;
+            echo json_encode($data);
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
     public static function newPlace($admin_id, $place_name, $place_type, 
             $address, $location_lat, $location_lng,
             $view, $description, $images) {
@@ -1865,6 +2058,54 @@ class dboperation {
     }
     
     
+     public static function getalladmin($selectfrom = 1, $selectamount = 25) {
+        $response = array("status" => "false", "data" => "");
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                        $stmt = $dbh->prepare('SELECT
+              admin.admin_id,
+              admin_type.admintype_name,
+              admin.admin_email,
+              admin.admin_name,
+              admin.admin_create_date
+            FROM admin
+              INNER JOIN admin_type
+                ON admin.admin_type = admin_type.admintype_id 
+                limit ' . intval($selectfrom) . ' , ' . intval($selectamount) . '');
+
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            $response = array("status" => "false", "data" => "");
+            $item = array(
+                "admin_id" => "",
+                "admintype_name" => "",
+                "admin_email" => "",
+                "admin_name" => "",
+                "admin_create_date" => ""
+              
+            );
+            $data = array();
+            foreach ($result as $row) {
+                $item['adminid'] = $row['admin_id'];
+                $item['admitypename'] = $row['admintype_name'];
+                $item['adminemail'] = $row['admin_email'];
+                $item['adminname'] = $row['admin_name'];
+                $item['admincreatedate'] = $row['admin_create_date'];
+               
+                array_push($data, $item);
+            }
+            $response['data'] = $data;
+            $response["status"] = "true";
+        } catch (PDOException $e) {
+            $response["data"] = $e->getMessage();
+            $response["status"] = "false";
+            echo $e->getMessage();
+        } finally {
+            return json_encode($response);
+            $dbh = null;
+        }
+    }
     
     
     

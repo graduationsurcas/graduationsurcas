@@ -271,6 +271,51 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
             break;
         default:
             break;
+        case "enternewadmin":
+            if (isset($_POST["new-admin-type"]) &&
+                    isset($_POST["new-admin-name"]) &&
+                    isset($_POST["new-email-email"]) &&
+                    isset($_POST["new-admin-password"])
+            ) {
+                include_once '../class/cryptpass.php';
+                dboperation::newadmin( $_POST["new-admin-name"],
+                        $_POST["new-email-email"], $_POST["new-admin-type"],
+                        $_POST["new-admin-password"]);
+                dboperation::action_report(ADDNEWADMIN, $_SESSION['login-admin-name']);
+            } else {
+                parmNotAccess();
+            }
+            break;
+            case "enternewplacetype":
+            if (isset($_POST["new-place-name"])
+            ) {
+                include_once '../class/cryptpass.php';
+                dboperation::addnewaplace( $_POST["new-place-name"]);
+                dboperation::action_report(ADDNEWADMIN, $_SESSION['login-admin-name']);
+            } else {
+                parmNotAccess();
+            }
+            break;
+            case "enternewservicestype":
+            if (isset($_POST["new-services-type"])
+            ) {
+                include_once '../class/cryptpass.php';
+                dboperation::addnewaservices( $_POST["new-services-type"]);
+                dboperation::action_report(ADDNEWADMIN, $_SESSION['login-admin-name']);
+            } else {
+                parmNotAccess();
+            }
+            break;
+            case "enternewitemtype":
+            if (isset($_POST["new-item-type"])
+            ) {
+                include_once '../class/cryptpass.php';
+                dboperation::addnewaitem( $_POST["new-item-type"]);
+                dboperation::action_report(ADDNEWADMIN, $_SESSION['login-admin-name']);
+            } else {
+                parmNotAccess();
+            }
+            break;
     }
 
     function parmNotAccess() {
