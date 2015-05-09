@@ -11,5 +11,3 @@ include_once './class/cryptpass.php';
 
 //dboperation::newadmin("khalfan", "khalfan@gmail.com", 3, "123");
 //dboperation::addnewaplace("kmk");
-dboperation::addnewaservices("test");
-

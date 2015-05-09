@@ -243,7 +243,26 @@ class dboperation {
         }
     } 
     
-    
+     public static function getAllNanvTabTitle() {
+        try {
+            $data = array();
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $sql = "SELECT nav_tab_title_id, navkey ,title,creator_admin FROM nav_tab_title WHERE 1";
+            foreach ($dbh->query($sql) as $row) {
+                $data[$row['navkey']] = array("id"=>$row['nav_tab_title_id'],
+                    "key"=>$row['navkey'],
+                    "title"=>$row['title'], "adminid"=>$row['creator_admin']);
+            }
+
+           
+
+            /*             * * close the database connection ** */
+            $dbh = null;
+             return $data;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    } 
 
     public static function getAllPlaces() {
         try {
@@ -651,6 +670,34 @@ class dboperation {
             $stmt->bindParam(':view', $view, PDO::PARAM_INT);
             $stmt->bindParam(':desc', $description, PDO::PARAM_STR);
             $stmt->bindParam(':placeid', $placeid, PDO::PARAM_INT);
+            $stmt->execute();
+            if ($stmt->rowCount() > 0) {
+                $response['message'] = "done";
+                $response["status"] = "true";
+            } else {
+                $response['message'] = $stmt->errorInfo();
+                $response["status"] = "false";
+            }
+        } catch (PDOException $e) {
+            $response["message"] = $e->getMessage();
+            $response["status"] = "false";
+            echo $e->getMessage();
+        } finally {
+            echo json_encode($response);
+            $dbh = null;
+        }
+    }
+    
+    
+    public static function updatePlacesNavTap($nav_tab_title_id, $title) {
+        $response = array("status" => "false", "message" => "");
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $dbh->prepare('UPDATE nav_tab_title
+                            SET title = :title where nav_tab_title_id= :nav_tab_title_id');
+            $stmt->bindParam(':nav_tab_title_id', $nav_tab_title_id, PDO::PARAM_INT);
+            $stmt->bindParam(':title', $title, PDO::PARAM_STR);
             $stmt->execute();
             if ($stmt->rowCount() > 0) {
                 $response['message'] = "done";

@@ -1,6 +1,50 @@
 
 $(document).ready(function () {
+    
+    
     var singleitemcommentscount = 0;
+    
+    $("#form-update-constant").submit(function (event) {
+        $(".submit-form-spinner").hide();
+        var url = sitelink + "/server/servecerequests.php";
+        Data = {
+                'destination': 'updateconstant',
+                'constantid': $('#constantid').val(),
+                'new-constant-title': $('input[id=new-constant-title]').val()
+            };
+            console.log(Data)
+        $.ajax({
+            type: 'POST',
+                url: url,
+                data: Data,
+                dataType: 'json',
+                encode: true,
+            
+            beforeSend: function (xhr) {
+                console.log(Data)
+                $("fa fa-spin fa-cog").show();
+                $("#form-update-constant :input").prop("disabled", true);
+            },
+            success: function (data, textStatus, jqXHR) {
+                if (data.status == "true") {
+                    $('#form-update-constant-messege').text("Updated");
+                } else {
+                    $('#form-update-constant-messege').text("Some unknown error happened");
+                }
+                document.getElementById("form-add-new-admin").reset();
+                $(".submit-form-spinner").hide();
+                $("#form-update-constant :input").prop("disabled", false);
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $("#form-update-constant :input").prop("disabled", false);
+                $('#form-update-constant-messege').text("Some error happened, " + errorThrown);
+            }
+        });
+        event.preventDefault();
+    });
+    
+    
     $("#form-add-new-admin").submit(function (event) {
         $(".submit-form-spinner").hide();
         var url = sitelink + "/server/servecerequests.php";
@@ -41,6 +85,8 @@ $(document).ready(function () {
         });
         event.preventDefault();
     });
+    
+    
     
  $("#form-add-new-item-type").submit(function (event) {
         $(".submit-form-spinner").hide();
@@ -706,7 +752,7 @@ $("#form-add-new-place-type").submit(function (event) {
                 encode: true,
             
             beforeSend: function (xhr) {
-                console.log(Data)
+               
                 $("fa fa-spin fa-cog").show();
                 $("#form-add-new-place-type :input").prop("disabled", true);
             },

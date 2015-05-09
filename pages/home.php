@@ -1,4 +1,6 @@
 <?php
+include '../server/config.php';
+include '../server/dboperation.php';
 include '../include/authpages.php';
 ?>
 <!DOCTYPE html>
