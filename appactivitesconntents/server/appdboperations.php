@@ -270,5 +270,147 @@ class appdboperations {
         }
     }
 
+    public static function getServiceList($limit = 25) {
+        try {
+
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $sql = "SELECT
+                    service.service_id,
+                    service_type.servicetype_id,
+                    service_type.servicetype_name,
+                    user_service.useservice_name,
+                    user_service.useservice_id,
+                    service.service_location_lat,
+                    service.service_location_lang,
+                    service.service_desc,
+                    DATE(service.service_add_date) AS createdate,
+                    service.service_title
+                  FROM service
+                    INNER JOIN service_type
+                      ON service.service_type = service_type.servicetype_id
+                    INNER JOIN user_service
+                      ON service.service_user_id = user_service.useservice_id
+                  WHERE service.service_status = 1
+                  ORDER BY service.service_add_date DESC
+                  LIMIT " . intval($limit);
+
+            $data = array();
+            $stmt = $dbh->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($result as $row) {
+                $service = array();
+                $service["id"] = $row["service_id"];
+                $service["title"] = $row["service_title"];
+                $service["type"] = $row["servicetype_name"];
+                $service["typeid"] = $row["servicetype_id"];
+                $service["providername"] = $row["useservice_name"];
+                $service["providerid"] = $row["useservice_id"];
+                $service["locationlat"] = $row["service_location_lat"];
+                $service["locationlong"] = $row["service_location_lang"];
+                $service["description"] = $row["service_desc"];
+                $service["date"] = $row["createdate"];
+                array_push($data, $service);
+            }
+
+            $dbh = null;
+            return $data;
+
+            /*             * * close the database connection ** */
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+    
+      public static function getServiceListByProvider($limit = 25, $providerid) {
+        try {
+
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $sql = "SELECT
+                    service.service_id,
+                    service_type.servicetype_id,
+                    service_type.servicetype_name,
+                    user_service.useservice_name,
+                    user_service.useservice_id,
+                    service.service_location_lat,
+                    service.service_location_lang,
+                    service.service_desc,
+                    DATE(service.service_add_date) AS createdate,
+                    service.service_title
+                  FROM service
+                    INNER JOIN service_type
+                      ON service.service_type = service_type.servicetype_id
+                    INNER JOIN user_service
+                      ON service.service_user_id = user_service.useservice_id
+                  WHERE service.service_status = 1
+                  AND service.service_user_id = :providerid
+                  ORDER BY service.service_add_date DESC
+                  LIMIT " . intval($limit);
+
+            $data = array();
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindParam(":providerid", $providerid, PDO::PARAM_INT);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($result as $row) {
+                $service = array();
+                $service["id"] = $row["service_id"];
+                $service["title"] = $row["service_title"];
+                $service["type"] = $row["servicetype_name"];
+                $service["typeid"] = $row["servicetype_id"];
+                $service["providername"] = $row["useservice_name"];
+                $service["providerid"] = $row["useservice_id"];
+                $service["locationlat"] = $row["service_location_lat"];
+                $service["locationlong"] = $row["service_location_lang"];
+                $service["description"] = $row["service_desc"];
+                $service["date"] = $row["createdate"];
+                array_push($data, $service);
+            }
+
+            $dbh = null;
+            return $data;
+
+            /*             * * close the database connection ** */
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+    
+      public static function getServiceProviderInformation($serviceproviderid) {
+        try {
+
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $sql = "SELECT
+                    user_service.useservice_name,
+                    user_service.useservice_email,
+                    (SELECT
+                      COUNT(*)
+                    FROM user_service_rate
+                    WHERE user_service_rate.user_service_id = user_service.useservice_id
+                    AND user_service_rate.rate_value = 1) AS positive_rate,
+                    (SELECT
+                      COUNT(*)
+                    FROM user_service_rate
+                    WHERE user_service_rate.user_service_id = user_service.useservice_id 
+                    AND user_service_rate.rate_value = 0) AS negative_rate,
+                    user_service.useservice_phone,
+                    user_service.useservice_add_date,
+                    user_service.account_status
+                  FROM user_service
+                  WHERE user_service.useservice_id = :id";
+
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindParam(":id", $serviceproviderid, PDO::PARAM_INT);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $dbh = null;
+            return $result[0];
+
+            /*             * * close the database connection ** */
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
     
 }
