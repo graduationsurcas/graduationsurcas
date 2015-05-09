@@ -47,6 +47,7 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
                 parmNotAccess();
             }
             break;
+            
         case "placessearch":
             if (isset($_POST['searchkey'])) {
                 dboperation::placeSearch($_POST['searchkey']);
@@ -291,6 +292,16 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
             ) {
                 include_once '../class/cryptpass.php';
                 dboperation::addnewaplace( $_POST["new-place-name"]);
+                dboperation::action_report(ADDNEWADMIN, $_SESSION['login-admin-name']);
+            } else {
+                parmNotAccess();
+            }
+            break;
+            case "updateconstant":
+            if (isset($_POST["constantid"]) &&
+                    isset($_POST["new-constant-title"])
+            ) {
+                dboperation::updatePlacesNavTap( $_POST["constantid"],$_POST["new-constant-title"]);
                 dboperation::action_report(ADDNEWADMIN, $_SESSION['login-admin-name']);
             } else {
                 parmNotAccess();

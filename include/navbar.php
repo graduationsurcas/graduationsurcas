@@ -1,3 +1,10 @@
+<?php
+
+$navtitles = dboperation::getAllNanvTabTitle();
+
+?>
+
+
 <!-- Navigation -->
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -9,15 +16,13 @@
             <span class="icon-bar"></span>
             
         </button>
-        <a class="navbar-brand" href="index.php">Oman tourism guide</a>
+        <a class="navbar-brand" href="../pages/home.php">Oman tourism guide</a>
     </div>
 
     <!-- Top Menu Items -->
     <ul class="nav navbar-right top-nav">
         <li class="dropdown">
-            <span class="badge">42</span><span  data-toggle="modal" data-target="#notification_modal" class="btn btn-danger btn-sm">
-                                <i class="fa fa-bell"></i>
-                            </span>
+
         </li>
         <li class="dropdown">
             <a href="#" ><i class="fa fa-user"></i> <?php echo $_SESSION['login-admin-name']; ?></a>
@@ -36,55 +41,56 @@
                 <a href="home.php"><i class="fa fa-arrow-circle-o-right"></i> Home</a>
             </li>
             <li>
-                <a href="javascript:;" data-toggle="collapse" data-target="#placescolntrollcollapse"><i class="fa fa-fw fa-arrows-v"></i>&nbsp;Places<i class="fa fa-fw fa-caret-down"></i></a>
+                <a href="javascript:;" data-toggle="collapse" data-target="#placescolntrollcollapse">
+                    <i class="fa fa-fw fa-arrows-v"></i>&nbsp;<?php echo $navtitles["placetitle"]["title"];?><i class="fa fa-fw fa-caret-down"></i></a>
                 <ul id="placescolntrollcollapse" class="collapse">
                     <li>
-                        <a href="../pages/newplace.php"><span class="fa fa-arrow-circle-o-right"></span>&nbsp;New Place</a>
+                        <a href="../pages/newplace.php"><span class="fa fa-arrow-circle-o-right"></span>&nbsp;<?php echo $navtitles["placenew"]["title"];?></a>
                     </li>
                     <li>
-                        <a href="../pages/placeslist.php"><span class="fa fa-arrow-circle-o-right"></span>&nbsp;Places List</a>
+                        <a href="../pages/placeslist.php"><span class="fa fa-arrow-circle-o-right"></span>&nbsp;<?php echo $navtitles["placelist"]["title"];?></a>
                     </li>
                     <li>
-                        <a href="../pages/placessearch.php"><span class="fa fa-arrow-circle-o-right"></span>&nbsp;Places Search</a>
+                        <a href="../pages/placessearch.php"><span class="fa fa-arrow-circle-o-right"></span>&nbsp;<?php echo $navtitles["placesearch"]["title"];?></a>
                     </li>
                 </ul>
             </li>
             <li>
-                <a href="javascript:;" data-toggle="collapse" data-target="#itemscolntrollcollapse"><i class="fa fa-fw fa-cubes"></i>&nbsp;Souvenirs<i class="fa fa-fw fa-caret-down"></i></a>
+                <a href="javascript:;" data-toggle="collapse" data-target="#itemscolntrollcollapse"><i class="fa fa-fw fa-cubes"></i>&nbsp;<?php echo $navtitles["souvenirtitle"]["title"];?><i class="fa fa-fw fa-caret-down"></i></a>
                 <ul id="itemscolntrollcollapse" class="collapse">
                     <li>
-                        <a href="../pages/newitems.php"><span class="fa fa-arrow-circle-o-right"></span>&nbsp;New Souvenirs</a>
+                        <a href="../pages/newitems.php"><span class="fa fa-arrow-circle-o-right"></span>&nbsp;<?php echo $navtitles["newsouvenir"]["title"];?></a>
                     </li>
                     <li>
-                        <a href="../pages/itemslist.php"><span class="fa fa-arrow-circle-o-right"></span>&nbsp;Souvenirs List</a>
+                        <a href="../pages/itemslist.php"><span class="fa fa-arrow-circle-o-right"></span>&nbsp;<?php echo $navtitles["listsouvenirtitle"]["title"];?></a>
                     </li>
                     <li>
-                        <a href="../pages/itemsearch.php"><span class="fa fa-arrow-circle-o-right"></span>&nbsp;Souvenirs Search</a>
+                        <a href="../pages/itemsearch.php"><span class="fa fa-arrow-circle-o-right"></span>&nbsp;<?php echo $navtitles["searchsouvenir"]["title"];?></a>
                     </li>
                     <li>
-                        <a href="../pages/itemcomments.php"><span class="fa fa-arrow-circle-o-right"></span>&nbsp;Souvenirs Comments</a>
+                        <a href="../pages/itemcomments.php"><span class="fa fa-arrow-circle-o-right"></span>&nbsp;<?php echo $navtitles["commintsouvenir"]["title"];?></a>
                     </li>
                 </ul>
             </li>
             <li>
-                <a href="javascript:;" data-toggle="collapse" data-target="#servicecollapse"><i class="fa fa-fw fa-arrows-v"></i> services <i class="fa fa-fw fa-caret-down"></i></a>
+                <a href="javascript:;" data-toggle="collapse" data-target="#servicecollapse"><i class="fa fa-fw fa-arrows-v"></i> <?php echo $navtitles["servicestitle"]["title"];?><i class="fa fa-fw fa-caret-down"></i></a>
                 <ul id="servicecollapse" class="collapse">
                     <li>
-                        <a href="../pages/service.php">services</a>
+                        <a href="../pages/service.php"><?php echo $navtitles["servicestitle"]["title"];?></a>
                     </li>
                     <li>
-                        <a href="../pages/servicesrequests.php">services requests</a>
+                        <a href="../pages/servicesrequests.php"><?php echo $navtitles["servicesproviders"]["title"];?></a>
                     </li>
                     <li>
-                        <a href="../pages/serviceproviders.php">service providers</a>
+                        <a href="../pages/serviceproviders.php"><?php echo $navtitles["Servicesrequests"]["title"];?></a>
                     </li>
                 </ul>
             </li>
             <li>
-                <a href="../pages/sheararea.php"><i class="fa fa-fw fa-table"></i> share area</a>
+                <a href="../pages/sheararea.php"><i class="fa fa-fw fa-table"></i> <?php echo $navtitles["sheararea"]["title"];?></a>
             </li>
             <li>
-                <a href="../pages/feedback.php"><i class="fa fa-fw fa-desktop"></i> users feedback</a>
+                <a href="../pages/feedback.php"><i class="fa fa-fw fa-desktop"></i><?php echo $navtitles["feedback"]["title"];?></a>
             </li>
             <li>
                 <a href="../pages/admin.php"><i class="fa fa-fw fa-desktop"></i> administration tools</a>
@@ -92,7 +98,7 @@
             </li>
 
         </ul>
-        
+       
     </div>
     <!-- /.navbar-collaps -->
 </nav>

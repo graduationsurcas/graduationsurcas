@@ -1,3 +1,8 @@
+<?php
+$navtitles = dboperation::getAllNanvTabTitle();
+?>
+
+
 <div class="row ">
     <div class="col-lg-12">
         <h1 class="page-header" style="text-transform: uppercase"><i class="fa fa-share-alt-square"></i></span>&nbsp;Admin Tools</h1>
@@ -8,12 +13,12 @@
     <div class="col-lg-12 col-md-12">
         <div class="panel panel-primary">
             <div class="panel-body">
-                <ul class="nav nav-tabs nav-justified">
+                <ul class="nav nav-tabs nav nav-pills">
                     <li class="nav active"><a href="#admintab" data-toggle="tab"><i class="fa fa-user-plus"></i> Admin</a></li>
                     <li class="nav"><a href="#placetap" data-toggle="tab"><i class="fa fa-street-view"></i> Place Type </a></li>
                     <li class="nav"><a href="#itemtap" data-toggle="tab"><i class="fa fa-bullseye"></i> Souvenirs Type</a></li>
                     <li class="nav"><a href="#servicetab" data-toggle="tab"><i class="fa fa-server"></i> Services Type</a></li>
-                    <li class="nav"><a href="#test" data-toggle="tab"><i class="fa fa-flag"></i> Application Constant </a></li>
+                    <li class="nav"><a href="#constanttab" data-toggle="tab"><i class="fa fa-flag"></i> Application Constant </a></li>
                 </ul>
 
                 <!-- Tab panes -->
@@ -126,7 +131,7 @@
                         </table>
                     </div>
                     <div class="tab-pane fade" id="placetap">
-                    <form accept-charset="UTF-8" 
+                        <form accept-charset="UTF-8" 
                               method="POST" 
                               enctype="multipart/form-data" 
                               class="forms" 
@@ -134,7 +139,7 @@
                               id="form-add-new-place-type">
                             <fieldset>
 
-                              
+
 
                                 <div class="form-group input-group">
                                     <span class="input-group-addon"><i class="fa fa-edit">&nbsp;Name</i>
@@ -147,8 +152,8 @@
                                            placeholder="place name">
 
                                 </div>
-                                
-                                
+
+
                                 <div class="form-group input-group">
 
                                 </div>
@@ -161,41 +166,40 @@
                                 </label>
                             </div>
                         </form>
-                        
-                    Available Place :
+
+                        Available Place :
                         <table id="items-list-table" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th>#</th>
                                     <th>NAME</th>
-                                    
+
 
                                 </tr>
                             </thead>
                             <tbody >
-                                <?php $number = 1;
-                                        foreach (dboperation::getPlacesTypes() as $key => $value) {
-                                           
-                                            ?>
-                                        <td><?php echo $number; ?></td>
-                                        <td><?php echo $value?></td>
-                                     
-                                    </tr>
-                                    <?php
-                                    $number++;
-                                }
-                                
-                                ?>
+                                <?php
+                                $number = 1;
+                                foreach (dboperation::getPlacesTypes() as $key => $value) {
+                                    ?>
+                                <td><?php echo $number; ?></td>
+                                <td><?php echo $value ?></td>
+
+                                </tr>
+                                <?php
+                                $number++;
+                            }
+                            ?>
 
                             </tbody>
 
                         </table>
-                    
-                    
+
+
                     </div>
-                 
+
                     <div class="tab-pane fade" id="itemtap">
-                    <form accept-charset="UTF-8" 
+                        <form accept-charset="UTF-8" 
                               method="POST" 
                               enctype="multipart/form-data" 
                               class="forms" 
@@ -203,7 +207,7 @@
                               id="form-add-new-item-type">
                             <fieldset>
 
-                              
+
 
                                 <div class="form-group input-group">
                                     <span class="input-group-addon"><i class="fa fa-edit">&nbsp;Name</i>
@@ -216,8 +220,8 @@
                                            placeholder="Souvenirs name">
 
                                 </div>
-                                
-                                
+
+
                                 <div class="form-group input-group">
 
                                 </div>
@@ -230,42 +234,41 @@
                                 </label>
                             </div>
                         </form>
-                        
-                    Available Souvenirs :
+
+                        Available Souvenirs :
                         <table id="items-list-table" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th>#</th>
                                     <th>NAME</th>
-                                    
+
 
                                 </tr>
                             </thead>
                             <tbody >
-                                <?php $number = 1;
-                                        foreach (dboperation::getAllItemTypes() as $key => $value) {
-                                           
-                                            ?>
-                                        <td><?php echo $number; ?></td>
-                                        <td><?php echo $value?></td>
-                                     
-                                    </tr>
-                                    <?php
-                                    $number++;
-                                }
-                                
-                                ?>
+                                <?php
+                                $number = 1;
+                                foreach (dboperation::getAllItemTypes() as $key => $value) {
+                                    ?>
+                                <td><?php echo $number; ?></td>
+                                <td><?php echo $value ?></td>
+
+                                </tr>
+                                <?php
+                                $number++;
+                            }
+                            ?>
 
                             </tbody>
 
                         </table>
-                    
-                    
+
+
                     </div>
-                    
-               
+
+
                     <div class="tab-pane fade" id="servicetab">
-                    <form accept-charset="UTF-8" 
+                        <form accept-charset="UTF-8" 
                               method="POST" 
                               enctype="multipart/form-data" 
                               class="forms" 
@@ -283,8 +286,8 @@
                                            placeholder="service name">
 
                                 </div>
-                                
-                                
+
+
                                 <div class="form-group input-group">
 
                                 </div>
@@ -297,47 +300,145 @@
                                 </label>
                             </div>
                         </form>
-                        
-                    Available Services Type :
+
+                        Available Services Type :
                         <table id="items-list-table" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th>#</th>
                                     <th>NAME</th>
-                                    
+
 
                                 </tr>
                             </thead>
                             <tbody >
-                                <?php $number = 1;
-                                        foreach (dboperation::getAllserviceTypes() as $key => $value) {
-                                           
-                                            ?>
-                                        <td><?php echo $number; ?></td>
-                                        <td><?php echo $value?></td>
-                                     
-                                    </tr>
-                                    <?php
-                                    $number++;
-                                }
-                                
-                                ?>
+                                <?php
+                                $number = 1;
+                                foreach (dboperation::getAllserviceTypes() as $key => $value) {
+                                    ?>
+                                <td><?php echo $number; ?></td>
+                                <td><?php echo $value ?></td>
+
+                                </tr>
+                                <?php
+                                $number++;
+                            }
+                            ?>
 
                             </tbody>
 
                         </table>
-                    
-                    
+
+
                     </div>
-                    <div class="tab-pane fade" id="test">
-                    test
-                    
-                    </div>
+                    <div class="tab-pane fade" id="constanttab">
+
+                        <?php
+                        $navtitles = dboperation::getAllNanvTabTitle();
+                        $constants = array();
+                        $i = 0;
+                        foreach ($navtitles as $key => $value) {
+                            $constants[$i] = $value;
+                            $i++;
+                        }
+                        ?>
+
+                        <div>
+
+                            Constants Table :
+                            <table id="items-list-table" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Key</th>
+                                        <th>Value</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody >
+                                    <?php
+                                    $number = 1;
+                                    foreach ($constants as $constant) {
+                                        ?>
+                                    <td><?php echo $number; ?></td>
+                                    <td><?php echo $constant["key"]; ?></td>
+                                    <td><?php echo $constant["title"]; ?></td>
+
+                                    </tr>
+                                    <?php
+                                    $number++;
+                                }
+                                ?>
+
+                                </tbody>
+
+                            </table>
+
+
+                            <form accept-charset="UTF-8" 
+                                  method="POST" 
+                                  class="forms" 
+                                  role="form"
+                                  id="form-update-constant">
+                                <fieldset>
+                                    <div class="row">
+                                        <div class="col-lg-5">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-tags"></i>
+                                                </span>
+                                                <select class="form-control"
+                                                        id="constantid"
+                                                        name="constantid"
+                                                        >
+                                                    <option value="1000" selected="false">  </option>
+                                                    <?php
+                                                    for ($index = 0; $index < count($constants); $index++) {
+                                                        ?>
+                                                        <option value="<?php echo $constants[$index]["id"]; ?>"><?php echo $constants[$index]["title"]; ?></option>
+                                                        <?php
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div><!-- /input-group -->
+
+                                        </div><!-- /.col-lg-6 -->
+                                        <div class="col-lg-5">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-list"></i>
+                                                </span>
+                                                <input id="new-constant-title"
+                                                       name="new-constant-title"
+                                                       required=""
+                                                       type="text" class="form-control"
+                                                       placeholder="new constant value">
+                                            </div><!-- /input-group -->
+                                        </div><!-- /.col-lg-6 -->
+                                        <div class="col-lg-2">
+                                            <div class="input-group">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-default btn-primary" type="submit">update</button>
+                                                </span>
+                                                
+                                            </div><!-- /input-group -->
+                                        </div><!-- /.col-lg-6 -->
+                                        <div class="form-message">
+                                                <label id="form-update-constant-messege">
+                                                </label>
+                                                </div>
+                                    </div><!-- /.row -->
+                                </fieldset>
+                            </form>
+                        </div>
+
+                        <br><br>
                     </div>
                 </div>
-        </div>
             </div>
         </div>
-  
+    </div>
+</div>
+
 
 </div>
