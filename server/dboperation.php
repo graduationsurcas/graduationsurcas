@@ -48,7 +48,8 @@ class dboperation {
                 $pass = $stmt->fetch(PDO::FETCH_ASSOC);
                 include_once '../class/cryptpass.php';
                 if (decrypt_pass($userpass, $pass['admin_password'])) {
-                    $query = 'SELECT admin_id, admin_type.admintype_name as level, '
+                    $query = 'SELECT admin_id, '
+                            . 'admin_type.admintype_name as level, '
                             . ' admin_name '
                             . ' FROM admin, admin_type WHERE '
                             . 'admin_email = :useremail and '
@@ -64,7 +65,6 @@ class dboperation {
                     $_SESSION['login-admin-id'] = $row['admin_id'];
                     $_SESSION['login-admin-email'] = $useremail;
                     $_SESSION['login-admin-level'] = $row['level'];
-                    $_SESSION['login'] = true;
                     $_SESSION['root-admin-sign-in'] = false;
 
 

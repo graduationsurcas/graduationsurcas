@@ -1,5 +1,7 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
+require 'vendor/autoload.php';
+use Stichoza\GoogleTranslate\TranslateClient;
 try {
     include_once './server/config.php';
     include_once './server/appdboperations.php';
@@ -31,7 +33,8 @@ try {
                 <div class="panel panel-default placeinformation-card">
 
                     <div class="panel-body">
-                        <p><?php echo $item["description"] ?></p>
+                        <p><?php 
+                        echo TranslateClient::translate(null, $_GET["lang"], $item["description"]);?></p>
                     </div>
                 </div>
                 <?php

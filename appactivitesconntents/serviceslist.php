@@ -2,6 +2,8 @@
 header('Content-Type: text/html; charset=utf-8');
 include_once './server/config.php';
 include_once './server/appdboperations.php';
+require 'vendor/autoload.php';
+use Stichoza\GoogleTranslate\TranslateClient;
 ?>
 
 <html>
@@ -42,15 +44,18 @@ include_once './server/appdboperations.php';
                          ?>
                 <div class="panel place-card">
                             <div class="panel-body">
-                                <span id="place-title"><?php echo $services[$index]["title"] ." ". $services[$index]["type"]; ?></span>
+                                <span id="place-title"><?php echo $services[$index]["title"] ." ". TranslateClient::translate(null, $_GET["lang"], $services[$index]["type"]); ?></span>
                                 <p>
-                                     <?php echo $services[$index]["description"]; ?>
+                                     <?php 
+                                     echo TranslateClient::translate(null, $_GET["lang"], $services[$index]["description"]);
+                                     ?>
                                 </p>
                             </div>
                             <div class="panel-footer">
                                 <div class="text-right">
                                         <span class="btn btn-sm card-icon">
-                                            <a href="">
+                                            <!--*providerprofile~id~name-->
+                                            <a href="*providerprofile~<?php echo $services[$index]["providerid"]; ?>~<?php echo $services[$index]["providername"]; ?>">
                                                 <i class="fa fa-user"></i>
                                             </a>
                                         </span>

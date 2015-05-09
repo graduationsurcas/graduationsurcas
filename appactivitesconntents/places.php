@@ -2,6 +2,8 @@
 header('Content-Type: text/html; charset=utf-8');
 include_once './server/config.php';
 include_once './server/appdboperations.php';
+require 'vendor/autoload.php';
+use Stichoza\GoogleTranslate\TranslateClient;
 ?>
 
 <html>
@@ -50,13 +52,16 @@ include_once './server/appdboperations.php';
                         <div class="panel-body">
                             <h4>
                                 <span  id="place-title"><?php
-                                    echo $places["name"] . " " . $places["placetype"];
+                                    echo $places["name"] . " " . TranslateClient::translate(null, $_GET["lang"], $places["placetype"]) ;
                                     ;
                                     ?></span>
                                 <span id="place-add-date"><?php echo $places["date"]; ?></span>
                             </h4>
                             <div id="place-main-area">
-                                <p><?php echo (strlen($places["description"]) > 150) ? substr($places["description"], 0, 150) . ".." : $places["description"]; ?></p>
+                                <p><?php 
+                                $description = (strlen($places["description"]) > 150) ? substr($places["description"], 0, 150) . ".." : $places["description"];
+                                echo TranslateClient::translate(null, $_GET["lang"], $description);
+                                        ?></p>
                             </div>
                         </div>
                         <div class="panel-footer">

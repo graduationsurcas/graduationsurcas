@@ -2,6 +2,8 @@
 header('Content-Type: text/html; charset=utf-8');
 include_once './server/config.php';
 include_once './server/appdboperations.php';
+require 'vendor/autoload.php';
+use Stichoza\GoogleTranslate\TranslateClient;
 ?>
 
 <html>
@@ -32,6 +34,7 @@ include_once './server/appdboperations.php';
                 max-height: 25%;
             }
             .scrollit {
+                margin-top: 110px;
                 max-height: max-content;
             }
             #thumbs-down{
@@ -92,7 +95,9 @@ include_once './server/appdboperations.php';
                             <div class="panel-body">
                                 <span id="place-title"><?php echo $services[$index]["title"] ." ". $services[$index]["type"]; ?></span>
                                 <p>
-                                     <?php echo $services[$index]["description"]; ?>
+                                     <?php 
+                                     echo TranslateClient::translate(null, $_GET["lang"], $services[$index]["description"]);
+                                     ?>
                                 </p>
                             </div>
                             <div class="panel-footer">
@@ -126,9 +131,10 @@ include_once './server/appdboperations.php';
         ?>
         <script src="materialize/js/materialize.min.js" type="text/javascript"></script>
         <script type="text/javascript">
-            $(document).ready(function (){
-                $(".scrollit").css("margin-top", $(".fixed").height() + 10);
-            });
+//            $(document).ready(function (){
+//                var h = $(".fixed").height() + 10;
+//                $(".scrollit").css("margin-top", h);
+//            });
         </script>
     </body>
 </html>
