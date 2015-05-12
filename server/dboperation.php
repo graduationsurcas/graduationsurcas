@@ -1,6 +1,7 @@
 <?php
 
 class dboperation {
+
     public static function action_report($report, $adminid) {
         $conn = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME)
                 or die(mysqli_error($conn));
@@ -10,10 +11,7 @@ class dboperation {
                 . ' report, create_date) VALUES '
                 . '(NULL, ?, ?, ?,CURRENT_TIMESTAMP)';
         $stmt = $conn->prepare($query) or die(mysql_error());
-        $stmt->bind_param('iss', 
-                $adminid,
-                $_SERVER['REMOTE_ADDR'],
-                $report);
+        $stmt->bind_param('iss', $adminid, $_SERVER['REMOTE_ADDR'], $report);
         $stmt->execute();
         if ($stmt->affected_rows == 1) {
 //            return TRUE;
@@ -46,7 +44,7 @@ class dboperation {
                 $stmt->bindParam(':useremail', $useremail, PDO::PARAM_STR);
                 $stmt->execute();
                 $pass = $stmt->fetch(PDO::FETCH_ASSOC);
-                include_once '../class/cryptpass.php';
+//                include_once '../class/cryptpass.php';
                 if (decrypt_pass($userpass, $pass['admin_password'])) {
                     $query = 'SELECT admin_id, '
                             . 'admin_type.admintype_name as level, '
@@ -58,6 +56,8 @@ class dboperation {
                     $stmt->bindParam(':useremail', $useremail, PDO::PARAM_STR);
                     $stmt->execute();
                     $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
                     session_start();
 
 
@@ -66,10 +66,12 @@ class dboperation {
                     $_SESSION['login-admin-email'] = $useremail;
                     $_SESSION['login-admin-level'] = $row['level'];
                     $_SESSION['root-admin-sign-in'] = false;
-
+                    $_SESSION['login'] = true;
 
                     $data["message"] = "some message";
                     $data["status"] = "true";
+
+
 
                     //inserted repor
 //                    require_once 'ActionReport.php';
@@ -78,25 +80,19 @@ class dboperation {
                     //                if the password is wrong
                     $data["message"] = "password is wrong";
                 }
+
+                $dbh = null;
+                return $data;
             }
 //            close the database connection
         } catch (PDOException $e) {
             $data["message"] = $e->getMessage();
             $data["status"] = "false";
-        } finally {
-            $dbh = null;
-            return $data;
         }
     }
-    
-    
-    /* test/
-     * 
-     * 
-     */
 
     public static function restpass($useremail) {
-        
+
         $data = array("status" => "false", "message" => "");
         try {
             $randompass = rand(1, 9);
@@ -110,29 +106,25 @@ class dboperation {
             $stmt->bindParam(':password', $place_type, PDO::PARAM_INT);
             $stmt->bindParam(':email', $useremail, PDO::PARAM_INT);
             $stmt->execute();
-            
+
+            $dbh = null;
+            echo json_encode($data);
+
 //            close the database connection
         } catch (PDOException $e) {
             $data["message"] = $e->getMessage();
             $data["status"] = "false";
-        } finally {
-            $dbh = null;
-            echo json_encode($data);
         }
     }
 
-    /*
-     * 
-     */
     public static function senemail($useremail) {
-         $to = $useremail;
-   $subject = "This is subject";
-   $message = "This is simple text message.";
-   $header = "From:albusaidi1231@gmail.com \r\n";
-   $retval = mail ($to,$subject,$message,$header);
-        
+        $to = $useremail;
+        $subject = "This is subject";
+        $message = "This is simple text message.";
+        $header = "From:albusaidi1231@gmail.com \r\n";
+        $retval = mail($to, $subject, $message, $header);
     }
-    
+
     public static function getPlacesTypes() {
         try {
 
@@ -154,7 +146,6 @@ class dboperation {
         }
     }
 
-    
     public static function getadminTypes() {
         try {
 
@@ -175,14 +166,9 @@ class dboperation {
             echo $e->getMessage();
         }
     }
-    
-    
-    
-    
-    
+
     public static function getAllPlacesx() {
         try {
-
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
             $sql = "SELECT place_id, place_name FROM place_type WHERE 1";
             $getPlacesTypes = array();
@@ -221,8 +207,8 @@ class dboperation {
             echo $e->getMessage();
         }
     }
-    
-   public static function getAllserviceTypes() {
+
+    public static function getAllserviceTypes() {
         try {
 
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
@@ -241,28 +227,28 @@ class dboperation {
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
-    } 
-    
-     public static function getAllNanvTabTitle() {
+    }
+
+    public static function getAllNanvTabTitle() {
         try {
             $data = array();
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
             $sql = "SELECT nav_tab_title_id, navkey ,title,creator_admin FROM nav_tab_title WHERE 1";
             foreach ($dbh->query($sql) as $row) {
-                $data[$row['navkey']] = array("id"=>$row['nav_tab_title_id'],
-                    "key"=>$row['navkey'],
-                    "title"=>$row['title'], "adminid"=>$row['creator_admin']);
+                $data[$row['navkey']] = array("id" => $row['nav_tab_title_id'],
+                    "key" => $row['navkey'],
+                    "title" => $row['title'], "adminid" => $row['creator_admin']);
             }
 
-           
+
 
             /*             * * close the database connection ** */
             $dbh = null;
-             return $data;
+            return $data;
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
-    } 
+    }
 
     public static function getAllPlaces() {
         try {
@@ -288,16 +274,8 @@ class dboperation {
             echo $e->getMessage();
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
- public static function newadmin($admin_name, $admin_email,$admin_type, 
-            $admin_password) {
+
+    public static function newadmin($admin_name, $admin_email, $admin_type, $admin_password) {
 
         $data = array("status" => "false", "message" => "");
         try {
@@ -310,7 +288,7 @@ class dboperation {
                     . 'admin_name, '
                     . 'admin_password,'
                     . ' admin_create_date) '
-                     . 'VALUES (NULL, '
+                    . 'VALUES (NULL, '
                     . ' :admin_type,'
                     . ' :admin_email,'
                     . ' :admin_name,'
@@ -321,7 +299,7 @@ class dboperation {
             $stmt->bindParam(':admin_name', $admin_name, PDO::PARAM_STR);
             $stmt->bindParam(':admin_password', encrypt_pass($admin_password), PDO::PARAM_STR);
             $stmt->execute();
-             if ($stmt->rowCount() == 1) {
+            if ($stmt->rowCount() == 1) {
                 $data["status"] = "true";
                 $idofinserteditem = $dbh->lastInsertId();
             } else {
@@ -331,13 +309,11 @@ class dboperation {
         } catch (Exception $e) {
             $data["message"] = $e->getMessage();
             $data["status"] = "false";
-        } finally {
-            $dbh = null;
-            echo json_encode($data);
         }
+        $dbh = null;
+        echo json_encode($data);
     }
-    
-    
+
     public static function addnewaplace($place_name) {
 
         $data = array("status" => "false", "message" => "");
@@ -347,12 +323,12 @@ class dboperation {
             $query = 'INSERT INTO oman_tourism_guide.place_type '
                     . '(place_id, '
                     . 'place_name) '
-                     . 'VALUES (NULL, '
+                    . 'VALUES (NULL, '
                     . ':place_name)';
             $stmt = $dbh->prepare($query) or die(mysql_error());
             $stmt->bindParam(':place_name', $place_name, PDO::PARAM_INT);
             $stmt->execute();
-             if ($stmt->rowCount() == 1) {
+            if ($stmt->rowCount() == 1) {
                 $data["status"] = "true";
                 $idofinserteditem = $dbh->lastInsertId();
             } else {
@@ -362,11 +338,11 @@ class dboperation {
         } catch (Exception $e) {
             $data["message"] = $e->getMessage();
             $data["status"] = "false";
-        } finally {
-            $dbh = null;
-            echo json_encode($data);
         }
+        $dbh = null;
+        echo json_encode($data);
     }
+
     public static function addnewaservices($services_name) {
 
         $data = array("status" => "false", "message" => "");
@@ -376,12 +352,12 @@ class dboperation {
             $query = 'INSERT INTO oman_tourism_guide.service_type '
                     . '(servicetype_id, '
                     . 'servicetype_name) '
-                     . 'VALUES (NULL, '
+                    . 'VALUES (NULL, '
                     . ':servicetype_name)';
             $stmt = $dbh->prepare($query) or die(mysql_error());
             $stmt->bindParam(':servicetype_name', $services_name, PDO::PARAM_INT);
             $stmt->execute();
-             if ($stmt->rowCount() == 1) {
+            if ($stmt->rowCount() == 1) {
                 $data["status"] = "true";
                 $idofinserteditem = $dbh->lastInsertId();
             } else {
@@ -391,12 +367,11 @@ class dboperation {
         } catch (Exception $e) {
             $data["message"] = $e->getMessage();
             $data["status"] = "false";
-        } finally {
-            $dbh = null;
-            echo json_encode($data);
         }
+        $dbh = null;
+        echo json_encode($data);
     }
-    
+
     public static function addnewaitem($itemtype_name) {
 
         $data = array("status" => "false", "message" => "");
@@ -406,12 +381,12 @@ class dboperation {
             $query = 'INSERT INTO oman_tourism_guide.item_type '
                     . '(itemtype_id, '
                     . 'itemtype_name) '
-                     . 'VALUES (NULL, '
+                    . 'VALUES (NULL, '
                     . ':itemtype_name)';
             $stmt = $dbh->prepare($query) or die(mysql_error());
             $stmt->bindParam(':itemtype_name', $itemtype_name, PDO::PARAM_INT);
             $stmt->execute();
-             if ($stmt->rowCount() == 1) {
+            if ($stmt->rowCount() == 1) {
                 $data["status"] = "true";
                 $idofinserteditem = $dbh->lastInsertId();
             } else {
@@ -421,21 +396,12 @@ class dboperation {
         } catch (Exception $e) {
             $data["message"] = $e->getMessage();
             $data["status"] = "false";
-        } finally {
-            $dbh = null;
-            echo json_encode($data);
         }
+        $dbh = null;
+        echo json_encode($data);
     }
-    
-    
-    
-    
-    
-    
-    
-    public static function newPlace($admin_id, $place_name, $place_type, 
-            $address, $location_lat, $location_lng,
-            $view, $description, $images) {
+
+    public static function newPlace($admin_id, $place_name, $place_type, $address, $location_lat, $location_lng, $view, $description, $images) {
 
         $data = array("status" => "false", "message" => "");
 //        require_once 'DB_coninfo.php';
@@ -474,7 +440,7 @@ class dboperation {
             $stmt->bindParam(':view', $view, PDO::PARAM_INT);
             $stmt->bindParam(':description', $description, PDO::PARAM_STR);
             $stmt->execute();
-             if ($stmt->rowCount() == 1) {
+            if ($stmt->rowCount() == 1) {
                 $data["status"] = "true";
                 $idofinserteditem = $dbh->lastInsertId();
                 $placeimage = dboperation::uploadItemImages($images);
@@ -497,10 +463,9 @@ class dboperation {
         } catch (Exception $e) {
             $data["message"] = $e->getMessage();
             $data["status"] = "false";
-        } finally {
-            $dbh = null;
-            echo json_encode($data);
         }
+        $dbh = null;
+        echo json_encode($data);
     }
 
     public static function placeTotalCount() {
@@ -578,12 +543,10 @@ class dboperation {
             $response["data"] = $e->getMessage();
             $response["status"] = "false";
             echo $e->getMessage();
-        } finally {
-            echo json_encode($response);
-
-            /*             * * close the database connection ** */
-            $dbh = null;
         }
+        echo json_encode($response);
+        /*         * * close the database connection ** */
+        $dbh = null;
     }
 
     public static function getPlacesList($selectfrom = 1, $selectamount = 25) {
@@ -641,10 +604,9 @@ class dboperation {
             $response["data"] = $e->getMessage();
             $response["status"] = "false";
             echo $e->getMessage();
-        } finally {
-            return json_encode($response);
-            $dbh = null;
         }
+        return json_encode($response);
+        $dbh = null;
     }
 
     public static function updatePlaces($placeid, $place_type, $new_name, $new_address, $loc_lat, $loc_lang, $view, $description) {
@@ -682,13 +644,11 @@ class dboperation {
             $response["message"] = $e->getMessage();
             $response["status"] = "false";
             echo $e->getMessage();
-        } finally {
-            echo json_encode($response);
-            $dbh = null;
         }
+        echo json_encode($response);
+        $dbh = null;
     }
-    
-    
+
     public static function updatePlacesNavTap($nav_tab_title_id, $title) {
         $response = array("status" => "false", "message" => "");
         try {
@@ -710,10 +670,9 @@ class dboperation {
             $response["message"] = $e->getMessage();
             $response["status"] = "false";
             echo $e->getMessage();
-        } finally {
-            echo json_encode($response);
-            $dbh = null;
         }
+        echo json_encode($response);
+        $dbh = null;
     }
 
     public static function removePlaces($placeid, $password, $email) {
@@ -752,10 +711,9 @@ class dboperation {
         } catch (PDOException $e) {
             $response["message"] = $e->getMessage();
             $response["status"] = "false";
-        } finally {
-            echo json_encode($response);
-            $dbh = null;
         }
+        echo json_encode($response);
+        $dbh = null;
     }
 
     public static function updateItem($itemid, $itemtype, $itemname, $view, $description) {
@@ -790,10 +748,9 @@ class dboperation {
             $response["message"] = $e->getMessage();
             $response["status"] = "false";
             echo $e->getMessage();
-        } finally {
-            echo json_encode($response);
-            $dbh = null;
         }
+        echo json_encode($response);
+        $dbh = null;
     }
 
     public static function removeItem($itemid, $password, $email) {
@@ -832,14 +789,11 @@ class dboperation {
         } catch (PDOException $e) {
             $response["message"] = $e->getMessage();
             $response["status"] = "false";
-        } finally {
-            echo json_encode($response);
-            $dbh = null;
         }
+        echo json_encode($response);
+        $dbh = null;
     }
-    
-    
-    
+
     public static function removesharearea($itemid, $password, $email) {
         $response = array("status" => "false", "message" => "");
 
@@ -877,13 +831,11 @@ class dboperation {
         } catch (PDOException $e) {
             $response["message"] = $e->getMessage();
             $response["status"] = "false";
-        } finally {
-            echo json_encode($response);
-            $dbh = null;
         }
+        echo json_encode($response);
+        $dbh = null;
     }
 
-    
     public static function removefeedback($itemid, $password, $email) {
         $response = array("status" => "false", "message" => "");
 
@@ -921,17 +873,12 @@ class dboperation {
         } catch (PDOException $e) {
             $response["message"] = $e->getMessage();
             $response["status"] = "false";
-        } finally {
-            echo json_encode($response);
-            $dbh = null;
         }
+        echo json_encode($response);
+        $dbh = null;
     }
-    
-    
-    
-    
-    public static function newItem($creatorid, $itemtype, $itemplace, $itemname,
-            $itemdesc, $itemview, $images) {
+
+    public static function newItem($creatorid, $itemtype, $itemplace, $itemname, $itemdesc, $itemview, $images) {
         $data = array("status" => "false", "message" => "");
         try {
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
@@ -977,10 +924,9 @@ class dboperation {
         } catch (Exception $e) {
             $data["message"] = $e->getMessage();
             $data["status"] = "false";
-        } finally {
-            $dbh = null;
-            echo json_encode($data);
         }
+        $dbh = null;
+        echo json_encode($data);
     }
 
     public static function itemsTotalCount() {
@@ -1055,10 +1001,9 @@ class dboperation {
             $response["data"] = $e->getMessage();
             $response["status"] = "false";
             echo $e->getMessage();
-        } finally {
-            return json_encode($response);
-            $dbh = null;
         }
+        $dbh = null;
+        return json_encode($response);
     }
 
     public static function itemsCommentTotalCount() {
@@ -1094,10 +1039,9 @@ class dboperation {
         } catch (PDOException $e) {
             $response["data"] = $e->getMessage();
             $response["status"] = "false";
-        } finally {
-            $dbh = null;
-            return json_encode($response, JSON_UNESCAPED_UNICODE);
         }
+        $dbh = null;
+        return json_encode($response, JSON_UNESCAPED_UNICODE);
     }
 
     public static function getItemsCommentsList($selectfrom = 1, $selectamount = 25) {
@@ -1149,10 +1093,9 @@ class dboperation {
             $response["data"] = $e->getMessage();
             $response["status"] = "false";
             echo $e->getMessage();
-        } finally {
-            $dbh = null;
-            return json_encode($response, JSON_UNESCAPED_UNICODE);
         }
+        $dbh = null;
+        return json_encode($response, JSON_UNESCAPED_UNICODE);
     }
 
     public static function getItemCommentsList($selectfrom = 0, $selectamount = 25, $itemid) {
@@ -1205,10 +1148,9 @@ class dboperation {
             $response["data"] = $e->getMessage();
             $response["status"] = "false";
             echo $e->getMessage();
-        } finally {
-            $dbh = null;
-            return json_encode($response, JSON_UNESCAPED_UNICODE);
         }
+        $dbh = null;
+        return json_encode($response, JSON_UNESCAPED_UNICODE);
     }
 
     public static function removeItemComment($commentid) {
@@ -1230,10 +1172,9 @@ class dboperation {
         } catch (PDOException $e) {
             $response["message"] = $e->errorInfo;
             $response["status"] = "false";
-        } finally {
-            $dbh = null;
-            return json_encode($response);
         }
+        $dbh = null;
+        return json_encode($response);
     }
 
     public static function getItemsImages($itemid) {
@@ -1256,10 +1197,9 @@ class dboperation {
             }
         } catch (PDOException $e) {
             //
-        } finally {
-            $dbh = null;
-            return json_encode($itemimages);
         }
+        $dbh = null;
+        return json_encode($itemimages);
     }
 
     public static function itemsSearch($searchkey) {
@@ -1328,10 +1268,9 @@ class dboperation {
             $response["data"] = $e->getMessage();
             $response["status"] = "false";
             echo $e->getMessage();
-        } finally {
-            echo json_encode($response);
-            $dbh = null;
         }
+        echo json_encode($response);
+        $dbh = null;
     }
 
     public static function uploadItemImages($images) {
@@ -1415,10 +1354,9 @@ class dboperation {
             $response["data"] = $e->getMessage();
             $response["status"] = "false";
             echo $e->getMessage();
-        } finally {
-            $dbh = null;
-            return json_encode($response);
         }
+        $dbh = null;
+        return json_encode($response);
     }
 
     public static function serviceProvidersTotalCount() {
@@ -1466,10 +1404,9 @@ class dboperation {
             $response["message"] = $e->getMessage();
             $response["status"] = "false";
             echo $e->getMessage();
-        } finally {
-            echo json_encode($response);
-            $dbh = null;
         }
+        echo json_encode($response);
+        $dbh = null;
     }
 
     public static function updateServiceProviderPassword($id, $password) {
@@ -1494,10 +1431,9 @@ class dboperation {
             $response["message"] = $e->getMessage();
             $response["status"] = "false";
             echo $e->getMessage();
-        } finally {
-            echo json_encode($response);
-            $dbh = null;
         }
+        echo json_encode($response);
+        $dbh = null;
     }
 
     public static function removeServiceProvider($ServiceProviderid, $password, $email) {
@@ -1536,10 +1472,9 @@ class dboperation {
         } catch (PDOException $e) {
             $response["message"] = $e->getMessage();
             $response["status"] = "false";
-        } finally {
-            echo json_encode($response);
-            $dbh = null;
         }
+        echo json_encode($response);
+        $dbh = null;
     }
 
     public static function getServiceProviderInfo($id) {
@@ -1589,10 +1524,9 @@ class dboperation {
             $response["data"] = $e->getMessage();
             $response["status"] = "false";
             echo $e->getMessage();
-        } finally {
-            $dbh = null;
-            return json_encode($response);
         }
+        $dbh = null;
+        return json_encode($response);
     }
 
     public static function getServiceRequestsList($selectfrom = 0, $selectamount = 25) {
@@ -1653,15 +1587,13 @@ class dboperation {
             $response["data"] = $e->getMessage();
             $response["status"] = "false";
             echo $e->getMessage();
-        } finally {
-            $dbh = null;
-            return json_encode($response);
         }
+        $dbh = null;
+        return json_encode($response);
     }
-    
-    
-    
-    /*dservices*/
+
+    /* dservices */
+
     public static function getServicesList($selectfrom = 0, $selectamount = 25) {
         $response = array("status" => "false", "data" => "");
         try {
@@ -1714,7 +1646,7 @@ class dboperation {
                 $service["adddate"] = $row['service_add_date'];
                 $service["prate"] = $row['service_positive_rate'];
                 $service["nrate"] = $row['service_negative_rate'];
-                $service["status"]  = ($row['service_status'] == "0") ? "false" : "true";
+                $service["status"] = ($row['service_status'] == "0") ? "false" : "true";
                 $service["desc"] = $row['service_status'];
                 $service["title"] = $row['service_title'];
                 $service["userid"] = $row['useservice_id'];
@@ -1727,21 +1659,12 @@ class dboperation {
             $response["data"] = $e->getMessage();
             $response["status"] = "false";
             echo $e->getMessage();
-        } finally {
-            $dbh = null;
-            return json_encode($response);
         }
+        $dbh = null;
+        return json_encode($response);
     }
-    
-    /*edn*/
-    
-    
-    
-    
-    
-    
-    
-    
+
+    /* edn */
 
     public static function ServiceRequestsTotalCount() {
         try {
@@ -1780,10 +1703,9 @@ class dboperation {
         } catch (PDOException $e) {
             $response["message"] = $e->getMessage();
             $response["status"] = "false";
-        } finally {
-            return json_encode($response);
-            $dbh = null;
         }
+        return json_encode($response);
+        $dbh = null;
     }
 
     public static function confirmServiceRequests($requestid, $adminid) {
@@ -1791,7 +1713,7 @@ class dboperation {
         $response = array("status" => "false", "message" => "");
         try {
 
-          $response = array("languages"=>"", "place"=>"","services"=>"","dbsize"=>"");
+            $response = array("languages" => "", "place" => "", "services" => "", "dbsize" => "");
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
             $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -1840,10 +1762,9 @@ class dboperation {
         } catch (PDOException $e) {
             $response["message"] = $e->getMessage();
             $response["status"] = "false";
-        } finally {
-            $dbh = null;
-            return json_encode($response);
         }
+        $dbh = null;
+        return json_encode($response);
     }
 
     public static function getStatisticsCount() {
@@ -1904,7 +1825,7 @@ class dboperation {
                 $service["service_request"] = $row[1];
             }
 
-            $response["service"] =$service;
+            $response["service"] = $service;
             $sql = 'SELECT table_name AS "Table",  '
                     . 'sum(cast(round((((data_length + index_length)) / 1024 / 1024), 2) '
                     . 'as decimal(11,3))) as space   FROM information_schema.TABLES  WHERE '
@@ -1925,7 +1846,6 @@ class dboperation {
             foreach ($dbh->query($sql) as $row) {
                 $sharearea["sharearea"] = $row[0];
                 $sharearea["sharecomment"] = $row[1];
-                
             }
             $response["sharearea"] = $sharearea;
             $sql = 'SELECT * 
@@ -1938,18 +1858,17 @@ class dboperation {
             foreach ($dbh->query($sql) as $row) {
                 $item["item"] = $row[0];
                 $item["item_comment"] = $row[1];
-                
             }
             $response["item"] = $item;
-;
-            
-            
+            ;
+
+
 
             ;
 
-/*
- *edit 
- */
+            /*
+             * edit 
+             */
 
             $dbh = null;
             return $response;
@@ -1993,7 +1912,7 @@ class dboperation {
             echo $e->getMessage();
         }
     }
-    
+
     public static function getsheaareaist($selectfrom = 1, $selectamount = 25) {
         $response = array("status" => "false", "data" => "");
         try {
@@ -2024,7 +1943,6 @@ class dboperation {
                 "sharearea_user_id" => "",
                 "sharearea_add_date" => "",
                 "sharearea_location" => ""
-              
             );
             $data = array();
             foreach ($result as $row) {
@@ -2044,15 +1962,11 @@ class dboperation {
             $response["data"] = $e->getMessage();
             $response["status"] = "false";
             echo $e->getMessage();
-        } finally {
-            return json_encode($response);
-            $dbh = null;
         }
+        return json_encode($response);
+        $dbh = null;
     }
 
-    
-    
-    
     public static function getuserfeedbacllist($selectfrom = 1, $selectamount = 25) {
         $response = array("status" => "false", "data" => "");
         try {
@@ -2080,7 +1994,6 @@ class dboperation {
                 "feadback_user_id" => "",
                 "feadback_add_date" => "",
                 "feadback_text" => ""
-              
             );
             $data = array();
             foreach ($result as $row) {
@@ -2098,19 +2011,17 @@ class dboperation {
             $response["data"] = $e->getMessage();
             $response["status"] = "false";
             echo $e->getMessage();
-        } finally {
-            return json_encode($response);
-            $dbh = null;
         }
+        return json_encode($response);
+        $dbh = null;
     }
-    
-    
-     public static function getalladmin($selectfrom = 1, $selectamount = 25) {
+
+    public static function getalladmin($selectfrom = 1, $selectamount = 25) {
         $response = array("status" => "false", "data" => "");
         try {
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
             $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                        $stmt = $dbh->prepare('SELECT
+            $stmt = $dbh->prepare('SELECT
               admin.admin_id,
               admin_type.admintype_name,
               admin.admin_email,
@@ -2130,7 +2041,6 @@ class dboperation {
                 "admin_email" => "",
                 "admin_name" => "",
                 "admin_create_date" => ""
-              
             );
             $data = array();
             foreach ($result as $row) {
@@ -2139,7 +2049,7 @@ class dboperation {
                 $item['adminemail'] = $row['admin_email'];
                 $item['adminname'] = $row['admin_name'];
                 $item['admincreatedate'] = $row['admin_create_date'];
-               
+
                 array_push($data, $item);
             }
             $response['data'] = $data;
@@ -2148,15 +2058,9 @@ class dboperation {
             $response["data"] = $e->getMessage();
             $response["status"] = "false";
             echo $e->getMessage();
-        } finally {
-            return json_encode($response);
-            $dbh = null;
         }
+        return json_encode($response);
+        $dbh = null;
     }
-    
-    
-    
-    
-    
 
 }

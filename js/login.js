@@ -49,6 +49,7 @@ $(document).ready(function () {
                 } else if (data.status == "false") {
                     $('input[type="submit"]').removeAttr('disabled');
                     $('input[name=useremail]').removeAttr('disabled');
+                    $('input[name=userpassword]').removeAttr('disabled');
                     $('#login_result').text(data.message);
                 }
             },

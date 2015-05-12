@@ -17,7 +17,10 @@ try {
         </head>
         <body>
 
-
+            <?php
+           $placedesc = TranslateClient::translate(null, $_GET["lang"], $place["description"]);
+           $placetype = TranslateClient::translate(null, $_GET["lang"], $place["placetype"]);
+            ?>
 
             <!--         ( [place_id] => 98 [place_name] => place test 
                      [description] => fsvtgegbtrbr t reb [createdate] => 2015-04-15 
@@ -30,7 +33,7 @@ try {
                 <div class="panel panel-default placeinformation-card">
 
                     <div class="panel-body">
-                        <p><?php echo TranslateClient::translate(null, $_GET["lang"], $place["description"]);?></p>
+                        <p><?php echo $placedesc;?></p>
                     </div>
                 </div>
                 <?php
@@ -54,14 +57,16 @@ try {
                 <div class="panel panel-default placeinformation-card">
 
                     <div class="panel-body">
-                        <span style="float: left; margin-top: 3px;" id="place-address"><?php echo $place["address"] ?></span>
+                        <span style="float: left; margin-top: 3px;" id="place-address">
+                            <?php echo $place["address"] ?>
+                        </span>
                         <span style="float: right;">
+                            <a><i class="fa fa-heart"></i></a>
                             <?php
                             $itemcount = appdboperations::getItemsOnPlaceCount($_GET["id"]);
                             if ($itemcount > 0) {
                                 ?>
-                            <a><i class="fa fa-heart"></i></a>
-                                <a class="btn btn-sm">
+                            <a href="*placeitemslist~<?php echo $_GET["id"]; ?>~<?php echo $place["place_name"]." ".$placetype; ?>" class="btn btn-sm">
                                     <i class="fa fa-diamond"></i>
                                     <i class="fa"><?php echo $itemcount; ?></i>
                                 </a>

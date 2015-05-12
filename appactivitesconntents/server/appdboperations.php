@@ -2,7 +2,7 @@
 
 class appdboperations {
 
-    public static function getPlacesList($limit = 25) {
+    public static function getPlacesList($limit = 25, $selectfrom = -1) {
         try {
 
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
@@ -16,8 +16,13 @@ class appdboperations {
                     INNER JOIN place_type
                       ON place.place_type = place_type.place_id
                   WHERE place.view = 1
-                  ORDER BY place.create_date DESC
-                  LIMIT " . intval($limit);
+                  ORDER BY place.create_date DESC";
+            if($selectfrom > -1){
+                $sql = $sql . " LIMIT " . intval($selectfrom) . ", " . intval($limit);
+            }  else {
+                $sql = $sql . " LIMIT " . intval($limit);
+            }
+                  
 
             $data = array();
             $stmt = $dbh->prepare($sql);
@@ -43,7 +48,7 @@ class appdboperations {
         }
     }
     
-       public static function getPlacesListOrderByLocation($limit = 25, $lat, $lang) {
+       public static function getPlacesListOrderByLocation($limit = 25, $lat, $lang, $selectfrom = -1) {
         try {
 
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
@@ -58,8 +63,12 @@ class appdboperations {
                       ON place.place_type = place_type.place_id
                   WHERE place.view = 1
                   ORDER BY (place.place_location_lat <= $lat),
-                  ( place.place_location_lng <= $lang)
-                  LIMIT " . intval($limit);
+                  ( place.place_location_lng <= $lang)";
+            if($selectfrom > -1){
+                $sql = $sql . " LIMIT " . intval($selectfrom) . ", " . intval($limit);
+            }  else {
+                $sql = $sql . " LIMIT " . intval($limit);
+            }
 
             $data = array();
             $stmt = $dbh->prepare($sql);
@@ -182,6 +191,81 @@ class appdboperations {
             $data = array();
             $stmt = $dbh->prepare($sql);
             $stmt->bindParam(":id", $placeid, PDO::PARAM_INT);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($result as $row) {
+                $item = array();
+                $item["id"] = $row["item_id"];
+                $item["name"] = $row["item_name"];
+                $item["description"] = $row["item_description"];
+                $item["date"] = $row["adddate"];
+                array_push($data, $item);
+            }
+
+            $dbh = null;
+            return $data;
+
+            /*             * * close the database connection ** */
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+     public static function getItemsListByLocation($limit = 25, $lat, $lang) {
+        try {
+
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $sql = "SELECT
+                    item.item_id,
+                    item.item_name,
+                    DATE(item.item_add_date) AS adddate,
+                    item.item_description
+                  FROM item
+                    INNER JOIN place
+                      ON item.item_place = place.place_id
+                  WHERE item.status_view = 1
+                  ORDER BY (place.place_location_lat <= ".floatval($lat)."),
+                  ( place.place_location_lng <= ".floatval($lang).")
+                  LIMIT ".  intval($limit);
+            $data = array();
+            $stmt = $dbh->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($result as $row) {
+                $item = array();
+                $item["id"] = $row["item_id"];
+                $item["name"] = $row["item_name"];
+                $item["description"] = $row["item_description"];
+                $item["date"] = $row["adddate"];
+                array_push($data, $item);
+            }
+
+            $dbh = null;
+            return $data;
+
+            /*             * * close the database connection ** */
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+     public static function getItemsListByPlace($limit = 25, $placeid) {
+        try {
+
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $sql = "SELECT
+                    item.item_id,
+                    item.item_name,
+                    DATE(item.item_add_date) AS adddate,
+                    item.item_description
+                  FROM item
+                    INNER JOIN place
+                      ON item.item_place = place.place_id
+                  WHERE item.status_view = 1 
+                        AND place.place_id = :palceid
+                  ORDER BY item.item_add_date
+                  LIMIT ".  intval($limit);
+            $data = array();
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindParam(":palceid", $placeid, PDO::PARAM_INT);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             foreach ($result as $row) {

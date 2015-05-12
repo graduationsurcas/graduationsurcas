@@ -6,6 +6,6 @@ session_start();
 include_once '../include/sessioncheck.php';
 
 if (!$_SESSION['login']) {
-    header('Location: http://localhost/LRC');
+    header('Location: http://localhost/graduationsurcas');
 }
 

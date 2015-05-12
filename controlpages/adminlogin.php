@@ -24,11 +24,12 @@
                                     <input class="form-control" placeholder="email" required="" name="useremail" id="useremail" type="email">
                                 
                             </div>
-
+                            <br>
                             <div class="input-group">
                                 <div class="input-group-addon" ><span class="fa fa-lock">&nbsp;</span>Password</div>
                                 <input class="form-control" placeholder="Password" required="" name="userpassword" id="userpassword" type="password">
                             </div>
+                            <br>
 
 
                             <input class="btn  btn-success btn-block" type="submit" id="login" value="Login">
