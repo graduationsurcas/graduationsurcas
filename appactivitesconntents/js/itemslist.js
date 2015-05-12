@@ -2,19 +2,18 @@
 $(document).ready(function () {
     $("#loadmore-button").click(function () {
         Data = {
-            'destination': 'placeslistnextpage',
+            'destination': 'itemlistnextpage',
             'selectfrom': $("#selectfrom").val(),
             'lang': $("#userlang").val(),
             'selectamount': $("#selectamount").val()
         };
 
-        
-        
 
         var nextfrom = Number($("#round").val()) * Number($("#selectamount").val());
         $("#selectfrom").val(nextfrom);
         $("#round").val(Number($("#round").val()) + 1);
 
+  
 
         $.ajax({
             type: 'POST',
@@ -33,11 +32,12 @@ $(document).ready(function () {
                 
             },
             success: function (data, textStatus, jqXHR) {
+                console.log(data)
                 if(data.length === 0){
                    $(".load-more").hide(); 
                 }else{
                     
-                $("#PlacesListTemplate").tmpl(data).appendTo(".main-places-section");
+                $("#ItemsListTemplate").tmpl(data).appendTo(".main-items-section");
                 }
                
             },

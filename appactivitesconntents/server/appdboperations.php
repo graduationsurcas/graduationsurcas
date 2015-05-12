@@ -174,7 +174,7 @@ class appdboperations {
     
     
     
-     public static function getItemsList($limit = 25) {
+     public static function getItemsList($limit = 25, $selectfrom = -1) {
         try {
 
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
@@ -185,12 +185,15 @@ class appdboperations {
                     item.item_description
                   FROM item
                   WHERE item.status_view = 1
-                  ORDER BY adddate DESC
-                  LIMIT " . intval($limit);
+                  ORDER BY adddate DESC";
+              if($selectfrom > -1){
+                $sql = $sql . " LIMIT " . intval($selectfrom) . ", " . intval($limit);
+            }  else {
+                $sql = $sql . " LIMIT " . intval($limit);
+            }
 
             $data = array();
             $stmt = $dbh->prepare($sql);
-            $stmt->bindParam(":id", $placeid, PDO::PARAM_INT);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             foreach ($result as $row) {
@@ -210,7 +213,7 @@ class appdboperations {
             echo $e->getMessage();
         }
     }
-     public static function getItemsListByLocation($limit = 25, $lat, $lang) {
+     public static function getItemsListByLocation($limit = 25, $lat, $lang , $selectfrom = -1) {
         try {
 
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
@@ -224,8 +227,12 @@ class appdboperations {
                       ON item.item_place = place.place_id
                   WHERE item.status_view = 1
                   ORDER BY (place.place_location_lat <= ".floatval($lat)."),
-                  ( place.place_location_lng <= ".floatval($lang).")
-                  LIMIT ".  intval($limit);
+                  ( place.place_location_lng <= ".floatval($lang).")";
+              if($selectfrom > -1){
+                $sql = $sql . " LIMIT " . intval($selectfrom) . ", " . intval($limit);
+            }  else {
+                $sql = $sql . " LIMIT " . intval($limit);
+            }
             $data = array();
             $stmt = $dbh->prepare($sql);
             $stmt->execute();
@@ -247,7 +254,7 @@ class appdboperations {
             echo $e->getMessage();
         }
     }
-     public static function getItemsListByPlace($limit = 25, $placeid) {
+     public static function getItemsListByPlace($limit = 25, $placeid, $selectfrom = -1) {
         try {
 
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
@@ -261,8 +268,12 @@ class appdboperations {
                       ON item.item_place = place.place_id
                   WHERE item.status_view = 1 
                         AND place.place_id = :palceid
-                  ORDER BY item.item_add_date
-                  LIMIT ".  intval($limit);
+                  ORDER BY item.item_add_date";
+              if($selectfrom > -1){
+                $sql = $sql . " LIMIT " . intval($selectfrom) . ", " . intval($limit);
+            }  else {
+                $sql = $sql . " LIMIT " . intval($limit);
+            }
             $data = array();
             $stmt = $dbh->prepare($sql);
             $stmt->bindParam(":palceid", $placeid, PDO::PARAM_INT);
@@ -354,7 +365,7 @@ class appdboperations {
         }
     }
 
-    public static function getServiceList($limit = 25) {
+    public static function getServiceList($limit = 25, $selectfrom = -1) {
         try {
 
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
@@ -375,8 +386,12 @@ class appdboperations {
                     INNER JOIN user_service
                       ON service.service_user_id = user_service.useservice_id
                   WHERE service.service_status = 1
-                  ORDER BY service.service_add_date DESC
-                  LIMIT " . intval($limit);
+                  ORDER BY service.service_add_date DESC";
+                    if($selectfrom > -1){
+                $sql = $sql . " LIMIT " . intval($selectfrom) . ", " . intval($limit);
+            }  else {
+                $sql = $sql . " LIMIT " . intval($limit);
+            }
 
             $data = array();
             $stmt = $dbh->prepare($sql);

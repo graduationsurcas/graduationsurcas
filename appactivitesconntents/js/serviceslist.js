@@ -2,7 +2,7 @@
 $(document).ready(function () {
     $("#loadmore-button").click(function () {
         Data = {
-            'destination': 'placeslistnextpage',
+            'destination': 'serviceslistnextpage',
             'selectfrom': $("#selectfrom").val(),
             'lang': $("#userlang").val(),
             'selectamount': $("#selectamount").val()
@@ -33,11 +33,12 @@ $(document).ready(function () {
                 
             },
             success: function (data, textStatus, jqXHR) {
+//                console.log(data);
                 if(data.length === 0){
                    $(".load-more").hide(); 
                 }else{
                     
-                $("#PlacesListTemplate").tmpl(data).appendTo(".main-places-section");
+                $("#ServicesListTemplate").tmpl(data).appendTo(".main-services-section");
                 }
                
             },

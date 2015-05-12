@@ -67,15 +67,14 @@ use Stichoza\GoogleTranslate\TranslateClient;
                     <div class="panel-body">
                         <span id="place-title" style="margin-bottom: 10px;">
                             <?php
-                                            echo $places["name"];
-//                            echo TranslateClient::translate(null, $_GET["lang"], $places["name"]);
+                            echo TranslateClient::translate(null, $_GET["lang"], $places["name"]);
                             ?>
 
                         </span>
                         <p>
                             <?php
                             $description = (strlen($places["description"]) > 150) ? substr($places["description"], 0, 150) . ".." : $places["description"];
-//                            $description = TranslateClient::translate(null, $_GET["lang"], $description);
+                            $description = TranslateClient::translate(null, $_GET["lang"], $description);
                             echo $description;
                             ?>
                         </p>
@@ -94,7 +93,7 @@ use Stichoza\GoogleTranslate\TranslateClient;
                                 <a><i class="fa fa-heart card-icon"></i></a>
                             </span>   
                             <span class="btn btn-sm card-icon">
-                                <a href="*openplace~<?php echo $places["id"]; ?>~<?php // echo TranslateClient::translate(null, $_GET["lang"], $places["name"]);    ?>" 
+                                <a href="*openplace~<?php echo $places["id"]; ?>~<?php echo TranslateClient::translate(null, $_GET["lang"], $places["name"]);    ?>" 
                                    >
                                     <i class="fa fa-expand card-icon"></i>
                                 </a>
@@ -113,7 +112,7 @@ use Stichoza\GoogleTranslate\TranslateClient;
                 <span  id="loadmore-button" style="margin: 0px; padding: 0px;"  class="btn btn-sm">
                     <i style="font-size: 2.5em;" class="fa fa-angle-double-down"></i>
                 </span>
-                <i id="loadmore-spinner" class="fa fa-spinner fa-pulse"></i>
+                <i style="color: #0091ea; font-weight: 100;" id="loadmore-spinner" class="fa fa-circle-o-notch fa-spin"></i>
             </center>
         </section>
 
@@ -122,7 +121,10 @@ use Stichoza\GoogleTranslate\TranslateClient;
         <input type="hidden" id="round" value="2">
         <input type="hidden" id="userlang" value="<?php echo $_GET["lang"]; ?>">
 
+        
+        
 
+        <script src="js/main.js" type="text/javascript"></script>
         <?php
         require_once './includes/footers.html';
         ?>
@@ -163,46 +165,12 @@ use Stichoza\GoogleTranslate\TranslateClient;
                     </div>
                 </div>
         </script>
-        <script src="../js/main.js" type="text/javascript"></script>
         <script src="js/placeslist.js" type="text/javascript"></script>
         <script type="text/javascript">
             // $("#loadmore-button").hide();
             $("#loadmore-spinner").hide();
         </script>
         <script src="materialize/js/materialize.min.js" type="text/javascript"></script>
-        <script id="PlacesListTemplate" type="text/x-jquery-tmpl">
-              <div class="panel place-card">
-                    <div class="panel-body">
-                        <span id="place-title" style="margin-bottom: 10px;">
-                          ${name}  
-                        </span>
-                        <p>
-                          ${description}
-                        </p>
-                    </div>
-                    <div class="panel-body">
-                        <div class="text-left" style="margin: 0px; padding: 0px; float: left">
-                            <span class="btn btn-sm card-icon">
-                                <a href="*share~this place comming from my app id = ${id}"
-                                   class="waves-effect" >
-                                    <i class="fa fa-share-alt card-icon"></i>
-                                </a>
-                            </span>
-                        </div>
-                        <div class="text-right" style="margin: 0px; padding: 0px; float: right">
-                            <span class="btn btn-sm card-icon" style="margin-right: 5px;">
-                                <a><i class="fa fa-heart card-icon"></i></a>
-                            </span>   
-                            <span class="btn btn-sm card-icon">
-                                <a href="*openplace~${id}~${name}" 
-                                   >
-                                    <i class="fa fa-expand card-icon"></i>
-                                </a>
-                            </span>
-                        </div>
-                        <br>
-                    </div>
-                </div>
-        </script>
+        
     </body>
 </html>
