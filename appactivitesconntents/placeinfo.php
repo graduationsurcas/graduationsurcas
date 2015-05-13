@@ -30,12 +30,7 @@ try {
                      [placetype] => museum )-->
 
             <section class="main-placeinformation-section">
-                <div class="panel panel-default placeinformation-card">
-
-                    <div class="panel-body">
-                        <p><?php echo $placedesc;?></p>
-                    </div>
-                </div>
+                
                 <?php
                 $placeimages = appdboperations::getPlaceImage($_GET["id"]);
                 if (count($placeimages) > 0) {
@@ -52,6 +47,14 @@ try {
                     }
                 }
                 ?>
+                
+                <div class="panel panel-default placeinformation-card">
+
+                    <div class="panel-body">
+                        <p><?php echo $placedesc;?></p>
+                    </div>
+                </div>
+                
 
 
                 <div class="panel panel-default placeinformation-card">

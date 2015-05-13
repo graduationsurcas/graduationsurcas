@@ -104,6 +104,9 @@ use Stichoza\GoogleTranslate\TranslateClient;
             </div>
         </section>
 
+        <?php
+        if(count($services) == $_GET["selectamount"]){
+            ?>
         <section class="load-more">
             <center>
                 <span  id="loadmore-button" style="margin: 0px; padding: 0px;"  class="btn btn-sm">
@@ -112,6 +115,9 @@ use Stichoza\GoogleTranslate\TranslateClient;
                 <i style="color: #0091ea; font-weight: 100;" id="loadmore-spinner" class="fa fa-circle-o-notch fa-spin"></i>
             </center>
         </section>
+        <?php
+        }
+        ?>
 
 <script src="js/main.js" type="text/javascript"></script>
         <?php

@@ -2,6 +2,10 @@
 
 include_once './server/config.php';
 include_once './server/appdboperations.php';
+include_once '../class/cryptpass.php';
+
+
+print_r(appdboperations::userSignIn("ghakwork@gmail.com", "12345"));
 //
 
 //require 'vendor/autoload.php';

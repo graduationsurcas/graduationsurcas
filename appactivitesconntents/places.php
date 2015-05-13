@@ -107,6 +107,9 @@ use Stichoza\GoogleTranslate\TranslateClient;
             ?>
         </section>
 
+         <?php
+        if(count($places) == $_GET["selectamount"]){
+            ?>
         <section class="load-more">
             <center>
                 <span  id="loadmore-button" style="margin: 0px; padding: 0px;"  class="btn btn-sm">
@@ -115,6 +118,9 @@ use Stichoza\GoogleTranslate\TranslateClient;
                 <i style="color: #0091ea; font-weight: 100;" id="loadmore-spinner" class="fa fa-circle-o-notch fa-spin"></i>
             </center>
         </section>
+        <?php
+        }
+        ?>
 
         <input type="hidden" id="selectamount" value="<?php echo $_GET["selectamount"]; ?>">
         <input type="hidden" id="selectfrom" value="25">

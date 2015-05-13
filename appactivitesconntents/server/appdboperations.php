@@ -512,4 +512,76 @@ class appdboperations {
         }
     }
     
+    
+        public static function userSignIn($useremail, $userpass) {
+        $data = array("status" => "false", "message" => "", "userinfo"=>"");
+        try {
+
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $dbh->prepare('SELECT count(*) as find FROM user WHERE user_email = :useremail');
+            $stmt->bindParam(':useremail', $useremail, PDO::PARAM_STR);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            $find;
+            foreach ($result as $row) {
+                $find = ($row['find'] == 0) ? false : true;
+            }    
+            if ($find == FALSE) {
+                $data["message"] = "check your emaile";
+                return $data;
+            } else {
+                $stmt = $dbh->prepare("SELECT user_password FROM user WHERE user_email = :useremail");
+                $stmt->bindParam(':useremail', $useremail, PDO::PARAM_STR);
+                $stmt->execute();
+                $pass = $stmt->fetch(PDO::FETCH_ASSOC);
+//                include_once '../class/cryptpass.php';
+                if (decrypt_pass($userpass, $pass['user_password'])) {
+                    $query = 'SELECT
+                                user.user_name,
+                                user.user_email,
+                                language.lang_shortcut,
+                                language.lang_name,
+                                user.user_id
+                              FROM user
+                                INNER JOIN language
+                                  ON user.user_lang = language.lang_id
+                              WHERE user.user_email = :useremail';
+                    $stmt = $dbh->prepare($query);
+                    $stmt->bindParam(':useremail', $useremail, PDO::PARAM_STR);
+                    $stmt->execute();
+                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                    $userinfo = array();
+                    $userinfo["userid"] = $row["user_id"];
+                    $userinfo["type"] = "user";
+                    $userinfo["username"] = $row["user_name"];
+                    $userinfo["useremail"] = $row["user_email"];
+                    $userinfo["langshortcut"] = $row["lang_shortcut"];
+                    $userinfo["langname"] = $row["lang_name"];
+                 
+
+                    $data["message"] = "did you know what is blue";
+                    $data["status"] = "true";
+                    $data["userinfo"] = $userinfo;
+                    
+                } else {
+                    //                if the password is wrong
+                    $data["message"] = "password is wrong";
+                    $data["status"] = "false";
+                    return $data;
+                }
+
+                $dbh = null;
+                return $data;
+            }
+//            close the database connection
+        } catch (PDOException $e) {
+            $data["message"] = $e->getMessage();
+            $data["status"] = "false";
+            return $data;
+        }
+    }
+    
+    
 }
