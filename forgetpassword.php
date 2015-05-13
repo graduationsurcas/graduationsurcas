@@ -17,5 +17,6 @@
         <?php
             include_once 'include/fotterlink.html';
         ?>
+        <script src="js/forgetpassword.js" type="text/javascript"></script>
     </body>
 </html>

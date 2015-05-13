@@ -1,7 +1,7 @@
 <?php
 
 $navtitles = dboperation::getAllNanvTabTitle();
-
+$notcount =dboperation::NotificationCount();
 ?>
 
 
@@ -22,20 +22,18 @@ $navtitles = dboperation::getAllNanvTabTitle();
     <!-- Top Menu Items -->
     <ul class="nav navbar-right top-nav">
         <li class="dropdown">
+            <a href="#"  data-toggle="modal" data-target="#notification_modal"><span style="color: white" class="badge badge-notify"> <?php echo $notcount;?> <i class="fa fa-bell"></i></a>
 
         </li>
         <li class="dropdown">
-            <a href="#" ><i class="fa fa-user"></i> <?php echo $_SESSION['login-admin-name']; ?></a>
+            <a href="../pages/userprofile.php" ><i class="fa fa-user"></i> <?php echo $_SESSION['login-admin-name']; ?></a>
         </li>
         <li class="dropdown">
             <a onclick="logout()" ><i class="fa fa-sign-out"></i></a>
         </li>
     </ul>
 
-
-
-    <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
-    <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <div class="collapse navbar-collapse ">
         <ul class="nav navbar-nav side-nav">
             <li>
                 <a href="home.php"><i class="fa fa-arrow-circle-o-right"></i> Home</a>
@@ -79,10 +77,10 @@ $navtitles = dboperation::getAllNanvTabTitle();
                         <a href="../pages/service.php"><?php echo $navtitles["servicestitle"]["title"];?></a>
                     </li>
                     <li>
-                        <a href="../pages/servicesrequests.php"><?php echo $navtitles["servicesproviders"]["title"];?></a>
+                        <a href="../pages/servicesrequests.php"><?php echo $navtitles["Servicesrequests"]["title"];?></a>
                     </li>
                     <li>
-                        <a href="../pages/serviceproviders.php"><?php echo $navtitles["Servicesrequests"]["title"];?></a>
+                        <a href="../pages/serviceproviders.php"><?php echo $navtitles["servicesproviders"]["title"];?></a>
                     </li>
                 </ul>
             </li>
@@ -99,6 +97,10 @@ $navtitles = dboperation::getAllNanvTabTitle();
 
         </ul>
        
+        <?php 
+        include_once '../modals/notification.php';
+         include_once '../modals/addnotification.php'; 
+        
+        ?>
     </div>
-    <!-- /.navbar-collaps -->
 </nav>

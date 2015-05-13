@@ -27,7 +27,7 @@
                     <div class="col-xs-6 col-sm-6 col-md-4 text-center leftspan" id="four"><h4>Share Area Statistics</h4>
                             <div id="wait-spain-five" style="margin-top: 9px"></div>
                             <canvas id="sharearea-statistics" /></div>
-                    <div class="col-xs-6 col-sm-6 col-md-4 text-center leftspan" id="sex"><h4>Items Statistics</h4>
+                    <div class="col-xs-6 col-sm-6 col-md-4 text-center leftspan" id="sex"><h4>Antiques Statistics</h4>
                             <div id="wait-spain-six" style="margin-top: 9px"></div>
                             <canvas id="item-statistics" /></div>
 

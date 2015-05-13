@@ -11,7 +11,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <form accept-charset="UTF-8" method="POST" role="form" id="form-forgetpassword">
+                    <form accept-charset="UTF-8" method="POST" role="form" id="form-forget-password">
                         <fieldset>
                             <center>
                                 <label id="login_result">
@@ -20,10 +20,10 @@
                             </center>
                             <div class="input-group">
                                     <div class="input-group-addon"><span>@&nbsp;</span>Email</div>
-                                    <input class="form-control" placeholder="email" required="" name="useremail" id="useremail" type="email">
+                                    <input class="form-control" placeholder="email" required="" name="new-useremail-rest" id="new-useremail-rest" type="email">
                                 
                             </div>
-
+                            <br>
                             <input class="btn  btn-success btn-block" type="submit" id="password" value="Get Password">
 
                             <hr>

@@ -29,6 +29,12 @@ $(document).ready(function () {
             $('input[id=remove-serviceprovider-admin-pass]').val("");
             $("#remove_serviceprovider_modal_form_result").text("");
         },
+        setremovesetservice: function (id, trid) {
+            $("#remove-service-id").val(id);
+            $("#remove-service-tr-id").val(trid);
+            $('input[id=remove-service-admin-pass]').val("");
+            $("#remove_serviceprovider_modal_form_result").text("");
+        },
         serviceprovidernextpage: function (selectfrom, selectamount) {
             Data = {
                 'destination': 'serviceproviderslist',
@@ -157,7 +163,52 @@ $(document).ready(function () {
         });
     });
 
-
+$("#form-remove-service").submit(function (event) {
+        var Data = {
+            'destination': 'serviceremove',
+            'remove-service-id': $("#remove-service-id").val(),
+            'remove-service-admin-pass': $('input[id=remove-service-admin-pass]').val()
+        };
+        console.log(Data)
+        event.preventDefault();
+        var trid = $("#remove-service-tr-id").val();
+        var url = sitelink + "/server/servecerequests.php";
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: Data,
+            dataType: 'json',
+            encode: true,
+            beforeSend: function (xhr) {
+                $("#remove_serviceprovider_modal_form_result").text("");
+                $('#remove_serviceprovider_modal_form_result').html('<span class="fa fa-spinner fa-pulse"></span>');
+                $("#form-remove-serviceprovider :input").prop("disabled", true);
+                $("#remove_serviceprovider_modal_form_result").css("color", "green");
+            },
+            complete: function (jqXHR, textStatus) {
+                $("#form-remove-serviceprovider :input").prop("disabled", false);
+            },
+            success: function (data, textStatus, jqXHR) {
+                
+                if (data.status == "true") {
+                    $('input[id=remove-serviceprovider-admin-pass]').val("");
+                    $("#remove_serviceprovider_modal_form_result").css("color", "green");
+                    $("#remove_serviceprovider_modal_form_result").text("delete successful");
+                    $("#service_list_tr_" + trid).toggle();
+                } else {
+                    $("#remove_serviceprovider_modal_form_result").css("color", "red");
+                    $("#remove_serviceprovider_modal_form_result").text(data.message);
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown)
+                $("#remove_serviceprovider_modal_form_result").css("color", "red");
+                $("#remove_serviceprovider_modal_form_result").text("Error, try again");
+            }
+        });
+    });
+    
+    
     $("#update-serviceproviderinfo").submit(function (event) {
 
         event.preventDefault();

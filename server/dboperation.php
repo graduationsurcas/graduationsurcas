@@ -9,8 +9,13 @@ class dboperation {
         $conn->query('SET NAMES utf8');
         $query = 'INSERT INTO action_report(id_action_report, admin, source_ip,'
                 . ' report, create_date) VALUES '
-                . '(NULL, ?, ?, ?,CURRENT_TIMESTAMP)';
+                . '(NULL, :adminid, :server, :report,CURRENT_TIMESTAMP())';
         $stmt = $conn->prepare($query) or die(mysql_error());
+        $stmt->bindParam(':useremail', $useremail, PDO::PARAM_STR);
+        $stmt->bindParam(':report', $report, PDO::PARAM_STR);
+                $stmt->bindParam(':server', $_SERVER['REMOTE_ADDR'], PDO::PARAM_STR);
+        $stmt->bindParam(':adminid', $adminid, PDO::PARAM_STR);
+
         $stmt->bind_param('iss', $adminid, $_SERVER['REMOTE_ADDR'], $report);
         $stmt->execute();
         if ($stmt->affected_rows == 1) {
@@ -91,40 +96,101 @@ class dboperation {
         }
     }
 
-    public static function restpass($useremail) {
-
+    public static function restpass($admin_email) {
+        
         $data = array("status" => "false", "message" => "");
         try {
-            $randompass = rand(1, 9);
-            $place_type = ($randompass);
-            dboperation::senemail($useremail);
+            
+            $randompass = generateRandomPass(8);
+            $newpass = encrypt_pass($randompass);
+            
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
             $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $stmt = $dbh->prepare('update admin
                             SET admin_password = :password 
                                 where admin_email = :email');
-            $stmt->bindParam(':password', $place_type, PDO::PARAM_INT);
-            $stmt->bindParam(':email', $useremail, PDO::PARAM_INT);
+            $stmt->bindParam(':password', $newpass, PDO::PARAM_INT);
+            $stmt->bindParam(':email', $admin_email, PDO::PARAM_INT);
             $stmt->execute();
-
-            $dbh = null;
-            echo json_encode($data);
-
+            if($stmt->rowCount() > 0){
+                
+                if(Services::sendEmail($admin_email, "Reset Password", 
+                        "<h2>your new password is <span style='color: green'>$randompass</span></h2>")){
+                    $data["message"] = "Your new password have been send to your email";
+                     $data["status"] = "true";
+                        }
+            }
+            
 //            close the database connection
         } catch (PDOException $e) {
             $data["message"] = $e->getMessage();
             $data["status"] = "false";
         }
+            $dbh = null;
+            echo json_encode($data);
+        
     }
 
-    public static function senemail($useremail) {
-        $to = $useremail;
-        $subject = "This is subject";
-        $message = "This is simple text message.";
-        $header = "From:albusaidi1231@gmail.com \r\n";
-        $retval = mail($to, $subject, $message, $header);
+    
+    public static function updateuserprofile($admin_id,$admin_email,$user_name,$old_password,$user_password) {
+        
+        $data = array("status" => "false", "message" => "");
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $dbh->prepare('SELECT count(*) as find FROM admin WHERE admin_id=:admin_id');
+            $stmt->bindParam(':admin_id', $admin_id, PDO::PARAM_STR);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            $find;
+            foreach ($result as $row) {
+                $find = ($row['find'] == 0) ? false : true;
+            }
+
+            if ($find == FALSE) {
+                $data["message"] = "no account like this in the database";
+            } else {
+                $stmt = $dbh->prepare("SELECT admin_password FROM admin WHERE admin_id =:admin_id");
+                $stmt->bindParam(':admin_id', $admin_id, PDO::PARAM_STR);
+                $stmt->execute();
+                $pass = $stmt->fetch(PDO::FETCH_ASSOC); 
+                if (decrypt_pass($old_password, $pass['admin_password'])) {
+                    $newpass = encrypt_pass($user_password);
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $dbh->prepare('update admin
+                            SET admin_password =:user_password ,admin_email=:admin_email,admin_name=:user_name
+                                where admin_id =:admin_id');
+            $stmt->bindParam(':admin_email', $admin_email, PDO::PARAM_INT);
+            $stmt->bindParam(':user_name', $user_name, PDO::PARAM_INT);
+            $stmt->bindParam(':user_password', $newpass, PDO::PARAM_INT);
+            $stmt->bindParam(':admin_id', $admin_id, PDO::PARAM_INT);
+            $stmt->execute();
+            if($stmt->rowCount() > 0){
+                    $data["message"] = "scuess";
+                     $data["status"] = "true";
+                        
+            }
+                }
+ else {
+     $data["message"] = "old password wrong";
+            $data["status"] = "false ";
+ }
+           
+            }
+//            close the database connection
+        } catch (PDOException $e) {
+            $data["message"] = $e->getMessage();
+            $data["status"] = "false ";
+        }
+            $dbh = null;
+            echo json_encode($data);
+        
     }
 
+    
+    
+    
     public static function getPlacesTypes() {
         try {
 
@@ -167,6 +233,38 @@ class dboperation {
         }
     }
 
+     public static function getallNotification() {
+        try {
+
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $sql = "SELECT
+                    notifications.noti_id,
+                    notifications.noti_text,
+                    admin.admin_name
+                  FROM notifications
+                    INNER JOIN admin
+                      ON notifications.noti_admin = admin.admin_id
+                              WHERE DATE( noti_adddate ) = DATE( NOW( ) )";
+            $getPlacesTypes = array();
+            $data = array();
+            foreach ($dbh->query($sql) as $row) {
+                $notifi = array();
+                $notifi["id"] = $row['noti_id'];
+                $notifi["noti_text"] = $row['noti_text'];
+                $notifi["admin_name"] = $row['admin_name'];
+                array_push($data, $notifi);
+            }
+
+            return $data;
+
+            /*             * * close the database connection ** */
+            $dbh = null;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+    
+    
     public static function getAllPlacesx() {
         try {
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
@@ -342,6 +440,37 @@ class dboperation {
         $dbh = null;
         echo json_encode($data);
     }
+    
+    
+     public static function addnewNotification($notifi_text) {
+         
+        $data = array("status" => "false", "message" => "");
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $query = 'INSERT INTO oman_tourism_guide.notifications '
+                    . '(noti_id, '
+                    . 'noti_text,noti_adddate,noti_admin) '
+                    . 'VALUES (NULL, '
+                    . ':notifi_text,CURRENT_TIMESTAMP(),:noti_admin)';
+            $stmt = $dbh->prepare($query) or die(mysql_error());
+            $stmt->bindParam(':notifi_text', $notifi_text, PDO::PARAM_INT);
+            $stmt->bindParam(':noti_admin', $_SESSION['login-admin-id'] , PDO::PARAM_INT);
+            $stmt->execute();
+            if ($stmt->rowCount() == 1) {
+                $data["status"] = "true";
+                $idofinserteditem = $dbh->lastInsertId();
+            } else {
+                $data["message"] = $stmt->errorInfo();
+                $data["status"] = "false";
+            }
+        } catch (Exception $e) {
+            $data["message"] = $e->getMessage();
+            $data["status"] = "false";
+        }
+        $dbh = null;
+        echo json_encode($data);
+    }
 
     public static function addnewaservices($services_name) {
 
@@ -483,7 +612,21 @@ class dboperation {
             echo $e->getMessage();
         }
     }
+public static function NotificationCount() {
+        try {
 
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $sql = 'SELECT count(*) as count FROM notifications WHERE 1';
+            $count;
+            foreach ($dbh->query($sql) as $row) {
+                $count = $row['count'];
+            }
+            return $count;
+            $dbh = null;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
     public static function placeSearch($searchkey) {
         $searchkey = strval($searchkey);
         $response = array("status" => "false", "data" => "");
@@ -1476,6 +1619,53 @@ class dboperation {
         echo json_encode($response);
         $dbh = null;
     }
+    
+    
+    public static function removeService($Serviceid, $password, $email) {
+        $response = array("status" => "false", "message" => "");
+
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+
+            $stmt = $dbh->prepare("SELECT admin_password FROM admin WHERE admin_email = :useremail");
+            $stmt->bindParam(':useremail', $email, PDO::PARAM_STR);
+            $stmt->execute();
+            $pass = $stmt->fetchAll();
+//            $response["message"] = $pass[0]["admin_password"];
+
+            if (decrypt_pass($password, $pass[0]['admin_password'])) {
+                $response["status"] = "true";
+
+                $stmt = $dbh->prepare('DELETE
+                                    FROM service
+                                  WHERE service_id = :service_id');
+                $stmt->bindParam(':service_id', $Serviceid, PDO::PARAM_INT);
+                $stmt->execute();
+                if ($stmt->rowCount() > 0) {
+                    $response["message"] = "done";
+                    $response["status"] = "true";
+                } else {
+                    $response["message"] = $stmt->errorInfo();
+                    $response["status"] = "false";
+                }
+            } else {
+                $response["message"] = "wrong password";
+                $response["status"] = "false";
+            }
+        } catch (PDOException $e) {
+            $response["message"] = $e->getMessage();
+            $response["status"] = "false";
+        }
+        echo json_encode($response);
+        $dbh = null;
+    }
+    
+    
+    
+    
+    
 
     public static function getServiceProviderInfo($id) {
         $response = array("status" => "false", "data" => "");
@@ -1600,7 +1790,7 @@ class dboperation {
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
             $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $stmt = $dbh->prepare('SELECT
-                service.service_user_id,
+                service.service_id,
                 service.service_admin_add,
                 service.service_location_lat,
                 service.service_location_lang,
@@ -1624,7 +1814,7 @@ class dboperation {
             $result = $stmt->fetchAll();
             $response = array("status" => "false", "data" => "");
             $service = array(
-                "id" => "",
+                "serviceid" => "",
                 "admin" => "",
                 "loclat" => "",
                 "loclan" => "",
@@ -1638,7 +1828,7 @@ class dboperation {
                 "username" => "");
             $data = array();
             foreach ($result as $row) {
-                $service["id"] = $row['service_user_id'];
+                $service["serviceid"] = $row['service_id'];
                 $service["admin"] = $row['service_admin_add'];
                 $service["loclat"] = $row['service_location_lat'];
                 $service["loclan"] = $row['service_location_lang'];
@@ -1646,7 +1836,7 @@ class dboperation {
                 $service["adddate"] = $row['service_add_date'];
                 $service["prate"] = $row['service_positive_rate'];
                 $service["nrate"] = $row['service_negative_rate'];
-                $service["status"] = ($row['service_status'] == "0") ? "false" : "true";
+                $service["status"] = ($row['service_status'] == "1") ? "false" : "true";
                 $service["desc"] = $row['service_status'];
                 $service["title"] = $row['service_title'];
                 $service["userid"] = $row['useservice_id'];
@@ -1778,17 +1968,26 @@ class dboperation {
             (SELECT COUNT(*) FROM user WHERE user_lang = 1) as ar, 
             (SELECT COUNT(*) FROM user WHERE user_lang = 2) as en, 
             (SELECT COUNT(*) FROM user WHERE user_lang = 3) as fr,
-            (SELECT COUNT(*) FROM user WHERE user_lang = 4) as gr';
+            (SELECT COUNT(*) FROM user WHERE user_lang = 4) as gr,
+            (SELECT COUNT(*) FROM user WHERE user_lang = 5) as pt,
+            (SELECT COUNT(*) FROM user WHERE user_lang = 6) as es,
+            (SELECT COUNT(*) FROM user WHERE user_lang = 7) as it';
             $languages = array(
                 "ar" => "",
                 "en" => "",
                 "fr" => "",
-                "gr" => "");
+                "gr" => "",
+                "pt" => "",
+                "es" => "",
+                "it" => "");
             foreach ($dbh->query($sql) as $row) {
                 $languages["ar"] = $row[0];
                 $languages["en"] = $row[1];
                 $languages["fr"] = $row[2];
                 $languages["gr"] = $row[3];
+                $languages["pt"] = $row[4];
+                $languages["es"] = $row[5];
+                $languages["it"] = $row[6];
             }
             $response["languages"] = $languages;
             $sql = 'SELECT * 
@@ -2016,6 +2215,42 @@ class dboperation {
         $dbh = null;
     }
 
+    public static function getnotification() {
+        $response = array("status" => "false", "data" => "");
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $dbh->prepare('SELECT noti_id, noti_text
+            FROM notifications
+            WHERE DATE( noti_adddate ) = DATE( NOW( ) )');
+
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            $response = array("status" => "false", "data" => "");
+            $item = array(
+                "noti_id" => "",
+                "noti_text" => ""
+            );
+            $data = array();
+            foreach ($result as $row) {
+                $item['notiid'] = $row['noti_id'];
+                $item['notitext'] = $row['noti_text'];
+               
+                array_push($data, $item);
+            }
+            $response['data'] = $data;
+            $response["status"] = "true";
+        } catch (PDOException $e) {
+            $response["data"] = $e->getMessage();
+            $response["status"] = "false";
+            echo $e->getMessage();
+        }
+        return json_encode($response);
+        $dbh = null;
+    }
+    
+    
+    
     public static function getalladmin($selectfrom = 1, $selectamount = 25) {
         $response = array("status" => "false", "data" => "");
         try {
