@@ -24,19 +24,7 @@ try {
                         [locationlong] => 57.5302 )-->
 
             <section class="main-placeinformation-section">
-                <div class="panel panel-default placeinformation-card">
-
-                    <div class="panel-body">
-                        <span><?php echo $item["itemtype"] ?></span>
-                    </div>
-                </div>
-                <div class="panel panel-default placeinformation-card">
-
-                    <div class="panel-body">
-                        <p><?php 
-                        echo TranslateClient::translate(null, $_GET["lang"], $item["description"]);?></p>
-                    </div>
-                </div>
+                
                 <?php
                 $itemimages = appdboperations::getItemImage($_GET["id"]);
                 if (count($itemimages) > 0) {
@@ -53,6 +41,22 @@ try {
                     }
                 }
                 ?>
+                
+                
+                <div class="panel panel-default placeinformation-card">
+
+                    <div class="panel-body">
+                        <span><?php echo $item["itemtype"] ?></span>
+                    </div>
+                </div>
+                <div class="panel panel-default placeinformation-card">
+
+                    <div class="panel-body">
+                        <p><?php 
+                        echo TranslateClient::translate(null, $_GET["lang"], $item["description"]);?></p>
+                    </div>
+                </div>
+                
 
 
                 <div class="panel panel-default placeinformation-card">
