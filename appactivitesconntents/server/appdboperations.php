@@ -513,7 +513,81 @@ class appdboperations {
     }
     
     
-        public static function userSignIn($useremail, $userpass) {
+        public static function ServiceProviderSignIn($useremail, $userpass) {
+        $data = array("status" => "false", "message" => "", "userinfo"=>"");
+        try {
+
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $dbh->prepare('SELECT count(*) as find FROM user_service WHERE useservice_email = :useremail');
+            $stmt->bindParam(':useremail', $useremail, PDO::PARAM_STR);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            $find;
+            foreach ($result as $row) {
+                $find = ($row['find'] == 0) ? false : true;
+            }    
+            if ($find == FALSE) {
+                $data["message"] = "check your emaile";
+                return $data;
+            } else {
+                $stmt = $dbh->prepare("SELECT useservice_password FROM user_service WHERE useservice_email = :useremail");
+                $stmt->bindParam(':useremail', $useremail, PDO::PARAM_STR);
+                $stmt->execute();
+                $pass = $stmt->fetch(PDO::FETCH_ASSOC);
+//                include_once '../class/cryptpass.php';
+                if (decrypt_pass($userpass, $pass['useservice_password'])) {
+                    $query = 'SELECT
+                                user_service.useservice_name,
+                                user_service.useservice_id,
+                                user_service.useservice_email,
+                                user_service.account_status,
+                                language.lang_name,
+                                language.lang_shortcut,
+                                user_service.useservice_lang
+                              FROM user_service
+                                INNER JOIN language
+                                  ON user_service.useservice_lang = language.lang_id
+                              WHERE user_service.useservice_email = :useremail';
+                    $stmt = $dbh->prepare($query);
+                    $stmt->bindParam(':useremail', $useremail, PDO::PARAM_STR);
+                    $stmt->execute();
+                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                    $userinfo = array();
+                    $userinfo["userid"] = $row["useservice_id"];
+                    $userinfo["type"] = "userprovider";
+                    $userinfo["username"] = $row["useservice_name"];
+                    $userinfo["useremail"] = $row["useservice_email"];
+                    $userinfo["langshortcut"] = $row["lang_shortcut"];
+                    $userinfo["langname"] = $row["lang_name"];
+                    $userinfo["status"] = $row["account_status"];
+                 
+
+                    $data["message"] = "did you know what is blue";
+                    $data["status"] = "true";
+                    $data["userinfo"] = $userinfo;
+                    
+                } else {
+                    //                if the password is wrong
+                    $data["message"] = "password is wrong";
+                    $data["status"] = "false";
+                    return $data;
+                }
+
+                $dbh = null;
+                return $data;
+            }
+//            close the database connection
+        } catch (PDOException $e) {
+            $data["message"] = $e->getMessage();
+            $data["status"] = "false";
+            return $data;
+        }
+    }
+    
+    
+            public static function userSignIn($useremail, $userpass) {
         $data = array("status" => "false", "message" => "", "userinfo"=>"");
         try {
 
@@ -582,6 +656,5 @@ class appdboperations {
             return $data;
         }
     }
-    
     
 }
