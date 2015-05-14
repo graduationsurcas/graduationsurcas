@@ -53,11 +53,31 @@ $(document).ready(function () {
                     label: "France user"
                 },
                 {
+//                   
                     value: data.languages.gr,
                     color: "#949FB1",
                     highlight: "#A8B3C5",
                     label: "Germany user"
+                },
+                {
+                    value: data.languages.pt,
+                    color: "#006600",
+                    highlight: "#00CC00",
+                    label: "Portuguese user"
+                },
+                {
+                    value: data.languages.es,
+                    color: "#FFCC00",
+                    highlight: "#FFFF00",
+                    label: "Spanish user"
+                },
+                {
+                    value: data.languages.it,
+                    color: "#000066",
+                    highlight: "#0000CC",
+                    label: "Italian user"
                 }
+               
 
             ];
 
@@ -138,13 +158,13 @@ $(document).ready(function () {
 					value: data.item.item,
 					color:"#F7464A",
 					highlight: "#FF5A5E",
-					label: "Items left"
+					label: "Antiques left"
 				},
                                 {
 					value: data.item.item_comment,
 					color: "#46BFBD",
                                         highlight: "#5AD3D1",
-					label: "Items Comment"
+					label: "Antiques Comment"
 				}
 
 			];

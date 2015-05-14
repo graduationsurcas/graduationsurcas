@@ -41,8 +41,8 @@ include '../server/dboperation.php';
         include_once '../include/footerlinkspages.html';
         include_once '../modals/serviceproviderinfo.php';
         include_once '../modals/updateserviceproviderinfo.php';
-        include_once '../modals/removesetserviceprovidermodal.php';
         include_once '../modals/servicerequestinfo.php';
+        include_once '../modals/reomveservices.php';
         include_once '../modals/mapmodel.php';
         ?>
 

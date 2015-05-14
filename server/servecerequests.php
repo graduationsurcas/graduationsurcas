@@ -327,6 +327,37 @@ if ($_SESSION['login'] && isset($_POST["destination"])) {
                 parmNotAccess();
             }
             break;
+            case "resetadminpass":
+                    if (isset($_POST["new-useremail-rest"])) {
+             include_once '../class/cryptpass.php';
+            include_once './Services.php';
+             dboperation::restpass( $_POST["new-useremail-rest"]);
+            }
+            break;
+            case "updateprofile":
+                    if (isset($_POST["user-profile-name"])&&isset($_POST["user-profile-email"])
+                            &&isset($_POST["user-profile-password-new"])&&isset($_POST["user-profile-password-old"])) {
+             include_once '../class/cryptpass.php';
+             dboperation::updateuserprofile($_SESSION['login-admin-id'], $_POST["user-profile-email"], 
+                     $_POST["user-profile-name"], $_POST["user-profile-password-old"],
+                     $_POST["user-profile-password-new"]);
+            }
+            break;
+            case "addnewnotification":
+                    if (isset($_POST["add-new-notification"])) {
+             include_once '../class/cryptpass.php';
+             dboperation::addnewNotification($_POST["add-new-notification"]);
+            }
+            break;
+//             'remove-service-id': $("#remove-service-id").val(),
+//            'remove-service-admin-pass': $('input[id=remove-service-admin-pass]').val()
+            case "serviceremove":
+             include_once '../class/cryptpass.php';
+                 $email = strval($_SESSION['login-admin-email']);
+             dboperation::removeService($_POST["remove-service-id"], $_POST["remove-service-admin-pass"],$email);
+          
+            break;
+        
     }
 
     function parmNotAccess() {

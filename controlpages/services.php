@@ -29,7 +29,7 @@
 //                                    "prate":"0","nrate":"0","status":"0","title":"service request",
 //                                    "userid":"161","username":"user name 111","desc":"0"}
                             ?>
-                            <tr id="servicerequests_list_tr_<?php echo $num; ?>">
+                            <tr id="service_list_tr_<?php echo $num; ?>">
                                 <td><?php echo $num; ?></td>
                                 <td><?php echo $service->title ?></td>
                                 <td><?php echo $service->username ?></td>
@@ -57,17 +57,9 @@
                                   class="btn btn-default btn-sm">
                                 <i class="fa fa-map-marker"></i>
                             </span>
-                             <span onclick="addnewservicesrequest.setservicerequestmodelinf(
-                                        '<?php echo $service->id ?>',
-                                        '<?php echo $service->username ?>',
-                                        '<?php echo $service->dec ?>',
-                                        '<?php echo $service->adddate ?>',
-                                        '<?php echo ($service->blockstatus == "true")? "block" : "active" ?>'
-                                        )" data-toggle="modal"
-                                  data-target="#update_serviceproviderinfo_modal"
-                                  class="btn btn-success btn-sm">
-                                <i class="fa fa-edit"></i>
-                             </span>
+                            <span onclick="servicesFunctions.setremovesetservice('<?php echo $service->serviceid ?>', '<?php echo $num ?>')" data-toggle="modal" data-target="#remove_service_modal" class="btn btn-danger btn-sm">
+                                <i class="fa fa-trash"></i>
+                            </span>
                         </center>
                         </td>
                         </tr>

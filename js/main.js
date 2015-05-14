@@ -1,4 +1,4 @@
-var sitelink = "http://192.168.1.14/graduationsurcas";
+var sitelink = "http://localhost/graduationsurcas";
 
 
 
