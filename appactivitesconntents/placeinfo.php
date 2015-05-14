@@ -64,7 +64,7 @@ try {
                             <?php echo $place["address"] ?>
                         </span>
                         <span style="float: right;">
-                            <a><i class="fa fa-heart"></i></a>
+                            <!--<a><i class="fa fa-heart"></i></a>-->
                             <?php
                             $itemcount = appdboperations::getItemsOnPlaceCount($_GET["id"]);
                             if ($itemcount > 0) {

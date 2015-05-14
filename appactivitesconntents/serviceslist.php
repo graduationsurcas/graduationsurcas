@@ -17,7 +17,7 @@ use Stichoza\GoogleTranslate\TranslateClient;
             #place-title{
                 font-size: 1.35em;
                 font-weight: 600;
-                color: #2196F3;
+                color: #3F51B5;
             }
             .card-icon{
                 color: #999999;
@@ -57,18 +57,20 @@ use Stichoza\GoogleTranslate\TranslateClient;
                     <div class="panel place-card">
                         <div class="panel-body">
                             <span id="place-title">
-                                <?php echo $services[$index]["title"] . " " . TranslateClient::translate("en", $_GET["lang"], $services[$index]["type"]); ?>
+                                <?php $title = $services[$index]["title"] . " " . TranslateClient::translate("en", $_GET["lang"], $services[$index]["type"]);
+                                echo $title; ?>
                             </span>
                             <p>
                                 <?php
-                                echo TranslateClient::translate("en", $_GET["lang"], $services[$index]["description"]);
+                                $description = TranslateClient::translate("en", $_GET["lang"], $services[$index]["description"]);
+                                echo $description;
                                 ?>
                             </p>
                         </div>
                         <div class="panel-body">
                             <div class="text-left" style="margin: 0px; padding: 0px; float: left">
                                 <span class="btn btn-sm card-icon">
-                                    <a href="*share~هذا التطبيق تمت برمجته بواسطة طلاب البرمجة"
+                                    <a href="*share~<?php echo $title." ".$description; ?>"
                                        class="waves-effect" >
                                         <i class="fa fa-share-alt card-icon"></i>
                                     </a>

@@ -17,7 +17,7 @@ use Stichoza\GoogleTranslate\TranslateClient;
             #place-title{
                 font-size: 1.35em;
                 font-weight: 600;
-                color: #2196F3;
+                color: #3F51B5;
             }
             .card-icon{
                 color: #999999;
@@ -67,7 +67,8 @@ use Stichoza\GoogleTranslate\TranslateClient;
                     <div class="panel-body">
                         <span id="place-title" style="margin-bottom: 10px;">
                             <?php
-                            echo TranslateClient::translate(null, $_GET["lang"], $places["name"]);
+                            $placename = TranslateClient::translate(null, $_GET["lang"], $places["name"]);
+                            echo $placename;
                             ?>
 
                         </span>
@@ -82,16 +83,16 @@ use Stichoza\GoogleTranslate\TranslateClient;
                     <div class="panel-body">
                         <div class="text-left" style="margin: 0px; padding: 0px; float: left">
                             <span class="btn btn-sm card-icon">
-                                <a href="*share~this place comming from my app id = <?php echo $places["id"]; ?>"
+                                <a href="*share~<?php echo $placename." ".$description; ?>"
                                    class="waves-effect" >
                                     <i class="fa fa-share-alt card-icon"></i>
                                 </a>
                             </span>
                         </div>
                         <div class="text-right" style="margin: 0px; padding: 0px; float: right">
-                            <span class="btn btn-sm card-icon" style="margin-right: 5px;">
+<!--                            <span class="btn btn-sm card-icon" style="margin-right: 5px;">
                                 <a><i class="fa fa-heart card-icon"></i></a>
-                            </span>   
+                            </span>   -->
                             <span class="btn btn-sm card-icon">
                                 <a href="*openplace~<?php echo $places["id"]; ?>~<?php echo TranslateClient::translate(null, $_GET["lang"], $places["name"]);    ?>" 
                                    >

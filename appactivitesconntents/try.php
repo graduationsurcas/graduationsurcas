@@ -5,7 +5,7 @@ include_once './server/appdboperations.php';
 include_once '../class/cryptpass.php';
 
 
-print_r(appdboperations::ServiceProviderSignIn("admin@gmail.com", "12345"));
+print_r(appdboperations::getShareAreaList());
 //
 
 //require 'vendor/autoload.php';

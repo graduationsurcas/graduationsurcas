@@ -68,14 +68,14 @@ use Stichoza\GoogleTranslate\TranslateClient;
                             <i class="fa fa-phone"></i>
                             <i class="fa">&nbsp;<?php echo $serviceprovider["useservice_phone"]; ?></i>
                         </div>
-                        <div class="text-right"  style="float: right">
+<!--                        <div class="text-right"  style="float: right">
                             <a class="btn btn-sm card-icon" id="thumbs-up">
-                                <i class="fa fa-thumbs-up">&nbsp;<?php echo $serviceprovider["positive_rate"]; ?></i>
+                                <i class="fa fa-thumbs-up">&nbsp;<?php // echo $serviceprovider["positive_rate"]; ?></i>
                             </a>
                             <a class="btn btn-sm card-icon" id="thumbs-down">
-                                <i class="fa fa-thumbs-down" >&nbsp;<?php echo $serviceprovider["negative_rate"]; ?></i>
+                                <i class="fa fa-thumbs-down" >&nbsp;<?php // echo $serviceprovider["negative_rate"]; ?></i>
                             </a>
-                        </div>
+                        </div>-->
                     </div>
                 </div>
             </div>
@@ -94,17 +94,19 @@ use Stichoza\GoogleTranslate\TranslateClient;
                              ?>
                         <div class="panel place-card">
                             <div class="panel-body">
-                                <span id="place-title"><?php echo $services[$index]["title"] . " " . $services[$index]["type"]; ?></span>
+                                <span id="place-title">
+                                    <?php echo $services[$index]["title"] . " " . $services[$index]["type"]; ?></span>
                                 <p>
                                     <?php
-                                    echo TranslateClient::translate(null, $_GET["lang"], $services[$index]["description"]);
+                                    $description = TranslateClient::translate("en", $_GET["lang"], $services[$index]["description"]);
+                                    echo $description;
                                     ?>
                                 </p>
                             </div>
                             <div class="panel-body">
                                 <div class="text-left" style="margin: 0px; padding: 0px; float: left">
                                     <span class="btn btn-sm card-icon">
-                                        <a href="*share~هذا التطبيق تمت برمجته بواسطة طلاب البرمجة"
+                                        <a href="*share~<?php echo ($services[$index]["title"] . " " . $services[$index]["type"])." ".$description; ?>"
                                            class="waves-effect" >
                                             <i class="fa fa-share-alt card-icon"></i>
                                         </a>

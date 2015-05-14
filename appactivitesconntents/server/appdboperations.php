@@ -17,12 +17,12 @@ class appdboperations {
                       ON place.place_type = place_type.place_id
                   WHERE place.view = 1
                   ORDER BY place.create_date DESC";
-            if($selectfrom > -1){
+            if ($selectfrom > -1) {
                 $sql = $sql . " LIMIT " . intval($selectfrom) . ", " . intval($limit);
-            }  else {
+            } else {
                 $sql = $sql . " LIMIT " . intval($limit);
             }
-                  
+
 
             $data = array();
             $stmt = $dbh->prepare($sql);
@@ -47,8 +47,8 @@ class appdboperations {
             echo $e->getMessage();
         }
     }
-    
-       public static function getPlacesListOrderByLocation($limit = 25, $lat, $lang, $selectfrom = -1) {
+
+    public static function getPlacesListOrderByLocation($limit = 25, $lat, $lang, $selectfrom = -1) {
         try {
 
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
@@ -64,9 +64,9 @@ class appdboperations {
                   WHERE place.view = 1
                   ORDER BY (place.place_location_lat <= $lat),
                   ( place.place_location_lng <= $lang)";
-            if($selectfrom > -1){
+            if ($selectfrom > -1) {
                 $sql = $sql . " LIMIT " . intval($selectfrom) . ", " . intval($limit);
-            }  else {
+            } else {
                 $sql = $sql . " LIMIT " . intval($limit);
             }
 
@@ -93,7 +93,7 @@ class appdboperations {
             echo $e->getMessage();
         }
     }
-    
+
     public static function getPlaceInformation($placeid) {
         try {
 
@@ -130,8 +130,8 @@ class appdboperations {
             echo $e->getMessage();
         }
     }
-    
-      public static function getPlaceImage($placeid) {
+
+    public static function getPlaceImage($placeid) {
         try {
 
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
@@ -145,7 +145,7 @@ class appdboperations {
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $index = 0;
             foreach ($result as $row) {
-                $data[$index] = $row["image_path"].$row["image_title"];
+                $data[$index] = $row["image_path"] . $row["image_title"];
                 $index++;
             }
             $dbh = null;
@@ -155,11 +155,11 @@ class appdboperations {
         }
     }
 
-     public static function getItemsOnPlaceCount($placeid) {
+    public static function getItemsOnPlaceCount($placeid) {
         try {
 
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
-            $sql = 'SELECT count(*) as count FROM item WHERE item_place = '.  intval($placeid);
+            $sql = 'SELECT count(*) as count FROM item WHERE item_place = ' . intval($placeid);
             $count;
             foreach ($dbh->query($sql) as $row) {
                 $count = $row['count'];
@@ -170,11 +170,8 @@ class appdboperations {
             echo $e->getMessage();
         }
     }
-    
-    
-    
-    
-     public static function getItemsList($limit = 25, $selectfrom = -1) {
+
+    public static function getItemsList($limit = 25, $selectfrom = -1) {
         try {
 
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
@@ -186,9 +183,9 @@ class appdboperations {
                   FROM item
                   WHERE item.status_view = 1
                   ORDER BY adddate DESC";
-              if($selectfrom > -1){
+            if ($selectfrom > -1) {
                 $sql = $sql . " LIMIT " . intval($selectfrom) . ", " . intval($limit);
-            }  else {
+            } else {
                 $sql = $sql . " LIMIT " . intval($limit);
             }
 
@@ -213,7 +210,8 @@ class appdboperations {
             echo $e->getMessage();
         }
     }
-     public static function getItemsListByLocation($limit = 25, $lat, $lang , $selectfrom = -1) {
+
+    public static function getItemsListByLocation($limit = 25, $lat, $lang, $selectfrom = -1) {
         try {
 
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
@@ -226,11 +224,11 @@ class appdboperations {
                     INNER JOIN place
                       ON item.item_place = place.place_id
                   WHERE item.status_view = 1
-                  ORDER BY (place.place_location_lat <= ".floatval($lat)."),
-                  ( place.place_location_lng <= ".floatval($lang).")";
-              if($selectfrom > -1){
+                  ORDER BY (place.place_location_lat <= " . floatval($lat) . "),
+                  ( place.place_location_lng <= " . floatval($lang) . ")";
+            if ($selectfrom > -1) {
                 $sql = $sql . " LIMIT " . intval($selectfrom) . ", " . intval($limit);
-            }  else {
+            } else {
                 $sql = $sql . " LIMIT " . intval($limit);
             }
             $data = array();
@@ -254,7 +252,8 @@ class appdboperations {
             echo $e->getMessage();
         }
     }
-     public static function getItemsListByPlace($limit = 25, $placeid, $selectfrom = -1) {
+
+    public static function getItemsListByPlace($limit = 25, $placeid, $selectfrom = -1) {
         try {
 
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
@@ -269,9 +268,9 @@ class appdboperations {
                   WHERE item.status_view = 1 
                         AND place.place_id = :palceid
                   ORDER BY item.item_add_date";
-              if($selectfrom > -1){
+            if ($selectfrom > -1) {
                 $sql = $sql . " LIMIT " . intval($selectfrom) . ", " . intval($limit);
-            }  else {
+            } else {
                 $sql = $sql . " LIMIT " . intval($limit);
             }
             $data = array();
@@ -296,8 +295,8 @@ class appdboperations {
             echo $e->getMessage();
         }
     }
-    
-     public static function getItemInformation($itemid) {
+
+    public static function getItemInformation($itemid) {
         try {
 
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
@@ -336,8 +335,8 @@ class appdboperations {
             echo $e->getMessage();
         }
     }
-    
-       public static function getItemImage($itemid) {
+
+    public static function getItemImage($itemid) {
         try {
 
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
@@ -355,7 +354,7 @@ class appdboperations {
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $index = 0;
             foreach ($result as $row) {
-                $data[$index] = $row["image_path"].$row["image_title"];
+                $data[$index] = $row["image_path"] . $row["image_title"];
                 $index++;
             }
             $dbh = null;
@@ -387,9 +386,9 @@ class appdboperations {
                       ON service.service_user_id = user_service.useservice_id
                   WHERE service.service_status = 1
                   ORDER BY service.service_add_date DESC";
-                    if($selectfrom > -1){
+            if ($selectfrom > -1) {
                 $sql = $sql . " LIMIT " . intval($selectfrom) . ", " . intval($limit);
-            }  else {
+            } else {
                 $sql = $sql . " LIMIT " . intval($limit);
             }
 
@@ -420,8 +419,8 @@ class appdboperations {
             echo $e->getMessage();
         }
     }
-    
-      public static function getServiceListByProvider($limit = 25, $providerid) {
+
+    public static function getServiceListByProvider($limit = 25, $providerid) {
         try {
 
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
@@ -474,8 +473,8 @@ class appdboperations {
             echo $e->getMessage();
         }
     }
-    
-      public static function getServiceProviderInformation($serviceproviderid) {
+
+    public static function getServiceProviderInformation($serviceproviderid) {
         try {
 
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
@@ -511,10 +510,9 @@ class appdboperations {
             echo $e->getMessage();
         }
     }
-    
-    
-        public static function ServiceProviderSignIn($useremail, $userpass) {
-        $data = array("status" => "false", "message" => "", "userinfo"=>"");
+
+    public static function ServiceProviderSignIn($useremail, $userpass) {
+        $data = array("status" => "false", "message" => "", "userinfo" => "");
         try {
 
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
@@ -526,7 +524,7 @@ class appdboperations {
             $find;
             foreach ($result as $row) {
                 $find = ($row['find'] == 0) ? false : true;
-            }    
+            }
             if ($find == FALSE) {
                 $data["message"] = "check your emaile";
                 return $data;
@@ -562,12 +560,11 @@ class appdboperations {
                     $userinfo["langshortcut"] = $row["lang_shortcut"];
                     $userinfo["langname"] = $row["lang_name"];
                     $userinfo["status"] = $row["account_status"];
-                 
+
 
                     $data["message"] = "did you know what is blue";
                     $data["status"] = "true";
                     $data["userinfo"] = $userinfo;
-                    
                 } else {
                     //                if the password is wrong
                     $data["message"] = "password is wrong";
@@ -585,10 +582,9 @@ class appdboperations {
             return $data;
         }
     }
-    
-    
-            public static function userSignIn($useremail, $userpass) {
-        $data = array("status" => "false", "message" => "", "userinfo"=>"");
+
+    public static function userSignIn($useremail, $userpass) {
+        $data = array("status" => "false", "message" => "", "userinfo" => "");
         try {
 
             $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
@@ -600,7 +596,7 @@ class appdboperations {
             $find;
             foreach ($result as $row) {
                 $find = ($row['find'] == 0) ? false : true;
-            }    
+            }
             if ($find == FALSE) {
                 $data["message"] = "check your emaile";
                 return $data;
@@ -633,12 +629,11 @@ class appdboperations {
                     $userinfo["useremail"] = $row["user_email"];
                     $userinfo["langshortcut"] = $row["lang_shortcut"];
                     $userinfo["langname"] = $row["lang_name"];
-                 
+
 
                     $data["message"] = "did you know what is blue";
                     $data["status"] = "true";
                     $data["userinfo"] = $userinfo;
-                    
                 } else {
                     //                if the password is wrong
                     $data["message"] = "password is wrong";
@@ -656,5 +651,106 @@ class appdboperations {
             return $data;
         }
     }
-    
+
+    public static function newUser($lang, $name, $email, $password) {
+
+        $data = array("status" => "false", "message" => "");
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $query = 'INSERT INTO user (user_id, user_name, user_password, user_lang, user_email)
+                        VALUES (NULL, :username, :userpassword, :userlang, :email)';
+            $stmt = $dbh->prepare($query) or die(mysql_error());
+            $stmt->bindParam(':userlang', $lang, PDO::PARAM_INT);
+            $stmt->bindParam(':username', $name, PDO::PARAM_STR);
+            $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+            $stmt->bindParam(':userpassword', encrypt_pass($password), PDO::PARAM_STR);
+            $stmt->execute();
+            if ($stmt->rowCount() == 1) {
+                $data["status"] = "true";
+                $idofinserteditem = $dbh->lastInsertId();
+            } else {
+                $data["message"] = $stmt->errorInfo();
+                $data["status"] = "false";
+            }
+        } catch (Exception $e) {
+            $data["message"] = $e->getMessage();
+            $data["status"] = "false";
+        }
+        $dbh = null;
+        return $data;
+    }
+
+    public static function newServiseProvider($lang, $name, $email, $password) {
+
+        $data = array("status" => "false", "message" => "");
+        try {
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $query = 'INSERT INTO user (user_id, user_name, user_password, user_lang, user_email)
+                        VALUES (NULL, :username, :userpassword, :userlang, :email)';
+            $stmt = $dbh->prepare($query) or die(mysql_error());
+            $stmt->bindParam(':userlang', $lang, PDO::PARAM_INT);
+            $stmt->bindParam(':username', $name, PDO::PARAM_STR);
+            $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+            $stmt->bindParam(':userpassword', encrypt_pass($password), PDO::PARAM_STR);
+            $stmt->execute();
+            if ($stmt->rowCount() == 1) {
+                $data["status"] = "true";
+                $idofinserteditem = $dbh->lastInsertId();
+            } else {
+                $data["message"] = $stmt->errorInfo();
+                $data["status"] = "false";
+            }
+        } catch (Exception $e) {
+            $data["message"] = $e->getMessage();
+            $data["status"] = "false";
+        }
+        $dbh = null;
+        return $data;
+    }
+
+    public static function getShareAreaList($limit = 25, $selectfrom = -1) {
+        try {
+
+            $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USERNAME, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $sql = "SELECT
+                    share_area.sharearea_id,
+                    share_area.sharearea_text,
+                    user.user_name,
+                    DATE(share_area.sharearea_add_date) AS createdate,
+                    user.user_id
+                  FROM share_area
+                    INNER JOIN user
+                      ON share_area.sharearea_user_id = user.user_id
+                  ORDER BY share_area.sharearea_add_date DESC ";
+            if ($selectfrom > -1) {
+                $sql = $sql . " LIMIT " . intval($selectfrom) . ", " . intval($limit);
+            } else {
+                $sql = $sql . " LIMIT " . intval($limit);
+            }
+
+            $data = array();
+            $stmt = $dbh->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($result as $row) {
+                $service = array();
+                $service["id"] = $row["sharearea_id"];
+                $service["username"] = $row["user_name"];
+                $service["userid"] = $row["user_id"];
+                $service["description"] = $row["sharearea_text"];
+                $service["date"] = $row["createdate"];
+                array_push($data, $service);
+            }
+
+            $dbh = null;
+            return $data;
+
+            /*             * * close the database connection ** */
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+
 }
